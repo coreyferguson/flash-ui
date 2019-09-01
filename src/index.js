@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import AWS from 'aws-sdk';
 import { CognitoAuth } from 'amazon-cognito-auth-js';
+import config from './config/config-local.json';
 
 class Root extends React.Component {
 
@@ -27,10 +28,12 @@ class Root extends React.Component {
     console.log('identityId:', identityId);
     const file = this.refs.image.files[0];
     console.log('file:', file);
+    const key = `${identityId}/${file.name}`;
+    console.log('key:', key);
     const params = {
       // ACL: 'public-read',
       Body: file,
-      Key: `${identityId}/${file.name}`
+      Key: key
     };
     return window.s3.putObject(params).promise().catch(err => {
       console.log('error:', err);
@@ -44,13 +47,13 @@ ReactDOM.render(<Root/>, container);
 
 
 const authData = {
-  ClientId : '27vjd6rt86mibpl0j0hfsrpqda', // Your client id here
-  AppWebDomain : 'auth.overattribution.com',
-  TokenScopesArray : [ 'email', 'profile','openid' ],
-  RedirectUriSignIn : 'http://localhost:8080/oauth/callback',
-  RedirectUriSignOut : 'http://localhost:8080/oauth/signout',
-  IdentityProvider : 'Google',
-  UserPoolId : 'us-west-2_MRlZ0BZ1Q'
+  ClientId: config.auth.userPool.client.id,
+  AppWebDomain: config.auth.userPool.webDomain,
+  TokenScopesArray: [ 'email', 'profile','openid' ],
+  RedirectUriSignIn: config.auth.userPool.client.redirectCallback,
+  RedirectUriSignOut: config.auth.userPool.client.redirectSignout,
+  IdentityProvider: 'Google',
+  UserPoolId: config.auth.userPool.id
 };
 const auth = new CognitoAuth(authData);
 
@@ -86,14 +89,12 @@ function authenticateWithIdentityService() {
   console.log('idToken:', idToken);
 
   const region = 'us-west-2';
-  const userPoolId = 'us-west-2_MRlZ0BZ1Q';
-  const s3Bucket = 'flashcards-media-5bb171aa-3d43-40e3-b158-efb834f171e6';
   AWS.config.region = region;
 
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId : 'us-west-2:c8a4ff17-b8d7-4aa2-818b-62b5eb09653b',
+    IdentityPoolId : config.auth.identityPoolId,
     Logins : {
-      [`cognito-idp.${region}.amazonaws.com/${userPoolId}`] : idToken
+      [`cognito-idp.${region}.amazonaws.com/${config.auth.userPool.id}`]: idToken
     }
   });
 
@@ -106,10 +107,11 @@ function authenticateWithIdentityService() {
 
       window.s3 = new AWS.S3({
         apiVersion: '2006-03-01',
-        params: { Bucket: s3Bucket }
+        params: { Bucket: config.media.s3Bucket }
       });
 
-      const params = { Bucket: s3Bucket, Key: 'us-west-2:546696e8-8824-42c5-89f7-e9f8df4b411f/branch-tip-spider.jpg' };
+      const identityId = AWS.config.credentials.identityId;
+      const params = { Bucket: config.media.s3Bucket, Key: `${identityId}/branch-tip-spider.jpg` };
       const url = window.s3.getSignedUrl('getObject', params);
       console.log('The URL is', url);
 
