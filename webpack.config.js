@@ -10,9 +10,7 @@ module.exports = {
   mode: stage === 'prod' ? 'production' : 'development',
   entry: './src/index.js',
   resolve: {
-    alias: {
-      config: envConfig
-    }
+    alias: { config: envConfig }
   },
   devtool: 'inline-source-map',
   plugins: [
