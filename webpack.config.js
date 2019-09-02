@@ -3,9 +3,17 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const stage = process.env.stage || 'dev';
+const envConfig = path.resolve(__dirname, `src/config/config-${stage}.json`);
+
 module.exports = {
-  mode: 'development',
+  mode: stage === 'prod' ? 'production' : 'development',
   entry: './src/index.js',
+  resolve: {
+    alias: {
+      config: envConfig
+    }
+  },
   devtool: 'inline-source-map',
   plugins: [
     new CleanWebpackPlugin(),

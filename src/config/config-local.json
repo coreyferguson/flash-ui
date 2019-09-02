@@ -1,16 +1,17 @@
 {
+  "stage": "local",
   "auth": {
     "userPool": {
-      "id": "us-west-2_15McutfO1",
+      "id": "us-west-2_voHSskzvL",
       "webDomain": "auth-dev.overattribution.com",
       "client": {
         "name": "flashcards",
-        "id": "nfn3fkrv7lulsumldbg2j60nb",
+        "id": "38f3a2m8lni2fqhhfoc1eiqs53",
         "redirectCallback": "http://localhost:8080/oauth/callback",
         "redirectSignout": "http://localhost:8080/oauth/signout"
       }
     },
-    "identityPoolId": "us-west-2:904ac209-681d-40df-85e8-6bf2d6976bb3"
+    "identityPoolId": "us-west-2:cac0f1e3-7c9d-4284-9b86-e93ff2192e03"
   },
   "media": {
     "s3Bucket": "overattribution-flashcards-dev-media"
