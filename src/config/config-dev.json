@@ -5,7 +5,7 @@
       "webDomain": "auth-dev.overattribution.com",
       "client": {
         "name": "flashcards",
-        "id": "7ovumrobcqc6k6q23igllj6vdt",
+        "id": "nfn3fkrv7lulsumldbg2j60nb",
         "redirectCallback": "https://flashcards-dev.overattribution.com/oauth/callback",
         "redirectSignout": "https://flashcards-dev.overattribution.com/oauth/signout"
       }
