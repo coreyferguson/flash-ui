@@ -1,5 +1,5 @@
 
-console.log('it worked!');
+console.log('it\'s alive!');
 
 // import ReactDOM from 'react-dom';
 // import React from 'react';

@@ -38,18 +38,6 @@ resources:
                 - !Ref S3BucketWebApp
                 - /*
 
-  # Outputs:
-  #   S3BucketSecureURL:
-  #     Value: !Join
-  #       - ''
-  #       - - 'https://'
-  #         - !GetAtt
-  #           - S3BucketWebApp
-  #           - DomainName
-  #     Description: Name of S3 bucket to hold website content
-
-
-
     CloudFrontWebApp:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -101,3 +89,17 @@ resources:
             AcmCertificateArn: arn:aws:acm:us-east-1:863138142000:certificate/078933c7-2e00-415f-b964-ead49b37f915
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
+
+    Route53RecordSetAlias:
+      Type: AWS::Route53::RecordSet
+      Properties:
+        AliasTarget:
+          DNSName: d1u9npwenqdmwk.cloudfront.net
+          # DNSName: !GetAtt CloudFrontWebApp.DomainName
+          EvaluateTargetHealth: false
+          # hosted zone for cloud formation
+          # https://docs.aws.amazon.com/general/latest/gr/rande.html#elb_region
+          HostedZoneId: Z2FDTNDATAQYW2
+        HostedZoneName: overattribution.com.
+        Name: ${file(./serverless-${self:provider.stage}.yml):cloudFrontAlias}
+        Type: 'A'

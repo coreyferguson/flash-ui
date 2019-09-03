@@ -7,12 +7,10 @@ const stage = process.env.stage || 'dev';
 const envConfig = path.resolve(__dirname, `src/config/config-${stage}.json`);
 
 module.exports = {
-  mode: stage === 'prod' ? 'production' : 'development',
   entry: './src/index.js',
   resolve: {
     alias: { config: envConfig }
   },
-  devtool: 'inline-source-map',
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -23,12 +21,6 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/'
-  },
-  devServer: {
-    contentBase: './dist',
-    historyApiFallback: {
-      index: '/index.html'
-    }
   },
   module: {
     rules: [

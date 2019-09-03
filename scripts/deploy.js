@@ -15,7 +15,7 @@ async function runAll() {
 
 function webpack() {
   console.info('Starting webpack');
-  return exec(`npm run webpack`);
+  return exec(`./node_modules/.bin/webpack --config webpack.prod.js`);
 }
 
 function synchronize() {
