@@ -1,7 +1,7 @@
 
-console.log('it\'s alive!');
+import ReactDOM from 'react-dom';
+import React from 'react';
 
-// import ReactDOM from 'react-dom';
 // import React from 'react';
 // import AWS from 'aws-sdk';
 // import { CognitoAuth } from 'amazon-cognito-auth-js';

@@ -7,6 +7,9 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
+    host: 'flash-local.overattribution.com',
+    port: 9000,
+    https: true,
     historyApiFallback: {
       index: '/index.html'
     }
