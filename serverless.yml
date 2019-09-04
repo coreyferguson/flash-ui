@@ -94,8 +94,7 @@ resources:
       Type: AWS::Route53::RecordSet
       Properties:
         AliasTarget:
-          DNSName: d1u9npwenqdmwk.cloudfront.net
-          # DNSName: !GetAtt CloudFrontWebApp.DomainName
+          DNSName: !GetAtt CloudFrontWebApp.DomainName
           EvaluateTargetHealth: false
           # hosted zone for cloud formation
           # https://docs.aws.amazon.com/general/latest/gr/rande.html#elb_region
