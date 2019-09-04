@@ -1,6 +1,10 @@
 
 import ReactDOM from 'react-dom';
-import React from 'react';
+
+import Nav from './Nav';
+
+const container = document.getElementById('container');
+ReactDOM.render(<Nav/>, container);
 
 // import React from 'react';
 // import AWS from 'aws-sdk';
