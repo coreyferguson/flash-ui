@@ -1,6 +1,7 @@
 
 import React, { PureComponent } from 'react';
 import './Nav.scss';
+import { Link } from 'react-router-dom';
 
 export default class Nav extends PureComponent {
   render() {
@@ -9,7 +10,7 @@ export default class Nav extends PureComponent {
         <div className="nav-wrapper">
           <a href="/" className="brand-logo">Flash</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><a href="/signin">Sign In</a></li>
+            <li><Link to='/signin'>Sign In</Link></li>
           </ul>
         </div>
       </nav>

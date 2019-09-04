@@ -1,10 +1,20 @@
 
 import ReactDOM from 'react-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Nav from './Nav';
+import Landing from './Landing';
+import Signin from './authentication/Signin';
+
+const Home = () => (
+  <Router>
+    <Route path='/' exact component={Landing} />
+    <Route path='/signin' exact component={Signin} />
+  </Router>
+);
 
 const container = document.getElementById('container');
-ReactDOM.render(<Nav/>, container);
+ReactDOM.render(<Home />, container);
 
 // import React from 'react';
 // import AWS from 'aws-sdk';
