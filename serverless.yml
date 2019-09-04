@@ -1,5 +1,5 @@
 
-service: flashcards-ui
+service: flash-ui
 
 frameworkVersion: "=1.44.1"
 
@@ -15,7 +15,7 @@ resources:
     S3BucketWebApp:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: overattribution-flashcards-${self:provider.stage}-flashcards-ui
+        BucketName: overattribution-flash-${self:provider.stage}-flash-ui
         AccessControl: PublicRead
         WebsiteConfiguration:
           ErrorDocument: index.html
