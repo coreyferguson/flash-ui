@@ -6,7 +6,7 @@
       "webDomain": "auth-dev.overattribution.com",
       "client": {
         "name": "flash",
-        "id": "38f3a2m8lni2fqhhfoc1eiqs53",
+        "id": "sue4ujmsbvio5f7s5on55pjvf",
         "redirectCallback": "https://flash-dev.overattribution.com/oauth/callback",
         "redirectSignout": "https://flash-dev.overattribution.com/oauth/signout"
       }
