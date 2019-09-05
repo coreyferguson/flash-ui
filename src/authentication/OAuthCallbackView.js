@@ -2,14 +2,20 @@
 import PageContainer from '../PageContainer';
 import React from 'react';
 import sessionService from './sessionService';
+import clientService from '../clientService';
 
 export default class OAuthCallbackView extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    sessionService.processCallback(window.location.href).then(response => {
-      console.log('response:', response);
-      window.location.href = '/';
+    this._sessionService = props.sessionService || sessionService;
+    this._clientService = props.clientService || clientService;
+    this.processCallback();
+  }
+
+  processCallback() {
+    return this._sessionService.processCallback(clientService.getUrl()).then(response => {
+      this._clientService.navigate('/');
     });
   }
 

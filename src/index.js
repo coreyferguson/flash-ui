@@ -1,23 +1,6 @@
 
 import ReactDOM from 'react-dom';
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
-import LandingView from './LandingView';
-import SigninView from './authentication/SigninView';
-import OAuthCallbackView from './authentication/OAuthCallbackView';
-import SignoutView from './authentication/SignoutView';
-import OAuthSignOutView from './authentication/OAuthSignOutView';
-
-const Home = () => (
-  <Router>
-    <Route path='/' exact component={LandingView} />
-    <Route path='/signin' exact component={SigninView} />
-    <Route path='/signout' exact component={SignoutView} />
-    <Route path='/oauth/callback' exact component={OAuthCallbackView} />
-    <Route path='/oauth/signout' exact component={OAuthSignOutView} />
-  </Router>
-);
+import Home from './Home';
 
 const container = document.getElementById('container');
 ReactDOM.render(<Home />, container);

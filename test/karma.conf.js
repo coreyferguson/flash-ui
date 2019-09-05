@@ -59,6 +59,7 @@ module.exports = function(config) {
 
     webpack: merge(common, {
       mode: 'development',
+      devtool: 'inline-source-map',
       plugins: []
     })
 
