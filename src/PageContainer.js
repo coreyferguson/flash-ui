@@ -8,7 +8,9 @@ export default class PageContainer extends React.PureComponent {
     return (
       <div>
         <Nav />
-        {{...this.props.children}}
+        <div className='container'>
+          {{...this.props.children}}
+        </div>
       </div>
     );
   }
