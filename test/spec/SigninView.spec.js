@@ -1,15 +1,15 @@
 
 import React from 'react';
-import OAuthCallbackView from '../../src/authentication/OAuthCallbackView';
+import SigninView from '../../src/authentication/SigninView';
 import { expect, sinon, shallow, sandbox } from '../support/TestUtilities';
 import clientService from '../support/stubs/clientServiceStub';
 import sessionService from '../support/stubs/authentication/sessionServiceStub';
 
-describe('OAuthCallbackView', () => {
+describe('SigninView', () => {
 
   const sandbox = sinon.createSandbox();
   const view = () => shallow(
-    <OAuthCallbackView
+    <SigninView
       clientService={clientService}
       sessionService={sessionService} />
   );
@@ -19,17 +19,16 @@ describe('OAuthCallbackView', () => {
     sandbox.restore();
   });
 
-  it('process callback and navigate home', () => {
+  it('sign in and navigate back home', async () => {
     sandbox.stub(sessionService, 'processCallback')
       .returns(Promise.resolve());
     sandbox.stub(clientService, 'navigate');
     const wrapper = view();
-    expect(wrapper.html()).to.contain('Validating credentials...');
+    expect(wrapper.html()).to.contain('Signing in...');
     expect(clientService.navigate).to.not.be.called;
-    return timeout(1).then(() => {
-      expect(wrapper.html()).to.contain('Validating credentials...');
-      expect(clientService.navigate).to.be.called;
-    });
+    await timeout(1);
+    expect(wrapper.html()).to.contain('Signing in...');
+    expect(clientService.navigate).to.be.called;
   });
 
 });

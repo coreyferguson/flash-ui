@@ -2,7 +2,7 @@
 const stub = {
   getCognitoAuth: () => {},
   processCallback: () => Promise.resolve(),
-  signin: () => {},
+  signin: () => Promise.resolve(),
   signout: () => {},
   isUserSignedIn: () => {}
 };
