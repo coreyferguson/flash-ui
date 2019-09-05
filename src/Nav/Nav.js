@@ -8,7 +8,8 @@ export default class Nav extends PureComponent {
 
   constructor(props) {
     super(props);
-    this._authenticated = props._authenticated || sessionService.isUserSignedIn();
+    this._sessionService = props.sessionService || sessionService;
+    this._authenticated = props.authenticated || this._sessionService.isUserSignedIn();
   }
 
   authenticatedView() {

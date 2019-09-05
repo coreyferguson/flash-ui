@@ -1,14 +1,19 @@
 
 import React from 'react';
-import { expect, sinon } from '../support/TestUtilities';
+import { expect, sinon, shallow } from '../support/TestUtilities';
 import NavView from '../../src/Nav/Nav';
-import { shallow } from 'enzyme';
+import sessionService from '../support/stubs/authentication/sessionServiceStub';
 
 describe('Nav', () => {
 
-  it('Nav optional params', () => {
-    const wrapper = shallow(<NavView />);
-    expect(wrapper.find('nav')).to.exist;
+  it('Nav - authenticated view', () => {
+    const wrapper = shallow(<NavView sessionService={sessionService} authenticated={false} />);
+    expect(wrapper.html()).to.contain('Signin');
+  });
+
+  it('Nav - unauthenticated view', async () => {
+    const wrapper = shallow(<NavView sessionService={sessionService} authenticated={true} />);
+    expect(wrapper.html()).to.contain('Signout');
   });
 
 });
