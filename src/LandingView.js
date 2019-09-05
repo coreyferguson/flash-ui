@@ -1,6 +1,6 @@
 
 import React from 'react';
-import PageContainer from '../PageContainer';
+import PageContainer from './PageContainer';
 
 export default class Landing extends React.PureComponent {
 

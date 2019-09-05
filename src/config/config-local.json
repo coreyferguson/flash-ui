@@ -6,9 +6,9 @@
       "webDomain": "auth-dev.overattribution.com",
       "client": {
         "name": "flash",
-        "id": "38f3a2m8lni2fqhhfoc1eiqs53",
-        "redirectCallback": "http://localhost:8080/oauth/callback",
-        "redirectSignout": "http://localhost:8080/oauth/signout"
+        "id": "sue4ujmsbvio5f7s5on55pjvf",
+        "redirectCallback": "https://flash-local.overattribution.com:9000/oauth/callback",
+        "redirectSignout": "https://flash-local.overattribution.com:9000/oauth/signout"
       }
     },
     "identityPoolId": "us-west-2:cac0f1e3-7c9d-4284-9b86-e93ff2192e03"

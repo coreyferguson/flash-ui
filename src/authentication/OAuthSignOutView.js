@@ -2,12 +2,16 @@
 import React from 'react';
 import PageContainer from '../PageContainer';
 
-export default class Signin extends React.PureComponent {
+export default class OAuthSignOutView extends React.PureComponent {
+
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     return (
       <PageContainer>
-        <h1>Sign in</h1>
+        <h1>You are signed out</h1>
       </PageContainer>
     );
   }
