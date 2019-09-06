@@ -7,7 +7,7 @@ export default class LandingViewAuthenticated extends React.PureComponent {
   render() {
     return (
       <PageContainer>
-        <h1>Authenticated</h1>
+        <h3 className='header'>Authenticated</h3>
       </PageContainer>
     );
   }

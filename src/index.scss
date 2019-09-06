@@ -1,0 +1,36 @@
+
+.flash {
+  .pop {
+    color: #ef5350;
+  }
+
+  .header {
+    color: #ef5350;
+    font-weight: 300;
+  }
+
+  .list {
+    li {
+      width: 100%;
+    }
+
+    .bullet {
+      color: #ef5350;
+      display: inline;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+  }
+
+  .signin-arrow {
+    color: #ef5350;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    font-size: 2em;
+    span, i {
+      display: inline;
+      vertical-align: bottom;
+    }
+  }
+}

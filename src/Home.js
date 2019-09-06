@@ -9,19 +9,23 @@ import OAuthCallbackView from './authentication/OAuthCallbackView';
 import SignoutView from './authentication/SignoutView';
 import OAuthSignOutView from './authentication/OAuthSignOutView';
 
+import './index.scss';
+
 export default class Home extends React.PureComponent {
 
   render() {
     return (
-      <ErrorBoundary>
-        <Router>
-          <Route path='/' exact component={Landing} />
-          <Route path='/signin' exact component={SigninView} />
-          <Route path='/signout' exact component={SignoutView} />
-          <Route path='/oauth/callback' exact component={OAuthCallbackView} />
-          <Route path='/oauth/signout' exact component={OAuthSignOutView} />
-        </Router>
-      </ErrorBoundary>
+      <div className='flash'>
+        <ErrorBoundary>
+          <Router>
+            <Route path='/' exact component={Landing} />
+            <Route path='/signin' exact component={SigninView} />
+            <Route path='/signout' exact component={SignoutView} />
+            <Route path='/oauth/callback' exact component={OAuthCallbackView} />
+            <Route path='/oauth/signout' exact component={OAuthSignOutView} />
+          </Router>
+        </ErrorBoundary>
+      </div>
     );
   }
 

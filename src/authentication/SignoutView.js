@@ -18,7 +18,7 @@ export default class SignoutView extends React.PureComponent {
   render() {
     return (
       <PageContainer>
-        <h1>Signing out...</h1>
+        <h3 className='header'>Signing out...</h3>
       </PageContainer>
     );
   }

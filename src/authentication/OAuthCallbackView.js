@@ -22,7 +22,7 @@ export default class OAuthCallbackView extends React.PureComponent {
   render() {
     return (
       <PageContainer>
-        <h1>Validating credentials...</h1>
+        <h3 className='header'>Validating credentials...</h3>
       </PageContainer>
     );
   }
