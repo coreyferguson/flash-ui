@@ -2,7 +2,6 @@
 import React from 'react';
 import logger from './logger';
 import PageContainer from './PageContainer';
-import FlashHero from './FlashHero';
 
 export default class ErrorBoundary extends React.PureComponent {
 
