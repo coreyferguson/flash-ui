@@ -1,6 +1,7 @@
 
 const merge = require('webpack-merge');
 const common = require('../webpack.common');
+const path = require('path');
 
 module.exports = function(config) {
   config.set({
@@ -14,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/spec/**/*.js'
+      'test/index.js'
     ],
 
     // list of files to exclude
@@ -24,13 +25,17 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/spec/**/*.js': ['webpack', 'sourcemap']
+      'test/index.js': ['webpack']
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage-istanbul'],
+    coverageIstanbulReporter: {
+      reports: [ 'text-summary', 'html' ],
+      fixWebpackSourcePaths: true
+    },
 
     // web server port
     port: 9876,
@@ -59,8 +64,7 @@ module.exports = function(config) {
 
     webpack: merge(common, {
       mode: 'development',
-      devtool: 'inline-source-map',
-      plugins: []
+      devtool: 'inline-source-map'
     })
 
   });

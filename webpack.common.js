@@ -38,6 +38,14 @@ module.exports = {
       }, {
         loader: 'sass-loader' // compiles Sass to CSS
       }]
+    }, {
+      test: /\.js$/,
+      use: {
+        loader: 'istanbul-instrumenter-loader',
+        options: { esModules: true }
+      },
+      enforce: 'post',
+      include: path.resolve('src/')
     }]
   }
 };
