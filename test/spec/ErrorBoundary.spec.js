@@ -26,4 +26,12 @@ describe('ErrorBoundary', () => {
     expect(component.html()).to.contain('Unknown error');
     expect(component.html()).to.contain('oops');
   });
+
+  it('componentDidCatch - logs to error', () => {
+    sandbox.stub(logger, 'error');
+    const wrapper = view();
+    const component = wrapper.find('ErrorBoundary').dive();
+    component.instance().componentDidCatch(new Error('oops'), 'errorInfoValue');
+    expect(logger.error).to.be.calledOnce;
+  });
 });

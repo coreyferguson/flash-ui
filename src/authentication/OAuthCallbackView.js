@@ -14,7 +14,7 @@ export default class OAuthCallbackView extends React.PureComponent {
   }
 
   processCallback() {
-    return this._sessionService.processCallback(clientService.getUrl()).then(response => {
+    return this._sessionService.processCallback(this._clientService.getUrl()).then(response => {
       this._clientService.navigate('/');
     });
   }
