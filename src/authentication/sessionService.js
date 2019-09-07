@@ -61,6 +61,10 @@ export class SessionService {
     return this.getCognitoAuth().isUserSignedIn();
   }
 
+  getSignInUserSession() {
+    return this.getCognitoAuth().getSignInUserSession();
+  }
+
 }
 
 export default new SessionService();

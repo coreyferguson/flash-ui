@@ -8,6 +8,7 @@ import SigninView from './authentication/SigninView';
 import OAuthCallbackView from './authentication/OAuthCallbackView';
 import SignoutView from './authentication/SignoutView';
 import OAuthSignOutView from './authentication/OAuthSignOutView';
+import EditCardPage from './cards/EditCardPage';
 
 import './index.scss';
 
@@ -23,6 +24,8 @@ export default class Home extends React.PureComponent {
             <Route path='/signout' exact component={SignoutView} />
             <Route path='/oauth/callback' exact component={OAuthCallbackView} />
             <Route path='/oauth/signout' exact component={OAuthSignOutView} />
+            <Route path='/cards/edit' exact component={EditCardPage} />
+            <Route path='/cards/:cardId/edit' exact component={EditCardPage} />
           </Router>
         </ErrorBoundary>
       </div>

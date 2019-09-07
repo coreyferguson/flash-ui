@@ -8,7 +8,7 @@ export default class PageContainer extends React.PureComponent {
     return (
       <div>
         <Nav />
-        <div className='container'>
+        <div className='flash-content'>
           {{...this.props.children}}
         </div>
       </div>

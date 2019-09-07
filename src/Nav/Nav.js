@@ -28,7 +28,7 @@ export default class Nav extends PureComponent {
     return (
       <nav className='flash-menu'>
         <div className='nav-wrapper'>
-          <a href='/' className='brand-logo'>Flash</a>
+          <Link to='/' className='brand-logo'>Flash</Link>
           <ul id='nav-mobile' className='right'>
             <li>
               {this.authenticatedView()}

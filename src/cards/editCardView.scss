@@ -1,0 +1,45 @@
+
+.flash .editCard {
+  .save {
+    text-align: center;
+  }
+  .sides {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .side {
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+    }
+    @media only screen and (min-width: 601px) {
+      width: 50%;
+    }
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    a.btn i, a.btn span {
+      display: inline;
+      vertical-align: bottom;
+    }
+  }
+
+  .edit-card-side-view {
+    .card-image {
+      text-align: center;
+      img {
+        max-height: 100px;
+      }
+      i {
+        font-size: 50px;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .card-side-view {
+    min-height: 150px;
+  }
+}

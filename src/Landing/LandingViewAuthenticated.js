@@ -1,13 +1,17 @@
 
 import React from 'react';
 import PageContainer from '../PageContainer';
+import { Link } from 'react-router-dom';
 
 export default class LandingViewAuthenticated extends React.PureComponent {
 
   render() {
     return (
       <PageContainer>
-        <h3 className='header'>Authenticated</h3>
+        <div>
+          <h3 className='header'>Welcome!</h3>
+          <Link to='/cards/edit'>Create Card</Link>
+        </div>
       </PageContainer>
     );
   }

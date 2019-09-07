@@ -1,4 +1,8 @@
 
+body {
+  padding: 10px;
+}
+
 .flash {
   .pop {
     color: #ef5350;
@@ -20,5 +24,14 @@
       vertical-align: middle;
       margin-right: 5px;
     }
+  }
+
+  .flash-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  a.btn i {
+    margin-right: 5px;
   }
 }
