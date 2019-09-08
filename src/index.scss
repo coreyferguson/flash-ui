@@ -1,37 +1,87 @@
+@import './colors';
 
-body {
-  padding: 10px;
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: $background-2;
+  color: $foreground-3;
+  font-family: 'Roboto', sans-serif;
+  font-size: 110%;
 }
 
-.flash {
-  .pop {
-    color: #ef5350;
-  }
+a {
+  color: $secondary;
+  text-decoration: none;
+}
 
-  .header {
-    color: #ef5350;
-    font-weight: 300;
-  }
+ul {
+  list-style-type: none
+}
 
-  .list {
-    li {
-      width: 100%;
+ul li::before {
+  content: "\25CF";
+  color: $primary;
+  display: inline-block;
+  margin: 10px 10px 0px -10px;
+  // display: inline-block;
+  // width: 25px;
+  // margin-bottom: 5px;
+}
+
+.pop {
+  color: $primary;
+}
+
+.flash-app-container {
+
+  nav {
+    background-color: $background-1;
+    margin: 10px;
+    border-radius: 3px 3px 3px 3px;
+    height: 50px;
+    display: flex;
+
+    a.logo {
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      font-size: 27px;
+      color: $foreground-3;
     }
 
-    .bullet {
-      color: #ef5350;
-      display: inline;
-      vertical-align: middle;
-      margin-right: 5px;
+    ul {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-grow: 1;
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 0px 15px;
+        height: 100%;
+
+        a {
+          padding: 10px 10px;
+          display: flex;
+          align-items: center;
+          color: $foreground-3;
+          border-radius: 3px 3px 3px 3px;
+        }
+        a:hover {
+          color: $background-1;
+          background-color: $foreground-3;
+        }
+      }
+
+      li:before {
+        content: none;
+      }
+
     }
   }
 
-  .flash-content {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  a.btn i {
-    margin-right: 5px;
-  }
 }

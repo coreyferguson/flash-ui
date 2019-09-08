@@ -13,29 +13,22 @@ export default class Nav extends PureComponent {
   }
 
   authenticatedView() {
-    return this._authenticated && (
-      <Link to='/signout'>Signout</Link>
-    );
+    if (!this._authenticated) return;
+    return <Link to='/signout'>Signout</Link>;
   }
 
   unauthenticatedView() {
-    return !this._authenticated && (
-      <Link to='/signin'>Signin</Link>
-    );
+    if (this._authenticated) return;
+    return <Link to='/signin'>Signin</Link>;
   }
 
   render() {
     return (
-      <nav className='flash-menu'>
-        <div className='nav-wrapper'>
-          <Link to='/' className='brand-logo'>Flash</Link>
-          <ul id='nav-mobile' className='right'>
-            <li>
-              {this.authenticatedView()}
-              {this.unauthenticatedView()}
-            </li>
-          </ul>
-        </div>
+      <nav className='flash-nav'>
+        <Link to='/' className='logo'><span>Flash</span></Link>
+        <ul>
+          <li>{this.authenticatedView() || this.unauthenticatedView()}</li>
+        </ul>
       </nav>
     );
   }

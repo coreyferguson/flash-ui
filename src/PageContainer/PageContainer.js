@@ -1,6 +1,7 @@
 
 import React from 'react';
-import Nav from './Nav';
+import Nav from '../Nav';
+import './PageContainer.scss';
 
 export default class PageContainer extends React.PureComponent {
 
@@ -8,7 +9,7 @@ export default class PageContainer extends React.PureComponent {
     return (
       <div>
         <Nav />
-        <div className='flash-content'>
+        <div className='page-container'>
           {{...this.props.children}}
         </div>
       </div>
