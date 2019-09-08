@@ -18,7 +18,7 @@ export default class EditCardSideView extends React.PureComponent {
   render() {
     return (
       <div className='edit-card-side-view'>
-        <h4 className='header'>Side {this.props.sideName}</h4>
+        <h2>Side {this.props.sideName}</h2>
         <div className='input-field col s12'>
           <textarea
             className='materialize-textarea'

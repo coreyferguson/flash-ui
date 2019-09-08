@@ -9,7 +9,7 @@ export default class LandingViewAuthenticated extends React.PureComponent {
     return (
       <PageContainer>
         <div>
-          <h3 className='header'>Welcome!</h3>
+          <h1>Welcome!</h1>
           <Link to='/cards/edit'>Create Card</Link>
         </div>
       </PageContainer>

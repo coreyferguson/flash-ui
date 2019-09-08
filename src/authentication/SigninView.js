@@ -22,7 +22,7 @@ export default class Signin extends React.PureComponent {
   render() {
     return (
       <PageContainer>
-        <h3 className='header'>Signing in...</h3>
+        <h1>Signing in...</h1>
       </PageContainer>
     );
   }

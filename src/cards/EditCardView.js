@@ -21,19 +21,19 @@ export default class EditCardView extends React.PureComponent {
     const cardId = this.props.cardId;
     return (
       <div className='editCard'>
-        {!!cardId && <h3 className='header'>Edit Card</h3>}
-        {!cardId && <h3 className='header'>Create Card</h3>}
+        {!!cardId && <h1>Edit Card</h1>}
+        {!cardId && <h1>Create Card</h1>}
         <div className='sides'>
           <div className='side'><EditCardSideView sideName='A' onChange={card => this.handleEditCardSideViewChange('A', card)} /></div>
           <div className='side'>
-            <h4 className='header'>Preview</h4>
+            <h2>Preview</h2>
             <CardSideView {...this.state.sideA} />
           </div>
         </div>
         <div className='sides'>
           <div className='side'><EditCardSideView sideName='B' onChange={card => this.handleEditCardSideViewChange('B', card)} /></div>
           <div className='side'>
-            <h4 className='header'>Preview</h4>
+            <h2>Preview</h2>
             <CardSideView {...this.state.sideB} />
           </div>
         </div>

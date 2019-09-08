@@ -6,33 +6,37 @@ html, body {
   background-color: $background-2;
   color: $foreground-3;
   font-family: 'Roboto', sans-serif;
-  font-size: 110%;
-}
-
-a {
-  color: $secondary;
-  text-decoration: none;
-}
-
-ul {
-  list-style-type: none
-}
-
-ul li::before {
-  content: "\25CF";
-  color: $primary;
-  display: inline-block;
-  margin: 10px 10px 0px -10px;
-  // display: inline-block;
-  // width: 25px;
-  // margin-bottom: 5px;
-}
-
-.pop {
-  color: $primary;
+  font-size: 16px;
+  letter-spacing: 0.2px;
 }
 
 .flash-app-container {
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    color: $primary;
+  }
+
+  a {
+    color: $secondary;
+    text-decoration: none;
+  }
+
+  ul {
+    list-style-type: none
+  }
+
+  ul li::before {
+    content: "\25CF";
+    color: $primary;
+    display: inline-block;
+    margin: 10px 10px 0px -10px;
+  }
+
+  .pop {
+    color: $primary;
+    font-size: 110%;
+  }
 
   nav {
     background-color: $background-1;

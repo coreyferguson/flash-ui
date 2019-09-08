@@ -37,7 +37,7 @@ export default class ErrorBoundary extends React.PureComponent {
 
         <div className='container'>
           <div className='row'>
-            <h3 className='header'>Unknown error</h3>
+            <h1>Unknown error</h1>
             <blockquote>{this.state.error.message}</blockquote>
             <a href='/'>Return home</a>
           </div>
