@@ -3,89 +3,89 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: $background-2;
-  color: $foreground-3;
+  background-color: $background-1;
+  color: $foreground-2;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   letter-spacing: 0.2px;
 }
 
-.flash-app-container {
+// .flash-app-container {
 
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 400;
-    color: $primary;
-  }
+//   h1, h2, h3, h4, h5, h6 {
+//     font-weight: 400;
+//     color: $primary;
+//   }
 
-  a {
-    color: $secondary;
-    text-decoration: none;
-  }
+//   a {
+//     color: $secondary;
+//     text-decoration: none;
+//   }
 
-  ul {
-    list-style-type: none
-  }
+//   ul {
+//     list-style-type: none
+//   }
 
-  ul li::before {
-    content: "\25CF";
-    color: $primary;
-    display: inline-block;
-    margin: 10px 10px 0px -10px;
-  }
+//   ul li::before {
+//     content: "\25CF";
+//     color: $primary;
+//     display: inline-block;
+//     margin: 10px 10px 0px -10px;
+//   }
 
-  .pop {
-    color: $primary;
-    font-size: 110%;
-  }
+//   .pop {
+//     color: $primary;
+//     font-size: 110%;
+//   }
 
-  nav {
-    background-color: $background-1;
-    margin: 10px;
-    border-radius: 3px 3px 3px 3px;
-    height: 50px;
-    display: flex;
+//   nav {
+//     background-color: $background-1;
+//     margin: 10px;
+//     border-radius: 3px 3px 3px 3px;
+//     height: 50px;
+//     display: flex;
 
-    a.logo {
-      padding: 10px 15px;
-      display: flex;
-      align-items: center;
-      font-size: 27px;
-      color: $foreground-3;
-    }
+//     a.logo {
+//       padding: 10px 15px;
+//       display: flex;
+//       align-items: center;
+//       font-size: 27px;
+//       color: $foreground-3;
+//     }
 
-    ul {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      flex-grow: 1;
+//     ul {
+//       margin: 0;
+//       padding: 0;
+//       height: 100%;
+//       display: flex;
+//       align-items: center;
+//       justify-content: flex-end;
+//       flex-grow: 1;
 
-      li {
-        display: flex;
-        align-items: center;
-        padding: 0px 15px;
-        height: 100%;
+//       li {
+//         display: flex;
+//         align-items: center;
+//         padding: 0px 15px;
+//         height: 100%;
 
-        a {
-          padding: 10px 10px;
-          display: flex;
-          align-items: center;
-          color: $foreground-3;
-          border-radius: 3px 3px 3px 3px;
-        }
-        a:hover {
-          color: $background-1;
-          background-color: $foreground-3;
-        }
-      }
+//         a {
+//           padding: 10px 10px;
+//           display: flex;
+//           align-items: center;
+//           color: $foreground-3;
+//           border-radius: 3px 3px 3px 3px;
+//         }
+//         a:hover {
+//           color: $background-1;
+//           background-color: $foreground-3;
+//         }
+//       }
 
-      li:before {
-        content: none;
-      }
+//       li:before {
+//         content: none;
+//       }
 
-    }
-  }
+//     }
+//   }
 
-}
+// }

@@ -1,5 +1,38 @@
-.flash-menu {
+
+@import '../colors.scss';
+
+.flash-nav {
+
+  font-size: 24px;
+  color: $foreground-2;
+  display: flex;
+
+  a {
+    color: $foreground-2;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 60px;
+    padding-right: 10px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    list-style-type: none;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
   .nav-wrapper .brand-logo {
     margin-left: 10px;
   }
+
 }

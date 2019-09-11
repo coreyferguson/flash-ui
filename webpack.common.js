@@ -39,6 +39,9 @@ module.exports = {
         loader: 'sass-loader' // compiles Sass to CSS
       }]
     }, {
+      test: /\.(png|svg|jpg|gif)$/,
+      use: [ 'file-loader' ]
+    }, {
       test: /\.js$/,
       use: {
         loader: 'istanbul-instrumenter-loader',

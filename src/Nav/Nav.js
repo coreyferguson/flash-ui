@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import './Nav.scss';
 import { Link } from 'react-router-dom';
 import sessionService from '../authentication/sessionService';
+import Logo from '../site/logo.png';
 
 export default class Nav extends PureComponent {
 
@@ -25,7 +26,7 @@ export default class Nav extends PureComponent {
   render() {
     return (
       <nav className='flash-nav'>
-        <Link to='/' className='logo'><span>Flash</span></Link>
+        <Link to='/' className='logo'><img src={Logo} /><span>flash</span></Link>
         <ul>
           <li>{this.authenticatedView() || this.unauthenticatedView()}</li>
         </ul>
