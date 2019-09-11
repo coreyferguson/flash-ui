@@ -51,6 +51,10 @@ html, body {
     text-decoration: none;
   }
 
+  button:hover, a.button:hover {
+    background-color: $primary-darken-2;
+  }
+
 }
 
 //   a {
