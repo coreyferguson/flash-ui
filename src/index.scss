@@ -6,16 +6,52 @@ html, body {
   background-color: $background-1;
   color: $foreground-2;
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-size: 24px;
   letter-spacing: 0.2px;
+  height: 100%;
 }
 
-// .flash-app-container {
+.flash-app-container, .flash {
+  height: 100%;
+}
 
-//   h1, h2, h3, h4, h5, h6 {
-//     font-weight: 400;
-//     color: $primary;
-//   }
+.flash {
+
+  h1 {
+    font-size: 72px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    color: $foreground-2;
+    margin: 0;
+    text-align: center;
+  }
+
+  .pop {
+    color: $primary;
+  }
+
+  button, a.button {
+    background-color: $primary;
+    border: 0;
+    border-radius: 10px 5px 10px 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 60px;
+    font-size: 24px;
+    color: $foreground-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+}
 
 //   a {
 //     color: $secondary;

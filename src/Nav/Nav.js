@@ -15,18 +15,18 @@ export default class Nav extends PureComponent {
 
   authenticatedView() {
     if (!this._authenticated) return;
-    return <Link to='/signout'>Signout</Link>;
+    return <Link to='/signout'>signout</Link>;
   }
 
   unauthenticatedView() {
     if (this._authenticated) return;
-    return <Link to='/signin'>Signin</Link>;
+    return <Link to='/signin'>signin</Link>;
   }
 
   render() {
     return (
       <nav className='flash-nav'>
-        <Link to='/' className='logo'><img src={Logo} /><span>flash</span></Link>
+        <Link to='/' className='logo'><img src={Logo} alt='flash logo' /><span>flash</span></Link>
         <ul>
           <li>{this.authenticatedView() || this.unauthenticatedView()}</li>
         </ul>

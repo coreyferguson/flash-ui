@@ -6,9 +6,7 @@ import AuthSwitch from '../authentication/AuthSwitch';
 import './index.scss';
 
 const LandingView = props => (
-  <div className='landing'>
-    <AuthSwitch authenticated={Authenticated} unauthenticated={Unauthenticated} />
-  </div>
+  <AuthSwitch authenticated={Authenticated} unauthenticated={Unauthenticated} />
 );
 
 export default LandingView;
