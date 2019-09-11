@@ -7,9 +7,9 @@ import './PageContainer.scss';
 export default class PageContainer extends React.PureComponent {
 
   render() {
-    const className = this.props.flex ? 'flex' : '';
+    const className = 'page-container ' + this.props.className;
     return (
-      <div className={`page-container ${className}`}>
+      <div className={className}>
         <Nav />
         <div className='page-content'>
           {{...this.props.children}}
@@ -21,5 +21,5 @@ export default class PageContainer extends React.PureComponent {
 }
 
 PageContainer.propTypes = {
-  flex: PropTypes.boolean
+  className: PropTypes.string
 };

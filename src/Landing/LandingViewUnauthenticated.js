@@ -9,7 +9,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer flex={true}>
+      <PageContainer className='flex'>
         <div className='landing-view-unauthenticated'>
           <div className='content'>
             <h1>learn in a flash</h1>
