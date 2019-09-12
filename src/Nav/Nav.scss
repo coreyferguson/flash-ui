@@ -14,9 +14,11 @@
     line-height: 40px;
     padding-left: 10px;
     padding-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
     margin-right: 10px;
+    @media (min-width: 800px) {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   }
 
   ul {
@@ -39,10 +41,13 @@
   a.logo {
     display: flex;
     align-items: center;
-  }
+    @media (max-width: 799px) {
+      padding-left: 0px;
+    }
 
-  .nav-wrapper .brand-logo {
-    margin-left: 10px;
+    img {
+      margin-right: 10px;
+    }
   }
 
 }

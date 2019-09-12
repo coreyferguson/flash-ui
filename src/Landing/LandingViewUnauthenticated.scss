@@ -1,18 +1,38 @@
 
 .flash .landing-view-unauthenticated {
   display: flex;
-  height: 100%;
+
+  @media (min-width: 800px) {
+    height: 100%;
+  }
+
+  @media (max-width: 799px) {
+    flex-wrap: wrap;
+  }
 
   div {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-grow: 1;
+    // max-width: 700px;
   }
 
   .content {
-    margin-left: 10%;
+
+    // desktop
+    @media (min-width: 800px) {
+      min-width: 482px;
+    }
+
+    // mobile
+    @media (max-width: 799px) {
+      min-width: 325px;
+      margin-top: 60px;
+      margin-bottom: 20px;
+    }
+
     h1 {
       margin-bottom: 20px;
     }
@@ -23,7 +43,17 @@
   }
 
   .imagery {
-    margin-right: 10%;
+    @media (min-width: 800px) and (max-width: 1000px) {
+      img {
+        width: 100%;
+        max-width: 466px;
+      }
+    }
+    @media (max-width: 799px) {
+      img {
+        width: 258px;
+      }
+    }
   }
 }
 

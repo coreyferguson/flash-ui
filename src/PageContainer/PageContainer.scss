@@ -6,8 +6,11 @@
   }
   .page-container {
     .page-content {
-      padding: 20px;
       flex-grow: 1;
+
+      @media (min-width: 800px) {
+        padding: 20px;
+      }
     }
   }
 }

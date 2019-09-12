@@ -6,9 +6,18 @@ html, body {
   background-color: $background-1;
   color: $foreground-2;
   font-family: 'Roboto', sans-serif;
-  font-size: 24px;
   letter-spacing: 0.2px;
   height: 100%;
+
+  // desktop
+  @media (min-width: 800px) {
+    font-size: 24px;
+  }
+
+  // mobile
+  @media (max-width: 799px) {
+    font-size: 14px;
+  }
 }
 
 .flash-app-container, .flash {
@@ -18,11 +27,28 @@ html, body {
 .flash {
 
   h1 {
-    font-size: 72px;
+    // desktop
+    @media (min-width: 800px) {
+      font-size: 72px;
+    }
+
+    // mobile
+    @media (max-width: 799px) {
+      font-size: 48px;
+    }
   }
 
   h2 {
-    font-size: 36px;
+    // desktop
+    @media (min-width: 800px) {
+      font-size: 36px;
+    }
+
+    // mobile
+    @media (max-width: 799px) {
+      font-size: 24px;
+    }
+
   }
 
   h1, h2, h3, h4, h5, h6 {
