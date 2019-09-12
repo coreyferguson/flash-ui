@@ -9,7 +9,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer className='flex'>
+      <PageContainer className='landing-view-unauthenticated-wrapper'>
         <div className='landing-view-unauthenticated'>
           <div className='content'>
             <h1>learn in a flash</h1>
@@ -19,7 +19,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
           </div>
           <div className='imagery'>
             <img src={Image} alt='' />
-            <p>it's good for your <span className='pop'>walnut</span></p>
+            <span>it's good for your <span className='pop'>walnut</span></span>
           </div>
         </div>
       </PageContainer>
