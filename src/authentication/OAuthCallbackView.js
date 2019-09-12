@@ -1,8 +1,8 @@
 
-import PageContainer from '../PageContainer';
 import React from 'react';
 import sessionService from './sessionService';
 import clientService from '../clientService';
+import Interim from '../Interim';
 
 export default class OAuthCallbackView extends React.PureComponent {
 
@@ -21,9 +21,9 @@ export default class OAuthCallbackView extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer>
-        <h1>Validating credentials...</h1>
-      </PageContainer>
+      <Interim>
+        <h1>validating...</h1>
+      </Interim>
     );
   }
 

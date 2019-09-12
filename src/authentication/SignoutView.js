@@ -1,7 +1,7 @@
 
 import React from 'react';
-import PageContainer from '../PageContainer';
 import sessionService from './sessionService';
+import Interim from '../Interim';
 
 export default class SignoutView extends React.PureComponent {
 
@@ -17,9 +17,9 @@ export default class SignoutView extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer>
-        <h1>Signing out...</h1>
-      </PageContainer>
+      <Interim>
+        <h1>wait...</h1>
+      </Interim>
     );
   }
 

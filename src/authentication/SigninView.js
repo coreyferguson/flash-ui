@@ -1,8 +1,8 @@
 
-import PageContainer from '../PageContainer';
 import React from 'react';
 import sessionService from './sessionService';
 import clientService from '../clientService';
+import Interim from '../Interim';
 
 export default class Signin extends React.PureComponent {
 
@@ -21,9 +21,9 @@ export default class Signin extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer>
-        <h1>Signing in...</h1>
-      </PageContainer>
+      <Interim>
+        <h1>wait...</h1>
+      </Interim>
     );
   }
 

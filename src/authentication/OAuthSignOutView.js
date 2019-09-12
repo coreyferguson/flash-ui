@@ -11,7 +11,7 @@ export default class OAuthSignOutView extends React.PureComponent {
   render() {
     return (
       <PageContainer>
-        <h1>You are signed out</h1>
+        <h1>you are signed out</h1>
       </PageContainer>
     );
   }
