@@ -12,14 +12,14 @@
 
   div {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    // max-width: 700px;
   }
 
   .content {
+
+    flex-direction: column;
 
     // desktop
     @media (min-width: 800px) {
@@ -29,7 +29,7 @@
     // mobile
     @media (max-width: 799px) {
       min-width: 325px;
-      margin-top: 60px;
+      margin-top: 10px;
       margin-bottom: 20px;
     }
 
@@ -49,7 +49,12 @@
         max-width: 466px;
       }
     }
+    @media (min-width: 800px) {
+      flex-direction: column;
+    }
     @media (max-width: 799px) {
+      flex-direction: column-reverse;
+
       img {
         width: 258px;
       }
