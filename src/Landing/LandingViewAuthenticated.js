@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PageContainer from '../PageContainer';
-import { Link } from 'react-router-dom';
+import Button from '../Button';
 
 export default class LandingViewAuthenticated extends React.PureComponent {
 
@@ -10,7 +10,7 @@ export default class LandingViewAuthenticated extends React.PureComponent {
       <PageContainer>
         <div>
           <h1>Welcome!</h1>
-          <Link to='/cards/edit'>Create Card</Link>
+          <Button to='/cards/edit'>Create Card</Button>
         </div>
       </PageContainer>
     );

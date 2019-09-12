@@ -22,7 +22,7 @@ export default class Signin extends React.PureComponent {
   render() {
     return (
       <Interim>
-        <h1>wait...</h1>
+        <h1>wait</h1>
       </Interim>
     );
   }

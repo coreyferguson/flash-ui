@@ -22,7 +22,7 @@ export default class OAuthCallbackView extends React.PureComponent {
   render() {
     return (
       <Interim>
-        <h1>validating...</h1>
+        <h1>validating</h1>
       </Interim>
     );
   }
