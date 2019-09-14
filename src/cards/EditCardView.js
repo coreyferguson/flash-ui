@@ -4,7 +4,7 @@ import PageContainer from '../PageContainer';
 import PropTypes from 'prop-types';
 import EditCardSideView from './EditCardSideView';
 import CardSideView from './CardSideView';
-import './editCardView.scss';
+import './EditCardView.scss';
 
 export default class EditCardView extends React.PureComponent {
 
@@ -20,22 +20,12 @@ export default class EditCardView extends React.PureComponent {
   render() {
     const cardId = this.props.cardId;
     return (
-      <div className='editCard'>
-        {!!cardId && <h1>Edit Card</h1>}
-        {!cardId && <h1>Create Card</h1>}
+      <div className='edit-card'>
+        {!!cardId && <h1>edit card</h1>}
+        {!cardId && <h1>create a card</h1>}
         <div className='sides'>
-          <div className='side'><EditCardSideView sideName='A' onChange={card => this.handleEditCardSideViewChange('A', card)} /></div>
-          <div className='side'>
-            <h2>Preview</h2>
-            <CardSideView {...this.state.sideA} />
-          </div>
-        </div>
-        <div className='sides'>
-          <div className='side'><EditCardSideView sideName='B' onChange={card => this.handleEditCardSideViewChange('B', card)} /></div>
-          <div className='side'>
-            <h2>Preview</h2>
-            <CardSideView {...this.state.sideB} />
-          </div>
+          <div className='side'><EditCardSideView sideName='1' onChange={card => this.handleEditCardSideViewChange('A', card)} /></div>
+          <div className='side'><EditCardSideView sideName='2' onChange={card => this.handleEditCardSideViewChange('B', card)} /></div>
         </div>
         <div className='save'>
           <button className='waves-effect waves-light btn'>Save</button>

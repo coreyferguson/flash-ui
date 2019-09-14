@@ -1,0 +1,21 @@
+
+.edit-card-side-view {
+  display: flex;
+  flex-direction: column;
+
+  > h2, textarea, div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  > textarea {
+    min-height: 100px;
+  }
+
+  > .media {
+    display: flex;
+    input {
+      flex-grow: 1;
+    }
+  }
+}

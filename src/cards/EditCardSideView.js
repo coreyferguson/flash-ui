@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mediaService from '../media/mediaService';
+import './EditCardSideView.scss';
 
 export default class EditCardSideView extends React.PureComponent {
   constructor(props) {
@@ -18,23 +19,17 @@ export default class EditCardSideView extends React.PureComponent {
   render() {
     return (
       <div className='edit-card-side-view'>
-        <h2>Side {this.props.sideName}</h2>
-        <div className='input-field col s12'>
-          <textarea
-            className='materialize-textarea'
-            placeholder='Text'
-            ref='text'
-            onChange={this.handleChange}
-          >
-          </textarea>
-        </div>
-        <div className="file-field input-field card-image">
+        <h2>side {this.props.sideName}</h2>
+        <textarea
+          className='materialize-textarea'
+          placeholder='Text'
+          ref='text'
+          onChange={this.handleChange}
+        />
+        <div className='media'>
           <input type="file" onChange={this.uploadFile} ref='image' />
-          {!!this.state.imageUrl && <img src={this.state.imageUrl} />}
           <i className='material-icons red-text text-lighten-1'>add_a_photo</i>
           {this.state.loading && <p>loading...</p>}
-          {/* the following line stops a javascript error from materialize */}
-          <input className="file-path validate" type="text" style={{ display: 'none' }} />
         </div>
       </div>
     );

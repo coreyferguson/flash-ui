@@ -1,0 +1,10 @@
+
+.flash .edit-card {
+  .sides {
+    display: flex;
+    .side {
+      flex-grow: 1;
+      padding: 10px;
+    }
+  }
+}
