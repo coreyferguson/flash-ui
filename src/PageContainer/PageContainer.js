@@ -9,7 +9,6 @@ export default class PageContainer extends React.PureComponent {
   render() {
     let className = 'page-container';
     if (this.props.className) className += ` ${this.props.className}`;
-    if (this.props.contentFillHeight) className += ' page-container-fill-height';
     return (
       <div className={className}>
         <Nav />
@@ -23,6 +22,5 @@ export default class PageContainer extends React.PureComponent {
 }
 
 PageContainer.propTypes = {
-  className: PropTypes.string,
-  contentFillHeight: PropTypes.boolean
+  className: PropTypes.string
 };
