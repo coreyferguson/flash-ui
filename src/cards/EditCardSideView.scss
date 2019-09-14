@@ -8,14 +8,14 @@
     margin-bottom: 10px;
   }
 
-  > textarea {
-    min-height: 100px;
-  }
-
   > .media {
     display: flex;
     input {
       flex-grow: 1;
+    }
+    > span {
+      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 }

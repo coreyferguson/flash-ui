@@ -2,6 +2,7 @@
 .flash .edit-card {
   .sides {
     display: flex;
+    flex-wrap: wrap;
     .side {
       flex-grow: 1;
       padding: 10px;

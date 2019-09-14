@@ -1,13 +1,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import mediaService from '../media/mediaService';
+// import mediaService from '../media/mediaService';
 import './EditCardSideView.scss';
+import TextareaAutosize from 'react-textarea-autosize';
 
 export default class EditCardSideView extends React.PureComponent {
   constructor(props) {
     super(props);
-    this._mediaService = props.mediaService || mediaService;
+    // this._mediaService = props.mediaService || mediaService;
     this.uploadFile = this.uploadFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
@@ -20,16 +21,15 @@ export default class EditCardSideView extends React.PureComponent {
     return (
       <div className='edit-card-side-view'>
         <h2>side {this.props.sideName}</h2>
-        <textarea
-          className='materialize-textarea'
+        <TextareaAutosize placeholder='flashcard text' maxRows='20' />
+        {/* <textarea
           placeholder='Text'
           ref='text'
           onChange={this.handleChange}
-        />
+        /> */}
         <div className='media'>
           <input type="file" onChange={this.uploadFile} ref='image' />
-          <i className='material-icons red-text text-lighten-1'>add_a_photo</i>
-          {this.state.loading && <p>loading...</p>}
+          {this.state.loading && <span>loading...</span>}
         </div>
       </div>
     );
@@ -40,12 +40,12 @@ export default class EditCardSideView extends React.PureComponent {
     this.setState({ loading: true });
     const file = this.refs.image.files[0];
     const name = file.name;
-    return this._mediaService.upload(name, file).then(() => {
-      return this._mediaService.getUrl(name);
-    }).then(url => {
-      this.setState({ loading: false, imageUrl: url });
-      this.handleChange();
-    });
+    // return this._mediaService.upload(name, file).then(() => {
+    //   return this._mediaService.getUrl(name);
+    // }).then(url => {
+    //   this.setState({ loading: false, imageUrl: url });
+    //   this.handleChange();
+    // });
   }
 
   handleChange() {
