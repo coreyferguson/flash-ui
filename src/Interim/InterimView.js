@@ -21,5 +21,5 @@ export default class InterimView extends React.PureComponent {
 }
 
 InterimView.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.element
 };
