@@ -1,11 +1,21 @@
 
 .flash .edit-card {
-  .sides {
+  > .sides {
+    margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
-    .side {
+    > .side {
       flex-grow: 1;
       padding: 10px;
+      min-width: 350px;
     }
+  }
+
+  > .save {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
   }
 }

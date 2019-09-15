@@ -11,6 +11,7 @@ export default class EditCardSideView extends React.PureComponent {
     this._mediaService = props.mediaService || mediaService;
     this.uploadFile = this.uploadFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.state = {
       loading: false,
       imageUrl: undefined
@@ -23,7 +24,8 @@ export default class EditCardSideView extends React.PureComponent {
         <h2>side {this.props.sideName}</h2>
         <TextareaAutosize placeholder='flashcard text' maxRows={20} inputRef={tag => (this.textarea = tag)} />
         <div className='media'>
-          <input type="file" onChange={this.uploadFile} ref='image' />
+          {this.viewFileUploadInput()}
+          {this.viewFileUploadImage()}
           {this.state.loading && <span>loading...</span>}
         </div>
       </div>
@@ -47,6 +49,29 @@ export default class EditCardSideView extends React.PureComponent {
     const text = this.textarea.value;
     const image = this.state.imageUrl;
     if (this.props.onChange) this.props.onChange({ text, image });
+  }
+
+  viewFileUploadInput() {
+    if (this.state.imageUrl) return;
+    return (
+      <input type="file" onChange={this.uploadFile} ref='image' />
+    );
+  }
+
+  viewFileUploadImage() {
+    if (!this.state.imageUrl) return;
+    return (
+      <div className='attachment'>
+        <img src={this.state.imageUrl} />
+        <button onClick={this.handleDelete} className='icon'>
+          <i className='material-icons delete'>delete</i>
+        </button>
+      </div>
+    );
+  }
+
+  handleDelete() {
+    this.setState({ imageUrl: undefined });
   }
 }
 

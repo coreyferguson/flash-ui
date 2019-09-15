@@ -61,7 +61,8 @@ html, body {
     color: $primary;
   }
 
-  button, a.button {
+  button.button, a.button {
+    cursor: pointer;
     background-color: $primary;
     border: 0;
     border-radius: 10px 5px 10px 5px;
@@ -83,12 +84,19 @@ html, body {
     }
   }
 
-  button:hover, a.button:hover {
+  button.button:hover, a.button:hover {
     background-color: $primary-darken-2;
   }
 
   button:focus, a.button:focus {
     border-bottom: 2px solid $foreground-2;
+  }
+
+  button.icon {
+    background-color: $background-1;
+    border: 0px;
+    color: $foreground-2;
+    cursor: pointer;
   }
 
   textarea {
@@ -107,6 +115,7 @@ html, body {
   input[type=file] {
     outline: none;
     padding-bottom: 5px;
+    cursor: pointer;
   }
   input[type=file]:focus {
     border-bottom: 1px solid $primary;

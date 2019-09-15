@@ -10,8 +10,14 @@
 
   > .media {
     display: flex;
-    input {
+    > input {
       flex-grow: 1;
+    }
+    > .attachment > img {
+      max-height: 100px;
+    }
+    > .attachment > .delete {
+      cursor: pointer;
     }
     > span {
       margin-left: 10px;

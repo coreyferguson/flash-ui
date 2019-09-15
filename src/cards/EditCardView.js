@@ -28,7 +28,7 @@ export default class EditCardView extends React.PureComponent {
           <div className='side'><EditCardSideView sideName='2' onChange={card => this.handleEditCardSideViewChange('B', card)} /></div>
         </div>
         <div className='save'>
-          <button className='waves-effect waves-light btn'>save</button>
+          <button className='button'>save</button>
         </div>
       </div>
     );
