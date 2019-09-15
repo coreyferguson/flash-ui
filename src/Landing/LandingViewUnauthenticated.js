@@ -2,8 +2,10 @@
 import React from 'react';
 import PageContainer from '../PageContainer';
 import './LandingViewUnauthenticated.scss';
-import Image from './walnut-xlarge-40.jpg';
 import Button from '../Button';
+import config from 'config';
+
+const imageUrl = `${config.assets.domain}/walnut-xlarge-40.jpg`;
 
 export default class LandingViewUnauthenticated extends React.PureComponent {
 
@@ -18,7 +20,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
             <Button to='/signin'>try it</Button>
           </div>
           <div className='imagery'>
-            <img src={Image} alt='' />
+            <img src={imageUrl} alt='' />
             <span>it's good for your <span className='pop'>walnut</span></span>
           </div>
         </div>

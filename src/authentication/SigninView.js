@@ -14,9 +14,9 @@ export default class Signin extends React.PureComponent {
   }
 
   signin() {
-    // this._sessionService.signin().then(response => {
-    //   this._clientService.navigate('/');
-    // });
+    this._sessionService.signin().then(response => {
+      this._clientService.navigate('/');
+    });
   }
 
   render() {

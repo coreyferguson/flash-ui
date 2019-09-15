@@ -15,5 +15,8 @@
   },
   "media": {
     "s3Bucket": "overattribution-flash-dev-media"
+  },
+  "assets": {
+    "domain": "https://flash-dev-assets.overattribution.com"
   }
 }

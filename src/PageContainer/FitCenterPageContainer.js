@@ -1,7 +1,6 @@
 
 import React from 'react';
 import './FitCenterPageContainer.scss';
-import image from '../Construction/Construction.jpg';
 import Nav from '../Nav';
 
 // TODO: Rename to FitCenterPageContainer and inclue in the PageContainer folder
