@@ -1,7 +1,5 @@
 
 import sessionService from '../../src/authentication/sessionService';
-import 'aws-sdk/global';
-import { S3, CognitoIdentityCredentials } from 'aws-sdk';
 import config from 'config';
 
 export class MediaService {
@@ -35,7 +33,7 @@ export class MediaService {
     const idToken = session.idToken.jwtToken;
     const region = 'us-west-2';
     AWS.config.region = region;
-    AWS.config.credentials = new CognitoIdentityCredentials({
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       IdentityPoolId : config.auth.identityPoolId,
       Logins : {
         [`cognito-idp.${region}.amazonaws.com/${config.auth.userPool.id}`]: idToken
