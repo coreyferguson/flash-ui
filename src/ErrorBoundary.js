@@ -27,6 +27,7 @@ export default class ErrorBoundary extends React.PureComponent {
 
   showErrorState() {
     if (!this.state.error) return;
+    console.log(this.state.error);
     return (
       <div>
         <nav className='flash-menu'>

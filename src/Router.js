@@ -12,24 +12,20 @@ import EditCardPage from './cards/EditCardPage';
 
 import './index.scss';
 
-export default class Home extends React.PureComponent {
-
-  render() {
-    return (
-      <div className='flash'>
-        <ErrorBoundary>
-          <Router>
-            <Route path='/' exact component={Landing} />
-            <Route path='/signin' exact component={SigninView} />
-            <Route path='/signout' exact component={SignoutView} />
-            <Route path='/oauth/callback' exact component={OAuthCallbackView} />
-            <Route path='/oauth/signout' exact component={OAuthSignOutView} />
-            <Route path='/cards/edit' exact component={EditCardPage} />
-            <Route path='/cards/:cardId/edit' exact component={EditCardPage} />
-          </Router>
-        </ErrorBoundary>
-      </div>
-    );
-  }
-
+export default function Home() {
+  return (
+    <div className='flash'>
+      <ErrorBoundary>
+        <Router>
+          <Route path='/' exact component={Landing} />
+          <Route path='/signin' exact component={SigninView} />
+          <Route path='/signout' exact component={SignoutView} />
+          <Route path='/oauth/callback' exact component={OAuthCallbackView} />
+          <Route path='/oauth/signout' exact component={OAuthSignOutView} />
+          <Route path='/cards/edit' exact component={EditCardPage} />
+          <Route path='/cards/:cardId/edit' exact component={EditCardPage} />
+        </Router>
+      </ErrorBoundary>
+    </div>
+  );
 }

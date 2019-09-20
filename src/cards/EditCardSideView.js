@@ -10,8 +10,9 @@ export default class EditCardSideView extends React.PureComponent {
     super(props);
     this._mediaService = props.mediaService || mediaService;
     this.uploadFile = this.uploadFile.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.side = {};
     this.state = {
       loading: false,
       imageUrl: undefined
@@ -22,7 +23,11 @@ export default class EditCardSideView extends React.PureComponent {
     return (
       <div className='edit-card-side-view'>
         <h2>side {this.props.sideName}</h2>
-        <TextareaAutosize placeholder='flashcard text' maxRows={20} inputRef={tag => (this.textarea = tag)} />
+        <TextareaAutosize
+          placeholder='flashcard text'
+          maxRows={20}
+          inputRef={tag => (this.textarea = tag)}
+          onChange={this.handleTextChange} />
         <div className='media'>
           {this.viewFileUploadInput()}
           {this.viewFileUploadImage()}
@@ -41,14 +46,18 @@ export default class EditCardSideView extends React.PureComponent {
       return this._mediaService.getUrl(name);
     }).then(url => {
       this.setState({ loading: false, imageUrl: url });
+      this.side.image = name;
       this.handleChange();
     });
   }
 
   handleChange() {
-    const text = this.textarea.value;
-    const image = this.state.imageUrl;
-    if (this.props.onChange) this.props.onChange({ text, image });
+    if (this.props.onChange) this.props.onChange(this.side);
+  }
+
+  handleTextChange() {
+    this.side.text = this.textarea.value;
+    this.handleChange();
   }
 
   viewFileUploadInput() {
@@ -72,6 +81,8 @@ export default class EditCardSideView extends React.PureComponent {
 
   handleDelete() {
     this.setState({ imageUrl: undefined });
+    this.side.image = undefined;
+    this.handleChange();
   }
 }
 

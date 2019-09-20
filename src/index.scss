@@ -62,6 +62,7 @@ html, body {
   }
 
   button.button, a.button {
+    margin: 10px 5px;
     cursor: pointer;
     background-color: $primary;
     border: 0;
@@ -122,76 +123,3 @@ html, body {
   }
 
 }
-
-//   a {
-//     color: $secondary;
-//     text-decoration: none;
-//   }
-
-//   ul {
-//     list-style-type: none
-//   }
-
-//   ul li::before {
-//     content: "\25CF";
-//     color: $primary;
-//     display: inline-block;
-//     margin: 10px 10px 0px -10px;
-//   }
-
-//   .pop {
-//     color: $primary;
-//     font-size: 110%;
-//   }
-
-//   nav {
-//     background-color: $background-1;
-//     margin: 10px;
-//     border-radius: 3px 3px 3px 3px;
-//     height: 50px;
-//     display: flex;
-
-//     a.logo {
-//       padding: 10px 15px;
-//       display: flex;
-//       align-items: center;
-//       font-size: 27px;
-//       color: $foreground-3;
-//     }
-
-//     ul {
-//       margin: 0;
-//       padding: 0;
-//       height: 100%;
-//       display: flex;
-//       align-items: center;
-//       justify-content: flex-end;
-//       flex-grow: 1;
-
-//       li {
-//         display: flex;
-//         align-items: center;
-//         padding: 0px 15px;
-//         height: 100%;
-
-//         a {
-//           padding: 10px 10px;
-//           display: flex;
-//           align-items: center;
-//           color: $foreground-3;
-//           border-radius: 3px 3px 3px 3px;
-//         }
-//         a:hover {
-//           color: $background-1;
-//           background-color: $foreground-3;
-//         }
-//       }
-
-//       li:before {
-//         content: none;
-//       }
-
-//     }
-//   }
-
-// }
