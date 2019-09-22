@@ -2,7 +2,7 @@
 import React from 'react';
 import { CardListView as View } from './CardListView';
 import { expect, shallow, sinon } from '../../../test/support/TestUtilities';
-import CardView from '../CardView';
+import Card from '../Card';
 import Button from '../../Button/Button';
 
 describe('CardListView', () => {
@@ -29,7 +29,7 @@ describe('CardListView', () => {
   it('no cards are rendered when items array is empty', () => {
     const cards = { items: [] };
     const wrapper = shallow(<View cards={cards} />);
-    expect(wrapper.find(CardView).length).to.equal(0);
+    expect(wrapper.find(Card).length).to.equal(0);
   });
 
   it('all cards are rendered', () => {
@@ -40,7 +40,7 @@ describe('CardListView', () => {
       ]
     };
     const wrapper = shallow(<View cards={cards} />);
-    expect(wrapper.find(CardView).length).to.equal(2);
+    expect(wrapper.find(Card).length).to.equal(2);
   });
 
 });

@@ -1,6 +1,5 @@
 
 import './EditCardView.scss';
-import CardSideView from './CardSideView';
 import EditCardSideView from './EditCardSideView';
 import PageContainer from '../PageContainer';
 import PropTypes from 'prop-types';
