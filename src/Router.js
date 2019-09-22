@@ -8,7 +8,7 @@ import SigninView from './authentication/SigninView';
 import OAuthCallbackView from './authentication/OAuthCallbackView';
 import SignoutView from './authentication/SignoutView';
 import OAuthSignOutView from './authentication/OAuthSignOutView';
-import EditCardPage from './cards/EditCardPage';
+import { EditCardPage } from './cards/EditCard';
 
 import './index.scss';
 
