@@ -1,18 +1,17 @@
 
 import React from 'react';
 import ErrorBoundary from '../../src/ErrorBoundary';
-import { expect, sinon, shallow } from '../support/TestUtilities';
+import { expect, sinon, shallowRouter as shallow } from '../support/TestUtilities';
 import logger from '../support/stubs/loggerStub';
 
 describe('ErrorBoundary', () => {
 
   const sandbox = sinon.createSandbox();
   const Content = () => <h1>Content</h1>;
-  const view = () => shallow(
-    <ErrorBoundary logger={logger}>
-      <Content />
-    </ErrorBoundary>
-  );
+  const view = () => shallow({
+    component: ErrorBoundary,
+    instance: <ErrorBoundary logger={logger}><Content /></ErrorBoundary>
+  });
 
   it('successful execution of ErrorBoundary', () => {
     const wrapper = view();
@@ -20,8 +19,7 @@ describe('ErrorBoundary', () => {
   });
 
   it('error within ErrorBoundary', () => {
-    const wrapper = view();
-    const component = wrapper.find('ErrorBoundary').dive();
+    const component = view();
     component.setState({ error: new Error('oops') });
     expect(component.html()).to.contain('Unknown error');
     expect(component.html()).to.contain('oops');
@@ -29,8 +27,7 @@ describe('ErrorBoundary', () => {
 
   it('componentDidCatch - logs to error', () => {
     sandbox.stub(logger, 'error');
-    const wrapper = view();
-    const component = wrapper.find('ErrorBoundary').dive();
+    const component = view();
     component.instance().componentDidCatch(new Error('oops'), 'errorInfoValue');
     expect(logger.error).to.be.calledOnce;
   });

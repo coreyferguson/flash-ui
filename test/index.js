@@ -3,6 +3,6 @@
 const tests = require.context('./spec/', true, /\.spec\.js$/);
 tests.keys().forEach(tests);
 
-// // requires all components in `project/src/components/**/*.js`
-const components = require.context('../src/', true, /\.js$/);
-components.keys().filter(item => item !== './index.js').forEach(components);
+// // requires all tests in `project/src/**/*.test.js`
+const components = require.context('../src', true, /\.test\.js$/);
+components.keys().forEach(components);

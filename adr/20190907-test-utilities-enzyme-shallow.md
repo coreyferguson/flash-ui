@@ -16,12 +16,12 @@ Performing operations on the component in question now requires additional proce
 This can be overcome by obtaining a reference to the child using `find` and `dive` operations from Enzyme:
 
 ```
-import { expect, shallow } from '.../support/TestUtilities';
+import { expect, shallowRouter } from '.../support/TestUtilities';
 
 // ...
 
 it('error within ErrorBoundary', () => {
-  const wrapper = shallow(
+  const wrapper = shallowRouter(
     <ErrorBoundary logger={logger}>
       <Content />
     </ErrorBoundary>

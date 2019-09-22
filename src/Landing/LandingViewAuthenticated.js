@@ -1,8 +1,7 @@
 
 import React from 'react';
 import PageContainer from '../PageContainer';
-import Button from '../Button';
-import CardListView from '../cards/CardListView';
+import CardList from '../cards/CardList';
 
 export default class LandingViewAuthenticated extends React.PureComponent {
 
@@ -10,8 +9,7 @@ export default class LandingViewAuthenticated extends React.PureComponent {
     return (
       <PageContainer>
         <React.Fragment>
-          <Button to='/cards/edit'>create card</Button>
-          <CardListView />
+          <CardList />
         </React.Fragment>
       </PageContainer>
     );

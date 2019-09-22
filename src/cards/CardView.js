@@ -10,7 +10,7 @@ export default function CardView({ card }) {
   if (!image && card.sideAImageUrl && shouldFetch) mediaService.getUrl(card.sideAImageUrl).then(setImage);
   const cardItems = [];
   if (card.sideAText) cardItems.push(<span className='text' key='1'>{card.sideAText}</span>);
-  if (image) cardItems.push(<span className='image grow' style={{ backgroundImage: `url(${image})` }} key='2'> &nbsp; </span>);
+  if (image) cardItems.push(<span className='image grow' style={{ backgroundImage: `url(${image})` }} key='2'></span>);
   return (
     <div className='card-view'>
       {cardItems}
