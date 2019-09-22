@@ -1,6 +1,6 @@
 
 import React from 'react';
-import View from './CardListView';
+import { CardListView as View } from './CardListView';
 import { expect, shallow, sinon } from '../../../test/support/TestUtilities';
 import CardView from '../CardView';
 import Button from '../../Button/Button';

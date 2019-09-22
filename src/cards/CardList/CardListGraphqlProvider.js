@@ -21,7 +21,7 @@ export const LIST_CARDS = gql`
   }
 `;
 
-export default function CardListController({ CardListView }) {
+export default function CardListGraphqlProvider({ CardListView }) {
   const { loading, error, data } = useQuery(LIST_CARDS);
   if (loading) return <p>loading</p>;
   if (error) return <p>unknown error occurred</p>;

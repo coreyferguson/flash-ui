@@ -2,7 +2,6 @@
 import './cardView.scss';
 import React, { useState } from 'react';
 import mediaService from '../media/mediaService';
-import './CardListView.scss';
 
 export default function CardView({ card }) {
   const [ image, setImage ] = useState();

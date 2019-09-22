@@ -3,12 +3,13 @@ import Button from '../../Button/Button';
 import CardView from '../CardView';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from './CardListStyle';
 
-export default function CardListView({ cards }) {
+export function CardListView({ cards, className }) {
   if (!cards) throw new Error('CardListView: invalid prop types');
   if (!cards.items) throw new Error('CardListView: invalid prop types');
   return (
-    <div className='card-list-view'>
+    <div className={`card-list-view ${className}`}>
       <div className='actions'>
         <Button to='/cards/edit'>create card</Button>
       </div>
@@ -18,6 +19,8 @@ export default function CardListView({ cards }) {
     </div>
   )
 }
+
+export default styled(CardListView);
 
 CardListView.propTypes = {
   cards: PropTypes.shape({
