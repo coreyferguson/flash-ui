@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Authenticated from './LandingViewAuthenticated';
+import Authenticated from './LoadableLandingViewAuthenticated'
 import Unauthenticated from './LandingViewUnauthenticated';
 import AuthSwitch from '../authentication/AuthSwitch';
 import './index.scss';

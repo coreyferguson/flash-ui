@@ -1,17 +1,18 @@
 
 import React from 'react';
 import PageContainer from '../PageContainer';
+import ApolloProvider from '../ApolloProvider';
 import CardList from '../cards/CardList';
 
 export default class LandingViewAuthenticated extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer>
-        <React.Fragment>
+      <ApolloProvider>
+        <PageContainer>
           <CardList />
-        </React.Fragment>
-      </PageContainer>
+        </PageContainer>
+      </ApolloProvider>
     );
   }
 
