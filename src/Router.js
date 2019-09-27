@@ -1,18 +1,28 @@
 
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import ErrorBoundary from './ErrorBoundary';
 import Landing from './Landing';
-import SigninView from './authentication/SigninView';
 import OAuthCallbackView from './authentication/OAuthCallbackView';
-import SignoutView from './authentication/SignoutView';
 import OAuthSignOutView from './authentication/OAuthSignOutView';
-import {EditCardPage } from './cards/EditCard';
+import React, { useState } from 'react';
+import sessionService from './authentication/sessionService';
+import SigninView from './authentication/SigninView';
+import SignoutView from './authentication/SignoutView';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './index.scss';
 
 export default function Home() {
+  const [ authenticatedViews, setAuthenticatedViews ] = useState();
+
+  if (!authenticatedViews && sessionService.isUserSignedIn()) {
+    import(/* webpackChunkName: "EditCard" */ './cards/EditCard').then(({ EditCardPage }) => {
+      setAuthenticatedViews([
+        <Route key='1' path='/cards/edit' exact component={EditCardPage} />,
+        <Route key='2' path='/cards/:cardId/edit' exact component={EditCardPage} />
+      ]);
+    });
+  }
+
   return (
     <div className='flash'>
       <ErrorBoundary>
@@ -22,8 +32,7 @@ export default function Home() {
           <Route path='/signout' exact component={SignoutView} />
           <Route path='/oauth/callback' exact component={OAuthCallbackView} />
           <Route path='/oauth/signout' exact component={OAuthSignOutView} />
-          <Route path='/cards/edit' exact component={EditCardPage} />
-          <Route path='/cards/:cardId/edit' exact component={EditCardPage} />
+          {authenticatedViews}
         </Router>
       </ErrorBoundary>
     </div>

@@ -7,5 +7,9 @@ module.exports = merge(common, {
   mode: 'production',
   plugins: [
     new DynamicCdnWebpackPlugin()
-  ]
+  ],
+  performance: {
+    hints: 'error',
+    maxEntrypointSize: 61440
+  }
 });

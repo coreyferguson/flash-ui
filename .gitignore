@@ -2,3 +2,4 @@ node_modules/
 dist/
 .serverless/
 coverage/
+build-stats.json
