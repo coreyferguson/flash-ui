@@ -1,6 +1,7 @@
 
 import sessionService from '../../src/authentication/sessionService';
 import config from 'config';
+import uuid from 'uuid/v4';
 
 export class MediaService {
   constructor(options) {
@@ -9,12 +10,14 @@ export class MediaService {
     this._configureAwsPromise = undefined;
   }
 
-  async upload(name, file) {
+  async upload(file) {
+    const name = uuid() + '.jpg';
     await this._configureAws();
     const identityId = AWS.config.credentials.identityId;
     const key = `${identityId}/${name}`;
     const params = { Body: file, Key: key };
-    return this._getS3().putObject(params).promise();
+    await this._getS3().putObject(params).promise();
+    return name;
   }
 
   async getUrl(name) {

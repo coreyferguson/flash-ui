@@ -38,14 +38,19 @@ export default class EditCardSideView extends React.PureComponent {
   }
 
   uploadFile() {
+    // get the file to be uploaded
     if (!this.refs.image.files[0]) return;
     this.setState({ loading: true });
     const file = this.refs.image.files[0];
-    const name = file.name;
-    return this._mediaService.upload(name, file).then(() => {
-      return this._mediaService.getUrl(name);
-    }).then(url => {
-      this.setState({ loading: false, imageUrl: url });
+
+    // show image immediately in current view
+    const reader = new FileReader();
+    reader.onload = e => this.setState({ imageUrl: e.target.result });
+    reader.readAsDataURL(file);
+
+    // save the image
+    return this._mediaService.upload(file).then(name => {
+      this.setState({ loading: false });
       this.side.image = name;
       this.handleChange();
     });
