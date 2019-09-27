@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Redirect as RedirectDefault } from 'react-router-dom'
 import EditCardView from './EditCardView';
 import ErrorMessage from '../../ErrorMessage';
+import client from '../../apolloProvider/apolloClient';
 
 export const SAVE_CARD = gql`
   mutation upsertCard(
@@ -38,16 +39,16 @@ export const SAVE_CARD = gql`
 const Loading = () => <p>Loading...</p>;
 
 export default function EditCardController({ Redirect }) {
-  const [saveCard, { loading, called, error }] = useMutation(SAVE_CARD);
+  const [saveCard, { loading, called, error }] = useMutation(SAVE_CARD, { client });
   Redirect = Redirect || RedirectDefault;
 
   if (called && !loading && !error) return <Redirect to='/' />;
 
   function handleSave(card) {
+    card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
     saveCard({ variables: card });
   }
 
-  const card = { userId: sessionService.getSignInUserSession().idToken.payload.sub };
   return (
     <React.Fragment>
       {error && <ErrorMessage>
