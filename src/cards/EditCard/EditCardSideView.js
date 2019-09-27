@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import mediaService from '../../media/mediaService';
 import './EditCardSideView.scss';
 import TextareaAutosize from 'react-textarea-autosize';
+import InlineLoading from '../../Loading/InlineLoadingView';
 
 export default class EditCardSideView extends React.PureComponent {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class EditCardSideView extends React.PureComponent {
         <div className='media'>
           {this.viewFileUploadInput()}
           {this.viewFileUploadImage()}
-          {this.state.loading && <span>loading...</span>}
+          {this.state.loading && <InlineLoading />}
         </div>
       </div>
     );
@@ -85,7 +86,7 @@ export default class EditCardSideView extends React.PureComponent {
   }
 
   handleDelete() {
-    this.setState({ imageUrl: undefined });
+    this.setState({ imageUrl: undefined, loading: false });
     this.side.image = undefined;
     this.handleChange();
   }

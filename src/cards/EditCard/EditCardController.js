@@ -9,6 +9,7 @@ import { Redirect as RedirectDefault } from 'react-router-dom'
 import EditCardView from './EditCardView';
 import ErrorMessage from '../../ErrorMessage';
 import client from '../../apolloProvider/apolloClient';
+import Interim from '../../Interim';
 
 export const SAVE_CARD = gql`
   mutation upsertCard(
@@ -36,8 +37,6 @@ export const SAVE_CARD = gql`
   }
 `;
 
-const Loading = () => <p>Loading...</p>;
-
 export default function EditCardController({ Redirect, useMutation }) {
   useMutation = useMutation || useMutationDefault;
   const [saveCard, { loading, called, error }] = useMutation(SAVE_CARD, { client });
@@ -56,8 +55,8 @@ export default function EditCardController({ Redirect, useMutation }) {
         <h2>Unknown error when saving card. Please try again.</h2>
         <h3>{error.message}</h3>
       </ErrorMessage> }
-      { loading && <Loading />}
-      <EditCardView onSave={handleSave} />
+      { loading && <Interim />}
+      { !loading && <EditCardView onSave={handleSave} /> }
     </React.Fragment>
   );
 }

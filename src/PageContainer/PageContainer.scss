@@ -1,6 +1,9 @@
 .flash-app-container {
   .page-container {
     .page-content {
+      @media (max-width: 799px) {
+        padding: 5px;
+      }
       @media (min-width: 800px) {
         padding: 20px;
       }

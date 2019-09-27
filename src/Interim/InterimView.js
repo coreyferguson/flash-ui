@@ -10,10 +10,10 @@ export default class InterimView extends React.PureComponent {
   render() {
     return (
       <PageContainer className='interim-view'>
-        <div>
+        <React.Fragment>
           <Loading />
           {this.props.children}
-        </div>
+        </React.Fragment>
       </PageContainer>
     );
   }
