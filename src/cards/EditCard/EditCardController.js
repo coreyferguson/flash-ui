@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import sessionService from '../../authentication/sessionService';
 import { gql } from 'apollo-boost';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation as useMutationDefault } from '@apollo/react-hooks';
 import { Redirect as RedirectDefault } from 'react-router-dom'
 import EditCardView from './EditCardView';
 import ErrorMessage from '../../ErrorMessage';
@@ -38,11 +38,12 @@ export const SAVE_CARD = gql`
 
 const Loading = () => <p>Loading...</p>;
 
-export default function EditCardController({ Redirect }) {
+export default function EditCardController({ Redirect, useMutation }) {
+  useMutation = useMutation || useMutationDefault;
   const [saveCard, { loading, called, error }] = useMutation(SAVE_CARD, { client });
   Redirect = Redirect || RedirectDefault;
 
-  if (called && !loading && !error) return <Redirect to='/' />;
+  if (called && !loading && !error) return <React.Fragment><Redirect to='/' /></React.Fragment>;
 
   function handleSave(card) {
     card.userId = sessionService.getSignInUserSession().idToken.payload.sub;

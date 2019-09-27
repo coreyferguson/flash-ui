@@ -5,7 +5,6 @@ import chaiEnzyme from 'chai-enzyme'
 import React from 'react';
 import sinonChai from 'sinon-chai';
 import { MemoryRouter } from 'react-router-dom';
-import { MockedProvider } from '@apollo/react-testing';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -24,6 +23,3 @@ export const shallowRouter = ({ component, instance }) =>
   enzymeShallow(<MemoryRouter>{instance}</MemoryRouter>).find(component).dive();
 export const mountRouter = ({ component, instance }) =>
   enzymeMount(<MemoryRouter>{instance}</MemoryRouter>);
-
-export const mountGraphqlProvider = ({ component, instance, mocks }) =>
-  enzymeMount(<MockedProvider mocks={mocks} addTypename={false}>{instance}</MockedProvider>);

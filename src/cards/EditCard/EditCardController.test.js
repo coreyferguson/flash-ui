@@ -1,20 +1,20 @@
 
-import EditCardController, { SAVE_CARD } from './EditCardController';
+import EditCardController from './EditCardController';
 import React from 'react';
-import { expect, mountGraphqlProvider, sinon } from '../../../test/support/TestUtilities';
+import { expect, shallow, sinon } from '../../../test/support/TestUtilities';
 import sessionService from '../../authentication/sessionService';
+import EditCardView from './EditCardView';
 
 describe('EditCardController', () => {
 
   const sandbox = sinon.createSandbox();
   const stubUserSession = () => ({ idToken: { payload: { sub: 'subValue' } } });
-  const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
   const RedirectStub = () => <React.Fragment></React.Fragment>;
-  const stubQueryResult = (variables, result, error) => ({
-    request: { query: SAVE_CARD, variables },
-    result: (result) ? { data: { upsertCard: result } } : undefined,
-    error
-  });
+  const newEditCardController = useMutationResponse => {
+    useMutationResponse = useMutationResponse || { loading: true };
+    const useMutationStub = sinon.stub().returns(useMutationResponse);
+    return shallow(<EditCardController Redirect={RedirectStub} useMutation={useMutationStub} />);
+  };
 
   beforeEach(() => {
     sandbox.stub(sessionService, 'getSignInUserSession').returns(stubUserSession());
@@ -26,85 +26,46 @@ describe('EditCardController', () => {
 
   it('renders with no surprises', () => {
     const mocks = [];
-    const wrapper = mountGraphqlProvider({
-      component: EditCardController,
-      instance: <EditCardController />,
-      mocks
-    });
-    expect(wrapper.find('EditCardView')).to.exist;
+    const useMutationResponse = [ sinon.spy(), { loading: false, called: false, error: undefined } ];
+    const wrapper = newEditCardController(useMutationResponse);
+    expect(wrapper.find(EditCardView)).to.exist;
     expect(wrapper.find('RedirectStub')).to.not.exist;
     expect(wrapper.find('Loading')).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
   it('loading', () => {
-    const wrapper = mountGraphqlProvider({
-      component: EditCardController,
-      instance: <EditCardController />,
-      mocks: []
-    });
-    wrapper.find('EditCardView').props().onSave({
-      userId: 'userIdValue',
-      labels: [],
-      sideAText: 'sideATextValue',
-      sideAImageUrl: 'sideAImageUrlValue',
-      sideBText: 'sideBTextValue',
-      sideBImageUrl: 'sideBImageUrlValue'
-    });
-    wrapper.update();
-    expect(wrapper.find('EditCardView')).to.exist;
+    const useMutationResponse = [ sinon.spy(), { loading: true, called: true, error: undefined } ];
+    const wrapper = newEditCardController(useMutationResponse);
+    expect(wrapper.find(EditCardView)).to.exist;
     expect(wrapper.find('RedirectStub')).to.not.exist;
     expect(wrapper.find('Loading')).to.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
-  it('successful mutation', async () => {
-    const baseCard = {
-      labels: [],
-      sideAText: 'sideATextValue',
-      sideAImageUrl: 'sideAImageUrlValue',
-      sideBText: 'sideBTextValue',
-      sideBImageUrl: 'sideBImageUrlValue'
-    };
-    const variables = Object.assign({}, baseCard, { userId: 'userIdValue' });
-    const result = Object.assign({}, baseCard, { id: 'idValue' });
-    const mocks = [ stubQueryResult(variables, result) ];
-    const wrapper = mountGraphqlProvider({
-      component: EditCardController,
-      instance: <EditCardController Redirect={RedirectStub} />,
-      mocks
-    });
-    wrapper.find('EditCardView').props().onSave(variables);
-    await timeout(1);
-    wrapper.update();
-    expect(wrapper.find('EditCardView')).to.not.exist;
+  it('successful mutation', () => {
+    const useMutationResponse = [ sinon.spy(), { loading: false, called: true, error: undefined } ];
+    const wrapper = newEditCardController(useMutationResponse);
+    expect(wrapper.find(EditCardView)).to.not.exist;
     expect(wrapper.find('RedirectStub')).to.exist;
     expect(wrapper.find('Loading')).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
-  it('error on mutation', async () => {
-    const variables = {
-      userId: 'userIdValue',
-      labels: [],
-      sideAText: 'sideATextValue',
-      sideAImageUrl: 'sideAImageUrlValue',
-      sideBText: 'sideBTextValue',
-      sideBImageUrl: 'sideBImageUrlValue'
-    };
-    const wrapper = mountGraphqlProvider({
-      component: EditCardController,
-      instance: <EditCardController Redirect={RedirectStub} />,
-      mocks: [ stubQueryResult(variables, undefined, new Error('oops')) ]
-    });
-    wrapper.find('EditCardView').props().onSave(variables);
-    await timeout(1);
-    wrapper.update();
-    expect(wrapper.find('EditCardView')).to.exist;
+  it('error on mutation', () => {
+    const useMutationResponse = [ sinon.spy(), { loading: false, called: true, error: new Error('oops') } ];
+    const wrapper = newEditCardController(useMutationResponse);
+    expect(wrapper.find(EditCardView)).to.exist;
     expect(wrapper.find('RedirectStub')).to.not.exist;
     expect(wrapper.find('Loading')).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.exist;
   });
 
+  it('clicking button triggers save', () => {
+    const useMutationResponse = [ sinon.spy(), { loading: false, called: false, error: undefined } ];
+    const wrapper = newEditCardController(useMutationResponse);
+    wrapper.find(EditCardView).prop('onSave')({});
+    expect(useMutationResponse[0]).to.be.calledWith({ variables: { userId: 'subValue' } });
+  });
 
 });
