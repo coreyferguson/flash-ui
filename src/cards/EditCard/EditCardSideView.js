@@ -33,7 +33,7 @@ export default function EditCardSideView(props) {
     if (props.onChange) props.onChange(values);
   };
 
-  const viewFileUploadInput = () => !image && <input type="file" onChange={uploadFile} />;
+  const viewFileUploadInput = () => !image && <input type="file" onChange={uploadFile} className='mousetrap' />;
 
   const viewFileUploadImage = () => {
     if (!image) return;
@@ -81,7 +81,8 @@ export default function EditCardSideView(props) {
         placeholder='flashcard text'
         maxRows={20}
         value={text}
-        onChange={handleTextChange} />
+        onChange={handleTextChange}
+        className='mousetrap' />
       <div className='media'>
         {viewFileUploadInput()}
         {viewFileUploadImage()}

@@ -123,8 +123,10 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
   }
 
   function handleDelete(card) {
-    card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
-    deleteCard({ variables: card });
+    if (window.confirm('This operation cannot be undone. Are you sure you want to delete?')) {
+      card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
+      deleteCard({ variables: card });
+    }
   }
 
   return (

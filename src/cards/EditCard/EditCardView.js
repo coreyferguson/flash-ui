@@ -1,10 +1,11 @@
 
 import cardPropType from '../Card/cardPropType';
 import EditCardSideView from './EditCardSideView';
+import mediaService from '../../media/mediaService';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from './EditCardStyle';
-import mediaService from '../../media/mediaService';
+import { HotkeyShortcut } from '../../Shortcuts';
 
 export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
   if (!onSave) throw new Error('EditCardView: missing required property `onSave`');
@@ -47,6 +48,10 @@ export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
 
   return (
     <form className={className} onSubmit={handleSubmit}>
+
+      <HotkeyShortcut combination={'escape'} callback={handleCancel} />
+      <HotkeyShortcut combination={'ctrl+enter'} callback={handleSubmit} />
+
       {!!card.id && <h1>edit card</h1>}
       {!card.id && <h1>create a card</h1>}
       <div className='sides'>
