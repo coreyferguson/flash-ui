@@ -4,26 +4,27 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from './CardSideStyle';
 import InlineLoading from '../../Loading/InlineLoadingView';
+import { Link } from 'react-router-dom';
 
 const loadingImageUrl = `${config.assets.domain}/loading.jpg`;
 
-export function CardSideView({ text, imageUrl, image, className, side, onShowFront, onShowBack }) {
+export function CardSideView({ id, text, imageUrl, image, className, side, onShowFront, onShowBack }) {
   className = className || '';
 
-  function flipIcon() {
-    if (side === 'front') {
-      return <i className='material-icons flip' onClick={onShowBack}>flip_to_front</i>;
-    } else {
-      return <i className='material-icons flip' onClick={onShowFront}>flip_to_back</i>
-    }
+  function flip() {
+    if (side === 'front') onShowBack();
+    else onShowFront();
   }
 
   return (
-    <div className={className}>
+    <div className={className} onClick={flip}>
       {text && <span className='text'>{text}</span>}
       {(!image && imageUrl) && <InlineLoading />}
       {image && <span className='image grow' style={{ backgroundImage: `url(${image})` }}></span>}
-      {flipIcon()}
+      <div className='actions'>
+        <Link to={`/cards/${id}/edit`} className='action'><i className='material-icons'>edit</i></Link>
+        <i className='material-icons action flip'>{`flip_to_${side}`}</i>
+      </div>
     </div>
   );
 }

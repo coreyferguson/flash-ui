@@ -18,6 +18,7 @@ export default function styled(component) {
     align-items: center;
     justify-content: center;
     padding: 10px;
+    cursor: pointer;
 
     @media screen and (max-width: 799px) {
       margin: 5px;
@@ -50,15 +51,24 @@ export default function styled(component) {
       font-size: 50%;
     }
 
-    > .flip {
+    > .actions {
       position: absolute;
       bottom: 0;
       right: 0;
       margin-right: 10px;
       margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    }
+
+    > .actions > .action {
+      text-shadow: 3px 3px 2px rgba(0, 0, 0, 1);
       cursor: pointer;
       user-select: none;
+      margin: 0px 0px 0px 5px;
+      color: ${colors['foreground-1']}
+      font-size: 30px;
+      > i {
+        font-size: 30px;
+      }
     }
   `;
 }

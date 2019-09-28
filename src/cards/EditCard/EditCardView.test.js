@@ -32,8 +32,8 @@ describe('EditCardView', () => {
     const wrapper = shallow(<EditCardView onSave={spy} />);
     const onChangeOfSide1 = wrapper.find({ sideName: '1' }).props().onChange;
     const onChangeOfSide2 = wrapper.find({ sideName: '2' }).props().onChange;
-    const side1 = { text: 'side A text value', image: 'side A image value' };
-    const side2 = { text: 'side B text value', image: 'side B image value' };
+    const side1 = { text: 'side A text value', imageUrl: 'side A image value' };
+    const side2 = { text: 'side B text value', imageUrl: 'side B image value' };
     onChangeOfSide1(side1);
     onChangeOfSide2(side2);
     const onSubmit = wrapper.find('form').props().onSubmit;

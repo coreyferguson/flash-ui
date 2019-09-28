@@ -58,7 +58,7 @@ describe('CardSideView', () => {
         onShowFront={onShowFront}
         onShowBack={onShowBack} />
     );
-    wrapper.find('.flip').prop('onClick')();
+    wrapper.prop('onClick')(); // click anywhere in card
     expect(onShowFront).to.not.be.called;
     expect(onShowBack).to.be.calledOnce;
   });
@@ -74,7 +74,7 @@ describe('CardSideView', () => {
         onShowFront={onShowFront}
         onShowBack={onShowBack} />
     );
-    wrapper.find('.flip').prop('onClick')();
+    wrapper.prop('onClick')(); // click anywhere in card
     expect(onShowFront).to.be.calledOnce;
     expect(onShowBack).to.not.be.called;
   });

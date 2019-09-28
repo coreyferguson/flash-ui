@@ -3,7 +3,7 @@ import React from 'react';
 import EditCardController from './EditCardController';
 
 const EditCardPage = props => {
-  const cardId = parseInt(props.match.params.cardId, 10);
+  const cardId = props.match.params.cardId;
   return <EditCardController cardId={cardId} />;
 };
 
