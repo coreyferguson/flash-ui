@@ -10,15 +10,16 @@ describe('EditCardController', () => {
 
   const sandbox = sinon.createSandbox();
   const stubUserSession = () => ({ idToken: { payload: { sub: 'subValue' } } });
-  const RedirectStub = () => <React.Fragment></React.Fragment>;
+  let redirectAfterSave;
   const newEditCardController = useMutationResponse => {
     useMutationResponse = useMutationResponse || { loading: true };
     const useMutationStub = sinon.stub().returns(useMutationResponse);
-    return shallow(<EditCardController Redirect={RedirectStub} useMutation={useMutationStub} />);
+    return shallow(<EditCardController redirectAfterSave={redirectAfterSave} useMutation={useMutationStub} />);
   };
 
   beforeEach(() => {
     sandbox.stub(sessionService, 'getSignInUserSession').returns(stubUserSession());
+    redirectAfterSave = new sinon.spy();
   });
 
   afterEach(() => {
@@ -30,7 +31,7 @@ describe('EditCardController', () => {
     const useMutationResponse = [ sinon.spy(), { loading: false, called: false, error: undefined } ];
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.exist;
-    expect(wrapper.find('RedirectStub')).to.not.exist;
+    expect(redirectAfterSave).to.not.be.called;
     expect(wrapper.find(Interim)).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
@@ -39,7 +40,7 @@ describe('EditCardController', () => {
     const useMutationResponse = [ sinon.spy(), { loading: true, called: true, error: undefined } ];
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.not.exist;
-    expect(wrapper.find('RedirectStub')).to.not.exist;
+    expect(redirectAfterSave).to.not.be.called;
     expect(wrapper.find(Interim)).to.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
@@ -48,8 +49,8 @@ describe('EditCardController', () => {
     const useMutationResponse = [ sinon.spy(), { loading: false, called: true, error: undefined } ];
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.not.exist;
-    expect(wrapper.find('RedirectStub')).to.exist;
-    expect(wrapper.find(Interim)).to.not.exist;
+    expect(redirectAfterSave).to.be.calledOnce;
+    expect(wrapper.find(Interim)).to.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
@@ -57,7 +58,7 @@ describe('EditCardController', () => {
     const useMutationResponse = [ sinon.spy(), { loading: false, called: true, error: new Error('oops') } ];
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.exist;
-    expect(wrapper.find('RedirectStub')).to.not.exist;
+    expect(redirectAfterSave).to.not.be.called;
     expect(wrapper.find(Interim)).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.exist;
   });

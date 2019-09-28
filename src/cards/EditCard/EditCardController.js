@@ -1,7 +1,7 @@
 
 import PageContainer from '../../PageContainer';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import sessionService from '../../authentication/sessionService';
 import { gql } from 'apollo-boost';
 import { useMutation as useMutationDefault, useQuery as useQueryDefault } from '@apollo/react-hooks';
@@ -54,16 +54,19 @@ export const GET_CARD = gql`
   }
 `;
 
-export default function EditCardController({ cardId, Redirect, useMutation, useQuery }) {
+export default function EditCardController({ cardId, redirectAfterSave, useMutation, useQuery }) {
   useMutation = useMutation || useMutationDefault;
   useQuery = useQuery || useQueryDefault;
-  Redirect = Redirect || RedirectDefault;
+  redirectAfterSave = redirectAfterSave || (() => window.history.back())
 
   const [saveCard, saveCardState] = useMutation(SAVE_CARD, { client });
-  const getCardState = useQuery(GET_CARD, { client, skip: !cardId, variables: { id: cardId } }); // { loading, error, data }
+  const getCardState = useQuery(GET_CARD, { client, skip: !cardId, variables: { id: cardId } });
   const card = getCardState.data ? getCardState.data.me.card : undefined;
 
-  if (saveCardState.called && !saveCardState.loading && !saveCardState.error) return <React.Fragment><Redirect to='/' /></React.Fragment>;
+  if (saveCardState.called && !saveCardState.loading && !saveCardState.error) {
+    redirectAfterSave();
+    return <Interim />;
+  }
 
   function handleSave(card) {
     card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
@@ -91,5 +94,6 @@ export default function EditCardController({ cardId, Redirect, useMutation, useQ
 }
 
 EditCardController.propTypes = {
-  cardId: PropTypes.string
+  cardId: PropTypes.string,
+  redirectAfterSave: PropTypes.func
 };
