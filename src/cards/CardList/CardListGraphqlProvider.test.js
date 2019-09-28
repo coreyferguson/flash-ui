@@ -3,6 +3,7 @@ import React from 'react';
 import View from './CardListGraphqlProvider';
 import { expect, shallow, sinon } from '../../../test/support/TestUtilities';
 import * as ReactHooks from '@apollo/react-hooks';
+import Interim from '../../Interim';
 
 const CardListView = ({ id }) => <div key={id}>{id}</div>;
 
@@ -34,7 +35,7 @@ describe('CardListGraphqlProvider', () => {
     const mocks = [];
     const wrapper = newCardListGraphqlProvider();
     expect(wrapper.find(CardListView).length).to.equal(0);
-    expect(wrapper.text()).to.contain('loading');
+    expect(wrapper.find(Interim)).to.exist;
   });
 
   it('error', () => {

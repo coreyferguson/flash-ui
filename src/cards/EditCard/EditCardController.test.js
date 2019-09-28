@@ -4,6 +4,7 @@ import React from 'react';
 import { expect, shallow, sinon } from '../../../test/support/TestUtilities';
 import sessionService from '../../authentication/sessionService';
 import EditCardView from './EditCardView';
+import Interim from '../../Interim';
 
 describe('EditCardController', () => {
 
@@ -30,16 +31,16 @@ describe('EditCardController', () => {
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.exist;
     expect(wrapper.find('RedirectStub')).to.not.exist;
-    expect(wrapper.find('Loading')).to.not.exist;
+    expect(wrapper.find(Interim)).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
   it('loading', () => {
     const useMutationResponse = [ sinon.spy(), { loading: true, called: true, error: undefined } ];
     const wrapper = newEditCardController(useMutationResponse);
-    expect(wrapper.find(EditCardView)).to.exist;
+    expect(wrapper.find(EditCardView)).to.not.exist;
     expect(wrapper.find('RedirectStub')).to.not.exist;
-    expect(wrapper.find('Loading')).to.exist;
+    expect(wrapper.find(Interim)).to.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
@@ -48,7 +49,7 @@ describe('EditCardController', () => {
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.not.exist;
     expect(wrapper.find('RedirectStub')).to.exist;
-    expect(wrapper.find('Loading')).to.not.exist;
+    expect(wrapper.find(Interim)).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.not.exist;
   });
 
@@ -57,7 +58,7 @@ describe('EditCardController', () => {
     const wrapper = newEditCardController(useMutationResponse);
     expect(wrapper.find(EditCardView)).to.exist;
     expect(wrapper.find('RedirectStub')).to.not.exist;
-    expect(wrapper.find('Loading')).to.not.exist;
+    expect(wrapper.find(Interim)).to.not.exist;
     expect(wrapper.find('ErrorMessageView')).to.exist;
   });
 
