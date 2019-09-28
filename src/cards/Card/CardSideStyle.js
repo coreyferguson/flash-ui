@@ -5,11 +5,12 @@ import shapes from '../../styles/shapes';
 
 export default function styled(component) {
   return _(component)`
+    position: relative;
     background-color: ${colors['background-2']};
     border: 1px solid ${colors['background-2-border-color']};
     border-radius: ${shapes['border-radius']};
     box-sizing: border-box;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 1);
     width: 500px;
     height: 300px;
     display: flex;
@@ -47,6 +48,17 @@ export default function styled(component) {
       display: flex;
       align-items: center;
       font-size: 50%;
+    }
+
+    > .flip {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+      cursor: pointer;
+      user-select: none;
     }
   `;
 }

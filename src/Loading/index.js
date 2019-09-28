@@ -1,5 +1,5 @@
 
 import Loading from './LoadingView';
-import style from './LoadingStyle';
+import styled from './LoadingStyle';
 
-export default style(Loading);
+export default styled(Loading);

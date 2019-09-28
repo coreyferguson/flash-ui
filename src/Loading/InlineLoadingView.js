@@ -1,5 +1,5 @@
 
-import style from './InlineLoadingStyle';
+import styled from './InlineLoadingStyle';
 
 export function InlineLoadingView(props) {
   const className = props.className || '';
@@ -10,4 +10,4 @@ export function InlineLoadingView(props) {
   );
 }
 
-export default style(InlineLoadingView);
+export default styled(InlineLoadingView);
