@@ -10,6 +10,7 @@ import EditCardView from './EditCardView';
 import ErrorMessage from '../../ErrorMessage';
 import client from '../../apolloProvider/apolloClient';
 import Interim from '../../Interim';
+import { LIST_CARDS } from '../CardList/CardListGraphqlProvider';
 
 export const SAVE_CARD = gql`
   mutation upsertCard(
@@ -59,8 +60,30 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
   useQuery = useQuery || useQueryDefault;
   redirectAfterSave = redirectAfterSave || (() => window.history.back())
 
-  const [saveCard, saveCardState] = useMutation(SAVE_CARD, { client });
-  const getCardState = useQuery(GET_CARD, { client, skip: !cardId, variables: { id: cardId } });
+  const isUpdatingCard = !!cardId;
+  const isCreatingCard = !cardId;
+
+  const [saveCard, saveCardState] = useMutation(SAVE_CARD, {
+    client,
+    update(cache, { data: { upsertCard } }) {
+      if (isCreatingCard) {
+        const res = cache.readQuery({ query: LIST_CARDS });
+        const cards = res.me.cards.items;
+        cache.writeQuery({
+          query: LIST_CARDS,
+          data: {
+            me: {
+              cards: {
+                items: [ upsertCard, ...cards ]
+              }
+            }
+          }
+        })
+
+      }
+    }
+  });
+  const getCardState = useQuery(GET_CARD, { client, skip: isCreatingCard, variables: { id: cardId } });
   const card = getCardState.data ? getCardState.data.me.card : undefined;
 
   if (saveCardState.called && !saveCardState.loading && !saveCardState.error) {
