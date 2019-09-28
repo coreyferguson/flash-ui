@@ -56,7 +56,8 @@ export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
             text={card.sideAText}
             imageUrl={card.sideAImageUrl}
             image={images.sideA}
-            onChange={side => handleEditCardSideViewChange('A', side)} />
+            onChange={side => handleEditCardSideViewChange('A', side)}
+            focus={true} />
         </div>
         <div className='side'>
           <EditCardSideView

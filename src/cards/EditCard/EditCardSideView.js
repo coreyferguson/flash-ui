@@ -3,14 +3,19 @@ import './EditCardSideView.scss';
 import InlineLoading from '../../Loading/InlineLoadingView';
 import mediaService from '../../media/mediaService';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 
 export default function EditCardSideView(props) {
+  const textRef = useRef();
+
   const [ loading, setLoading ] = useState(false);
   const [ image, setImage ] = useState();
   const [ text, setText ] = useState();
   const [ imageUrl, setImageUrl ] = useState();
+
+  // focus textarea
+  useEffect(() => props.focus && textRef.current.focus());
 
   // undefined = not specified
   // null = explicitly removed
@@ -72,6 +77,7 @@ export default function EditCardSideView(props) {
     <div className='edit-card-side-view'>
       <h2>side {props.sideName}</h2>
       <TextareaAutosize
+        inputRef={textRef}
         placeholder='flashcard text'
         maxRows={20}
         value={text}
@@ -89,5 +95,6 @@ EditCardSideView.propTypes = {
   sideName: PropTypes.string.isRequired,
   text: PropTypes.string,
   imageUrl: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  focus: PropTypes.bool
 };
