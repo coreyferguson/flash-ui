@@ -9,7 +9,7 @@ export default function styled(component) {
     display: inline-block;
     overflow: hidden;
     min-width: 75px;
-    min-height: 50px;
+    min-height: 75px;
     margin-top: 0;
     margin-bottom: 0;
 
