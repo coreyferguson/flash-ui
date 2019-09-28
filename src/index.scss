@@ -61,7 +61,7 @@ html, body {
     color: $primary;
   }
 
-  button.button, a.button {
+  button, a.button {
     margin: 10px 5px;
     cursor: pointer;
     background-color: $primary;
@@ -85,8 +85,16 @@ html, body {
     }
   }
 
-  button.button:hover, a.button:hover {
+  button.primary, a.button.primary {
+    background-color: $secondary;
+  }
+
+  button:hover, a.button:hover {
     background-color: $primary-darken-2;
+  }
+
+  button.primary:hover, a.button.primary:hover {
+    background-color: $secondary-darken-2;
   }
 
   button:focus, a.button:focus {

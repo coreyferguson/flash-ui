@@ -55,6 +55,17 @@ export const GET_CARD = gql`
   }
 `;
 
+export const DELETE_CARD = gql`
+  mutation deleteCard($userId: String!, $id: String!) {
+    deleteCard(
+      userId: $userId,
+      id: $id
+    ) {
+      id
+    }
+  }
+`;
+
 export default function EditCardController({ cardId, redirectAfterSave, useMutation, useQuery }) {
   useMutation = useMutation || useMutationDefault;
   useQuery = useQuery || useQueryDefault;
@@ -63,30 +74,42 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
   const isUpdatingCard = !!cardId;
   const isCreatingCard = !cardId;
 
-  const [saveCard, saveCardState] = useMutation(SAVE_CARD, {
+  // save card
+  const [ saveCard, saveCardState ] = useMutation(SAVE_CARD, {
     client,
     update(cache, { data: { upsertCard } }) {
       if (isCreatingCard) {
-        const res = cache.readQuery({ query: LIST_CARDS });
-        const cards = res.me.cards.items;
+        const data = cache.readQuery({ query: LIST_CARDS });
+        data.me.cards.items.unshift(upsertCard);
         cache.writeQuery({
           query: LIST_CARDS,
-          data: {
-            me: {
-              cards: {
-                items: [ upsertCard, ...cards ]
-              }
-            }
-          }
-        })
-
+          data
+        });
       }
     }
   });
+
+  // get card
   const getCardState = useQuery(GET_CARD, { client, skip: isCreatingCard, variables: { id: cardId } });
   const card = getCardState.data ? getCardState.data.me.card : undefined;
 
-  if (saveCardState.called && !saveCardState.loading && !saveCardState.error) {
+  // delete card
+  const [ deleteCard, deleteCardState ] = useMutation(DELETE_CARD, {
+    client,
+    update(cache, { data: { deleteCard } }) {
+      const data = cache.readQuery({ query: LIST_CARDS });
+      data.me.cards.items = data.me.cards.items.filter(card => card.id !== deleteCard.id);
+      cache.writeQuery({
+        query: LIST_CARDS,
+        data
+      });
+    }
+  });
+
+  // redirect after successful save or delete
+  const finishedSaving = saveCardState.called && !saveCardState.loading && !saveCardState.error;
+  const finishedDelete = deleteCardState.called && !deleteCardState.loading && !deleteCardState.error;
+  if (finishedSaving || finishedDelete) {
     redirectAfterSave();
     return <Interim />;
   }
@@ -94,6 +117,15 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
   function handleSave(card) {
     card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
     saveCard({ variables: card });
+  }
+
+  function handleCancel() {
+    redirectAfterSave();
+  }
+
+  function handleDelete(card) {
+    card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
+    deleteCard({ variables: card });
   }
 
   return (
@@ -110,7 +142,13 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
       { getCardState.loading && <Interim />}
       {
         !saveCardState.loading && !getCardState.loading &&
-        <PageContainer><EditCardView card={card} onSave={handleSave} /></PageContainer>
+        <PageContainer>
+          <EditCardView
+            card={card}
+            onSave={handleSave}
+            onCancel={handleCancel}
+            onDelete={handleDelete} />
+        </PageContainer>
       }
     </React.Fragment>
   );

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import styled from './EditCardStyle';
 import mediaService from '../../media/mediaService';
 
-export function EditCardView({ card, onSave, className }) {
+export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
   if (!onSave) throw new Error('EditCardView: missing required property `onSave`');
 
   const [ images, setImages ] = useState({});
@@ -17,8 +17,13 @@ export function EditCardView({ card, onSave, className }) {
     setImages(Object.assign({}, images, { sideB: image }));
   });
 
-  card = card || {};
+  card = Object.assign({}, card);
   className = className || '';
+  const isUpdatingCard = !!card.id;
+
+  function reset() {
+    setImages({});
+  }
 
   function handleEditCardSideViewChange(sideLabel, side) {
     card[`side${sideLabel}Text`] = side.text;
@@ -28,6 +33,16 @@ export function EditCardView({ card, onSave, className }) {
   function handleSubmit(e) {
     e.preventDefault();
     onSave(card);
+  }
+
+  function handleCancel(e) {
+    e.preventDefault();
+    onCancel();
+  }
+
+  function handleDelete(e) {
+    e.preventDefault();
+    onDelete(card);
   }
 
   return (
@@ -53,7 +68,9 @@ export function EditCardView({ card, onSave, className }) {
         </div>
       </div>
       <div className='save'>
-        <button type='submit' className='button'>save</button>
+        <button onClick={handleCancel}>cancel</button>
+        {isUpdatingCard && <button onClick={handleDelete}>delete</button>}
+        <button type='submit' className='primary'>save</button>
       </div>
     </form>
   );
