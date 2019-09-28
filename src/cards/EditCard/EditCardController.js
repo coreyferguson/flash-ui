@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 import sessionService from '../../authentication/sessionService';
 import { gql } from 'apollo-boost';
 import { useMutation as useMutationDefault, useQuery as useQueryDefault } from '@apollo/react-hooks';
-import { Redirect as RedirectDefault } from 'react-router-dom'
 import EditCardView from './EditCardView';
 import ErrorMessage from '../../ErrorMessage';
 import client from '../../apolloProvider/apolloClient';

@@ -1,11 +1,11 @@
 
-import { gql } from 'apollo-boost';
-import DefaultView from './CardListView';
-import React from 'react';
-import { useQuery as useDefaultQuery } from '@apollo/react-hooks';
 import client from '../../apolloProvider/apolloClient';
+import DefaultView from './CardListView';
 import Interim from '../../Interim';
 import PageContainer from '../../PageContainer';
+import React from 'react';
+import { gql } from 'apollo-boost';
+import { useQuery as useDefaultQuery } from '@apollo/react-hooks';
 
 export const LIST_CARDS = gql`
   {
