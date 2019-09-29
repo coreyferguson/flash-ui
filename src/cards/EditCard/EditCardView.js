@@ -29,7 +29,12 @@ export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
   function handleEditCardSideViewChange(sideLabel, side) {
     card[`side${sideLabel}Text`] = side.text;
     card[`side${sideLabel}ImageUrl`] = side.imageUrl;
+    card[`side${sideLabel}ImageUrl`] = side.imageUrl;
   }
+
+  function handleLabelsChange(e) {
+    card.labels = e.target.value.split(' ');
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -46,6 +51,7 @@ export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
     onDelete(card);
   }
 
+  const labels = card.labels ? card.labels.join(' ') : '';
   return (
     <form className={className} onSubmit={handleSubmit}>
 
@@ -72,6 +78,10 @@ export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
             image={images.sideB}
             onChange={side => handleEditCardSideViewChange('B', side)} />
         </div>
+      </div>
+      <div className='labels'>
+        <span>labels</span>
+        <input type='text' onChange={handleLabelsChange} defaultValue={labels} className='mousetrap' />
       </div>
       <div className='save'>
         <button onClick={handleCancel}>cancel</button>

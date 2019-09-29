@@ -131,4 +131,19 @@ html, body {
     border-bottom: 1px solid $primary;
   }
 
+
+  input[type=text] {
+    background-color: $background-2;
+    color: $foreground-2;
+    border: 0px;
+    border-bottom: 1px solid $foreground-2;
+    resize: none;
+    font-size: 100%;
+    padding: 5px;
+  }
+  input[type=text]:focus {
+    outline: none;
+    border-bottom: 1px solid $primary;
+  }
+
 }

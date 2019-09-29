@@ -14,6 +14,19 @@ export default function styled(component) {
       }
     }
 
+    > .labels {
+      display: flex;
+      flex-flow: row nowrap;
+      margin-top: 20px;
+      align-items: baseline;
+      > span {
+        margin-right: 10px;
+      }
+      > input {
+        flex-grow: 1;
+      }
+    }
+
     > .save {
       margin-top: 20px;
       display: flex;

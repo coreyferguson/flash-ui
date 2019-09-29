@@ -15,6 +15,7 @@ export const SAVE_CARD = gql`
   mutation upsertCard(
     $id: String
     $userId: String!
+    $labels: [String]
     $sideAText: String
     $sideAImageUrl: String
     $sideBText: String
@@ -23,7 +24,7 @@ export const SAVE_CARD = gql`
     upsertCard(
       id: $id
       userId: $userId
-      labels: []
+      labels: $labels
       sideAText: $sideAText
       sideAImageUrl: $sideAImageUrl
       sideBText: $sideBText
