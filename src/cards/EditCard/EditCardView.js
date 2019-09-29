@@ -33,7 +33,7 @@ export function EditCardView({ className, card, onSave, onCancel, onDelete }) {
   }
 
   function handleLabelsChange(e) {
-    card.labels = e.target.value.split(' ');
+    card.labels = e.target.value.trim().split(' ');
   };
 
   function handleSubmit(e) {

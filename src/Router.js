@@ -3,6 +3,7 @@ import ErrorBoundary from './ErrorBoundary';
 import Landing from './Landing';
 import OAuthCallbackView from './authentication/OAuthCallbackView';
 import OAuthSignOutView from './authentication/OAuthSignOutView';
+import { PracticePage } from './Practice';
 import React, { useState } from 'react';
 import sessionService from './authentication/sessionService';
 import SigninView from './authentication/SigninView';
@@ -28,6 +29,8 @@ export default function Home() {
       <ErrorBoundary>
         <Router>
           <Route path='/' exact component={Landing} />
+          <Route path='/cards' exact component={Landing} />
+          <Route path='/practice' exact component={PracticePage} />
           <Route path='/signin' exact component={SigninView} />
           <Route path='/signout' exact component={SignoutView} />
           <Route path='/oauth/callback' exact component={OAuthCallbackView} />

@@ -5,7 +5,7 @@ import Interim from '../../Interim';
 import PageContainer from '../../PageContainer';
 import React from 'react';
 import { gql } from 'apollo-boost';
-import { useQuery as useDefaultQuery } from '@apollo/react-hooks';
+import { useQuery as useQueryDefault } from '@apollo/react-hooks';
 
 export const LIST_CARDS = gql`
   {
@@ -25,7 +25,7 @@ export const LIST_CARDS = gql`
 `;
 
 export default function CardListGraphqlProvider({ CardListView, useQuery }) {
-  useQuery = useQuery || useDefaultQuery;
+  useQuery = useQuery || useQueryDefault;
   const { loading, error, data } = useQuery(LIST_CARDS, { client });
   if (loading) return <Interim />;
   if (error) return <p>unknown error occurred</p>;

@@ -1,13 +1,13 @@
 
-import React from 'react';
 import Nav from '../Nav';
 import PropTypes from 'prop-types';
-import './PageContainer.scss';
+import React from 'react';
+import styled from './PageContainerStyle';
 
-export default class PageContainer extends React.PureComponent {
+export class PageContainer extends React.PureComponent {
 
   render() {
-    let className = 'page-container';
+    let className = this.props.className || '';
     if (this.props.className) className += ` ${this.props.className}`;
     return (
       <div className={className}>
@@ -24,3 +24,5 @@ export default class PageContainer extends React.PureComponent {
 PageContainer.propTypes = {
   className: PropTypes.string
 };
+
+export default styled(PageContainer);
