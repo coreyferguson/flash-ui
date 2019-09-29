@@ -1,0 +1,25 @@
+{
+  "api": {
+    "uri": "https://flash-api.overattribution.com/graphql"
+  },
+  "assets": {
+    "domain": "https://flash-assets.overattribution.com"
+  },
+  "auth": {
+    "identityPoolId": "us-west-2:3e2253f7-17ab-42ad-aa81-b6bc15ae9f1d",
+    "userPool": {
+      "client": {
+        "id": "1c0e5q6bvrsek9agaufqgvh7fu",
+        "name": "flash",
+        "redirectCallback": "https://flash.overattribution.com/oauth/callback",
+        "redirectSignout": "https://flash.overattribution.com/oauth/signout"
+      },
+      "id": "us-west-2_hR7h3U4gQ",
+      "webDomain": "auth.overattribution.com"
+    }
+  },
+  "media": {
+    "s3Bucket": "overattribution-flash-prod-media"
+  },
+  "stage": "prod"
+}

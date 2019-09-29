@@ -1,9 +1,10 @@
 
 import ApolloClient from 'apollo-boost';
 import sessionService from '../authentication/sessionService';
+import config from 'config';
 
 const client = new ApolloClient({
-  uri: 'https://flash-api-dev.overattribution.com/graphql',
+  uri: config.api.uri,
   request: operation => {
     const session = sessionService.getSignInUserSession();
     const token = session.idToken.jwtToken;
