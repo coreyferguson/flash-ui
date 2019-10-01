@@ -24,9 +24,12 @@ export const LIST_CARDS = gql`
   }
 `;
 
+export const useQueryCacheState = { hasCache: false };
+
 export default function CardListGraphqlProvider({ CardListView, useQuery }) {
   useQuery = useQuery || useQueryDefault;
   const { loading, error, data } = useQuery(LIST_CARDS, { client });
+  useQueryCacheState.hasCache = true;
   if (loading) return <Interim />;
   if (error) return <p>unknown error occurred</p>;
   const View = CardListView || DefaultView;

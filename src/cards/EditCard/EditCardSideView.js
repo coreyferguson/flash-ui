@@ -1,101 +1,73 @@
 
 import './EditCardSideView.scss';
 import InlineLoading from '../../Loading/InlineLoadingView';
-import mediaService from '../../media/mediaService';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 
 export default function EditCardSideView(props) {
+  const { focusOnMount, image, imageLoading, inputRef, onImageChange, onTextChange, sideName, text } = props;
   const textRef = useRef();
 
-  const [ loading, setLoading ] = useState(false);
-  const [ image, setImage ] = useState();
-  const [ text, setText ] = useState();
-  const [ imageUrl, setImageUrl ] = useState();
-
   // focus textarea
-  useEffect(() => props.focus && textRef.current.focus());
+  useEffect(() => {
+    if (focusOnMount) {
+      textRef.current.focus();
+    }
+  }, [focusOnMount]);
 
-  // undefined = not specified
-  // null = explicitly removed
-  if (image === undefined && props.image) setImage(props.image);
-  if (text === undefined && props.text) setText(props.text);
-  if (!imageUrl && props.imageUrl) setImageUrl(props.imageUrl);
-
-  const handleTextChange = e => {
-    setText(e.target.value);
-    handleChange({ text: e.target.value });
+  const handleImageChange = e => {
+    e.preventDefault();
+    onImageChange(e.target.files && e.target.files[0]);
   };
 
-  const handleChange = (values) => {
-    values = Object.assign({ text, imageUrl }, values);
-    if (props.onChange) props.onChange(values);
+  const viewFileUploadInput = () => {
+    if (image) return;
+    return (
+      <input
+        type="file"
+        onChange={handleImageChange}
+        className='mousetrap' />
+    );
   };
-
-  const viewFileUploadInput = () => !image && <input type="file" onChange={uploadFile} className='mousetrap' />;
 
   const viewFileUploadImage = () => {
     if (!image) return;
     return (
       <div className='attachment'>
         <img src={image} />
-        <button onClick={handleDelete} className='icon'>
+        <button onClick={handleImageChange} className='icon'>
           <i className='material-icons delete'>delete</i>
         </button>
       </div>
     );
   };
 
-  const uploadFile = async e => {
-    // get the file to be uploaded
-    if (!e.target.files[0]) return;
-    setLoading(true);
-    const file = e.target.files[0];
-
-    // show image immediately in current view
-    const reader = new FileReader();
-    reader.onload = e => setImage(e.target.result);
-    reader.readAsDataURL(file);
-
-    // save the image
-    const newImageUrl = await mediaService.upload(file);
-    setImageUrl(newImageUrl);
-    setLoading(false);
-    handleChange({ imageUrl: newImageUrl });
-  };
-
-  const handleDelete = e => {
-    e.preventDefault();
-    setImage(null);
-    setLoading(false);
-    setImageUrl(null);
-    handleChange({ imageUrl: null });
-  };
-
   return (
     <div className='edit-card-side-view'>
-      <h2>side {props.sideName}</h2>
+      <h2>side {sideName}</h2>
       <TextareaAutosize
         inputRef={textRef}
         placeholder='flashcard text'
         maxRows={20}
-        value={text}
-        onChange={handleTextChange}
+        value={text || ''}
+        onChange={e => onTextChange(e.target.value)}
         className='mousetrap' />
       <div className='media'>
         {viewFileUploadInput()}
         {viewFileUploadImage()}
-        {loading && <InlineLoading />}
+        {imageLoading && <InlineLoading />}
       </div>
     </div>
   );
 }
 
 EditCardSideView.propTypes = {
+  focusOnMount: PropTypes.bool,
+  image: PropTypes.string,
+  imageLoading: PropTypes.bool,
+  onImageChange: PropTypes.func.isRequired,
+  onTextChange: PropTypes.func.isRequired,
   sideName: PropTypes.string.isRequired,
-  text: PropTypes.string,
-  imageUrl: PropTypes.string,
-  onChange: PropTypes.func,
-  focus: PropTypes.bool
+  text: PropTypes.string
 };

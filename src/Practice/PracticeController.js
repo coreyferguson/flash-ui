@@ -1,96 +1,47 @@
 
-import { gql } from 'apollo-boost';
-import {
-  useMutation as useMutationDefault,
-  useQuery as useQueryDefault
-} from '@apollo/react-hooks';
+import { default as useCardSaverDefault } from '../cards/graphql/useCardSaver';
+import { useMutation as useMutationDefault, useQuery as useQueryDefault } from '@apollo/react-hooks';
 import ErrorMessage, { UnknownError } from '../ErrorMessage';
-import client from '../apolloProvider/apolloClient';
 import Loading from '../Loading';
 import PracticeView from './PracticeView';
 import PropTypes from 'prop-types';
 import React, { useState as useStateDefault } from 'react';
-
-export const GQL_GET_PRACTICE_CARDS = gql`
-  query getPracticeCards {
-    me {
-      sub
-      cards(label: "practice", orderBy: "lastTestTime") {
-        items {
-          id
-          labels
-          sideAText
-          sideAImageUrl
-          sideBText
-          sideBImageUrl
-        }
-      }
-    }
-  }
-`;
-
-export const GQL_NEW_PRACTICE_DECK = gql`
-  mutation newPracticeDeck($userId: String!) {
-    newPracticeDeck(userId: $userId, pageSize: 2)
-  }
-`;
+import usePracticeDeckFetcher from '../cards/graphql/usePracticeDeckFetcher';
+import usePracticeDeckCreator from '../cards/graphql/usePracticeDeckCreator';
 
 export const ViewState = {
-  FETCH_PRACTICE_CARDS: "Fetching practice cards from backend server",
-  NEW_PRACTICE_DECK: "Creating a new practice deck because the current one is empty",
-  REFETCH_PRACTICE_CARDS_LOADING: "Fetch practice deck again because new deck created",
-  REFETCH_PRACTICE_CARDS_COMPLETE: "Refetch practice deck complete; cards should be available now",
-  REFETCH_PRACTICE_CARDS_ERROR: "Refetch practice deck unknown error"
+  DEFAULT: "Default view state when fetching for first time or after creation of a new deck",
+  LOADING: "Loading state override for when Apollo can't provide it",
+  REFETCH_PRACTICE_CARDS_STILL_NO_CARDS: "No cards in practice deck even after attempting to create",
+  REFETCH_PRACTICE_CARDS_UNKNOWN_ERROR: "Refetch practice deck unknown error"
 }
 
-export default function PracticeController({ useMutation, useQuery, useState }) {
+export default function PracticeController({ useMutation, useQuery, useState, useCardSaver }) {
   // allow overrides for testing
   useMutation = useMutation || useMutationDefault;
   useQuery = useQuery || useQueryDefault;
   useState = useState || useStateDefault;
+  useCardSaver = useCardSaver || useCardSaverDefault;
 
   // hooks
-  const getPracticeCardsState = useQuery(GQL_GET_PRACTICE_CARDS, { client });
-  const [ newPracticeDeck, newPracticeDeckState ] = useMutation(GQL_NEW_PRACTICE_DECK, { client });
-  const [ viewState, setViewState ] = useState(ViewState.FETCH_PRACTICE_CARDS);
+  const getPracticeCardsState = usePracticeDeckFetcher();
+  const [ newPracticeDeck, newPracticeDeckState ] = usePracticeDeckCreator();
+  const [ viewState, setViewState ] = useState(ViewState.DEFAULT);
+  const [ saveCard, saveCardState ] = useCardSaver(false);
 
   // all loading states
   const loading =
     getPracticeCardsState.loading ||
     newPracticeDeckState.loading ||
-    viewState === ViewState.REFETCH_PRACTICE_CARDS_LOADING;
+    viewState === ViewState.LOADING;
   if (loading) return <Loading />;
 
-  // all errors
+  // all unknown errors
   const inError = !!getPracticeCardsState.error ||
-    viewState === ViewState.REFETCH_PRACTICE_CARDS_ERROR;
+    viewState === ViewState.REFETCH_PRACTICE_CARDS_UNKNOWN_ERROR;
   if (inError) return <UnknownError />;
 
-  // data from backend
-  const userId = getPracticeCardsState.data.me.sub;
-  const cards = getPracticeCardsState.data.me.cards;
-
-  // fetched practice deck but there are no cards; create them now
-  if (viewState === ViewState.FETCH_PRACTICE_CARDS && cards.items.length === 0) {
-    newPracticeDeck({ variables: { userId } });
-    setViewState(ViewState.NEW_PRACTICE_DECK);
-    return <Loading />;
-  }
-
-  // cards have been created; refetch cards from backend
-  if (viewState === ViewState.NEW_PRACTICE_DECK) {
-    setViewState(ViewState.REFETCH_PRACTICE_CARDS_LOADING);
-    getPracticeCardsState.refetch().then(() => {
-      setViewState(ViewState.REFETCH_PRACTICE_CARDS_COMPLETE);
-    }).catch(err => {
-      setViewState(ViewState.REFETCH_PRACTICE_CARDS_ERROR);
-    });
-    return <Loading />;
-  }
-
-  // refetch completed; still no cards
-  if (viewState === ViewState.REFETCH_PRACTICE_CARDS_COMPLETE && cards.items.length === 0) {
-    // TODO: Need a better message here
+  if (viewState === ViewState.REFETCH_PRACTICE_CARDS_STILL_NO_CARDS) {
     return (
       <ErrorMessage>
         <h2>practice deck could not be created</h2>
@@ -107,12 +58,43 @@ export default function PracticeController({ useMutation, useQuery, useState }) 
     );
   }
 
-  const handleRemindImmediately = () => {};
-  const handleRemindOften = () => {};
+  // data from backend
+  const userId = getPracticeCardsState.data.me.sub;
+  const cards = getPracticeCardsState.data.me.cards;
+
+  // fetched practice deck but there are no cards; create them now
+  if (cards.items.length === 0) {
+    setTimeout(() => { // indexes may take a little bit to update since last card save
+      newPracticeDeck({ variables: { userId } }).then(res => {
+        if (res.data.newPracticeDeck.items.length === 0) setViewState(ViewState.REFETCH_PRACTICE_CARDS_STILL_NO_CARDS);
+        else setViewState(ViewState.DEFAULT);
+      }).catch(err => {
+        setViewState(ViewState.REFETCH_PRACTICE_CARDS_UNKNOWN_ERROR);
+      });
+    }, 50);
+    return <Loading />;
+  }
+
+  const handleRemindImmediately = () => {
+    const card = Object.assign({}, cards.items[0], { userId, lastTestTime: new Date().toISOString() });
+    saveCard({ variables: card }, { optimistically: true });
+  };
+  const handleRemindOften = () => {
+    let labels = cards.items[0].labels;
+    labels = labels.filter(label =>
+      label!=='frequency-sometimes' &&
+      label!=='frequency-often' &&
+      label!=='practice');
+    labels.push('frequency-often');
+    const card = Object.assign({}, cards.items[0], { userId, labels, lastTestTime: new Date().toISOString() });
+    saveCard({ variables: card }, { optimistically: true });
+  };
   const handleRemindSometimes = () => {};
   const handleRemindNever = () => {};
 
   return <PracticeView
+      key={cards.items[0].id}
+      canHandleImmediately={cards.items.length > 1}
       card={cards.items[0]}
       onRemindImmediately={handleRemindImmediately}
       onRemindOften={handleRemindOften}

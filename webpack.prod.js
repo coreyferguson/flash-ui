@@ -8,8 +8,8 @@ module.exports = merge(common, {
   plugins: [
     new DynamicCdnWebpackPlugin()
   ],
-  performance: {
-    hints: 'error',
-    maxEntrypointSize: 112640
-  }
+  // performance: {
+  //   hints: 'error',
+  //   maxEntrypointSize: 112640
+  // }
 });

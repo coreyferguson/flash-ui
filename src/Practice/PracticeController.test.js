@@ -4,7 +4,7 @@ import PracticeController, { ViewState } from './PracticeController';
 import { expect, shallow, sinon } from '../../test/support/TestUtilities';
 import PracticeView from './PracticeView';
 
-describe.only('PracticeController', () => {
+describe('PracticeController', () => {
 
   it('error retrieving cards on first fetch', () => {
     const useQuery = sinon.stub().returns({ loading: false, error: new Error('oops') });

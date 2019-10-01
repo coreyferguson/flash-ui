@@ -1,110 +1,53 @@
 
-import PageContainer from '../../PageContainer';
-import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
-import sessionService from '../../authentication/sessionService';
-import { gql } from 'apollo-boost';
-import { useMutation as useMutationDefault, useQuery as useQueryDefault } from '@apollo/react-hooks';
+import { useMemo, useState } from 'react';
 import EditCardView from './EditCardView';
 import ErrorMessage from '../../ErrorMessage';
-import client from '../../apolloProvider/apolloClient';
 import Interim from '../../Interim';
-import { LIST_CARDS } from '../CardList/CardListGraphqlProvider';
+import mediaService from '../../media/mediaService';
+import PageContainer from '../../PageContainer';
+import PropTypes from 'prop-types';
+import useCardDeleter from '../graphql/useCardDeleter';
+import useCardFetcher from '../graphql/useCardFetcher';
+import useCardSaver from '../graphql/useCardSaver';
+import useImageFetcher from '../../media/useImageFetcher';
+import sessionService from '../../authentication/sessionService';
 
-export const SAVE_CARD = gql`
-  mutation upsertCard(
-    $id: String
-    $userId: String!
-    $labels: [String]
-    $sideAText: String
-    $sideAImageUrl: String
-    $sideBText: String
-    $sideBImageUrl: String
-  ) {
-    upsertCard(
-      id: $id
-      userId: $userId
-      labels: $labels
-      sideAText: $sideAText
-      sideAImageUrl: $sideAImageUrl
-      sideBText: $sideBText
-      sideBImageUrl: $sideBImageUrl
-    ) {
-      id
-      labels
-      sideAText
-      sideAImageUrl
-      sideBText
-      sideBImageUrl
-    }
-  }
-`;
-
-export const GET_CARD = gql`
-  query getCard($id: String!) {
-    me {
-      card(id: $id) {
-        id
-        labels
-        sideAText
-        sideAImageUrl
-        sideBText
-        sideBImageUrl
-      }
-    }
-  }
-`;
-
-export const DELETE_CARD = gql`
-  mutation deleteCard($userId: String!, $id: String!) {
-    deleteCard(
-      userId: $userId,
-      id: $id
-    ) {
-      id
-    }
-  }
-`;
-
-export default function EditCardController({ cardId, redirectAfterSave, useMutation, useQuery }) {
-  useMutation = useMutation || useMutationDefault;
-  useQuery = useQuery || useQueryDefault;
-  redirectAfterSave = redirectAfterSave || (() => window.history.back())
+export default function EditCardController({ cardId, redirectAfterSave }) {
+  redirectAfterSave = redirectAfterSave || (() => window.history.back());
 
   const isUpdatingCard = !!cardId;
   const isCreatingCard = !cardId;
+  const userId = sessionService.getSignInUserSession().idToken.payload.sub;
 
-  // save card
-  const [ saveCard, saveCardState ] = useMutation(SAVE_CARD, {
-    client,
-    update(cache, { data: { upsertCard } }) {
-      if (isCreatingCard) {
-        const data = cache.readQuery({ query: LIST_CARDS });
-        data.me.cards.items.unshift(upsertCard);
-        cache.writeQuery({
-          query: LIST_CARDS,
-          data
-        });
-      }
-    }
-  });
+  // card state
+  const [ sideAImageUrl, setSideAImageUrl ] = useState();
+  const [ sideAText, setSideAText ] = useState();
+  const [ sideBImageUrl, setSideBImageUrl ] = useState();
+  const [ sideBText, setSideBText ] = useState();
+  const [ labels, setLabels ] = useState();
 
-  // get card
-  const getCardState = useQuery(GET_CARD, { client, skip: isCreatingCard, variables: { id: cardId } });
-  const card = getCardState.data ? getCardState.data.me.card : undefined;
+  // card CRUD hooks
+  const getCardState = useCardFetcher({ cardId, skip: isCreatingCard });
+  const [ saveCard, saveCardState ] = useCardSaver(isCreatingCard);
+  const [ deleteCard, deleteCardState ] = useCardDeleter();
 
-  // delete card
-  const [ deleteCard, deleteCardState ] = useMutation(DELETE_CARD, {
-    client,
-    update(cache, { data: { deleteCard } }) {
-      const data = cache.readQuery({ query: LIST_CARDS });
-      data.me.cards.items = data.me.cards.items.filter(card => card.id !== deleteCard.id);
-      cache.writeQuery({
-        query: LIST_CARDS,
-        data
-      });
-    }
-  });
+  const card = getCardState.data ? getCardState.data.me.card : {};
+
+  // set default values in state
+  useMemo(() => setSideAImageUrl(card.sideAImageUrl), [card.sideAImageUrl]);
+  useMemo(() => setSideAText(card.sideAText), [card.sideAText]);
+  useMemo(() => setSideBImageUrl(card.sideBImageUrl), [card.sideBImageUrl]);
+  useMemo(() => setSideBText(card.sideBText), [card.sideBText]);
+  useMemo(() => setLabels(card.labels), [card.labels]);
+
+  // images
+  const [ sideAImage, setSideAImage ] = useImageFetcher(sideAImageUrl);
+  const [ sideAImageLoading, setSideAImageLoading ] = useState();
+  const [ sideBImage, setSideBImage ] = useImageFetcher(sideBImageUrl);
+  const [ sideBImageLoading, setSideBImageLoading ] = useState();
+
+  if (saveCardState.loading || getCardState.loading || deleteCardState.loading)
+    return <Interim />
 
   // redirect after successful save or delete
   const finishedSaving = saveCardState.called && !saveCardState.loading && !saveCardState.error;
@@ -114,20 +57,66 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
     return <Interim />;
   }
 
-  function handleSave(card) {
-    card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
-    saveCard({ variables: card });
-  }
-
   function handleCancel() {
     redirectAfterSave();
   }
 
-  function handleDelete(card) {
+  function handleDelete() {
+    const card = { userId, id: cardId };
     if (window.confirm('This operation cannot be undone. Are you sure you want to delete?')) {
-      card.userId = sessionService.getSignInUserSession().idToken.payload.sub;
       deleteCard({ variables: card });
     }
+  }
+
+  function handleLabelsChange(labels) {
+    setLabels(labels);
+  }
+
+  const handleSave = () => {
+    const card = {
+      id: cardId,
+      userId,
+      labels: labels.filter(label => label !== ''),
+      sideAText,
+      sideAImageUrl,
+      sideBText,
+      sideBImageUrl
+    };
+    saveCard({ variables: card });
+  }
+
+  function handleImageChange(file, setImageUrl, setImage, setImageLoading) {
+    if (!file) {
+      setImageUrl();
+      setImage();
+      return;
+    }
+    setImageLoading(true);
+    // show image immediately in current view
+    const reader = new FileReader();
+    reader.onload = e => setImage(e.target.result);
+    reader.readAsDataURL(file);
+    // save the image
+    mediaService.upload(file).then(newImageUrl => {
+      setImageUrl(newImageUrl);
+      setImageLoading(false);
+    });
+  }
+
+  function handleSideAImageChange(file) {
+    return handleImageChange(file, setSideAImageUrl, setSideAImage, setSideAImageLoading);
+  }
+
+  function handleSideATextChange(text) {
+    setSideAText(text);
+  }
+
+  function handleSideBImageChange(file) {
+    return handleImageChange(file, setSideBImageUrl, setSideBImage, setSideBImageLoading);
+  }
+
+  function handleSideBTextChange(text) {
+    setSideBText(text);
   }
 
   return (
@@ -137,7 +126,7 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
         <h3>{saveCardState.error.message}</h3>
       </ErrorMessage> }
       {getCardState.error && <ErrorMessage>
-        <h2>Unknown error when saving card. Please try again.</h2>
+        <h2>Unknown error when retrieving cards. Please try again.</h2>
         <h3>{getCardState.error.message}</h3>
       </ErrorMessage> }
       { saveCardState.loading && <Interim />}
@@ -146,10 +135,22 @@ export default function EditCardController({ cardId, redirectAfterSave, useMutat
         !saveCardState.loading && !getCardState.loading &&
         <PageContainer>
           <EditCardView
-            card={card}
-            onSave={handleSave}
+            isUpdating={isUpdatingCard}
+            labels={labels}
             onCancel={handleCancel}
-            onDelete={handleDelete} />
+            onDelete={handleDelete}
+            onLabelsChange={handleLabelsChange}
+            onSave={handleSave}
+            onSideAImageChange={handleSideAImageChange}
+            onSideATextChange={handleSideATextChange}
+            onSideBImageChange={handleSideBImageChange}
+            onSideBTextChange={handleSideBTextChange}
+            sideAImage={sideAImage}
+            sideAImageLoading={sideAImageLoading}
+            sideAText={sideAText}
+            sideBImage={sideBImage}
+            sideBImageLoading={sideBImageLoading}
+            sideBText={sideBText} />
         </PageContainer>
       }
     </React.Fragment>

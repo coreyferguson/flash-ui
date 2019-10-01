@@ -3,7 +3,7 @@ import mousetrap from 'mousetrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default class HotkeyShortcut extends React.PureComponent {
+export default class HotkeyShortcut extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,10 +18,10 @@ export default class HotkeyShortcut extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.combination) mousetrap.bind(this.props.combination, this.props.callback);
+    if (this.props.combination) mousetrap.bind(this.props.combination, () => this.props.callback());
     if (this.props.combinations) {
       for (let combination of this.props.combinations) {
-        mousetrap.bind(combination, this.props.callback);
+        mousetrap.bind(combination, () => this.props.callback());
       }
     }
   }
@@ -30,7 +30,7 @@ export default class HotkeyShortcut extends React.PureComponent {
     if (this.props.combination) mousetrap.unbind(this.props.combination);
     if (this.props.combinations) {
       for (let combination of this.props.combinations) {
-        mousetrap.unbind(combination, this.props.callback);
+        mousetrap.unbind(combination, () => this.props.callback());
       }
     }
   }

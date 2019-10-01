@@ -13,7 +13,10 @@ export function PracticeView(props) {
       </section>
       <section className='controls'>
         <span>remind me</span>
-        <button className='remind-immediately' onClick={props.onRemindImmediately}>immediately</button>
+        {
+          props.canHandleImmediately &&
+          <button className='remind-immediately' onClick={props.onRemindImmediately}>immediately</button>
+        }
         <button className='remind-often' onClick={props.onRemindOften}>often</button>
         <button className='remind-sometimes' onClick={props.onRemindSometimes}>sometimes</button>
         <button className='remind-never' onClick={props.onRemindNever}>never</button>
@@ -23,6 +26,8 @@ export function PracticeView(props) {
 }
 
 PracticeView.propTypes = {
+  canHandleImmediately: PropTypes.bool,
+  card: PropTypes.object.isRequired,
   onRemindImmediately: PropTypes.func.isRequired,
   onRemindOften: PropTypes.func.isRequired,
   onRemindSometimes: PropTypes.func.isRequired,
