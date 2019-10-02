@@ -16,12 +16,27 @@ export const DELETE_CARD = gql`
 `;
 
 export default function useCardDeleter() {
-  return useMutation(DELETE_CARD, {
+  const result = useMutation(DELETE_CARD, {
     client,
     update(cache, { data: { deleteCard } }) {
       useCardCollectionFetcherCache(cache, deleteCard);
     }
   });
+  const deleteCard = (apolloProps, extraOptions) => {
+    const { optimistic } = extraOptions || {};
+    if (optimistic) {
+      apolloProps = Object.assign({
+        optimisticResponse: {
+          deleteCard: {
+            __typename: 'Card',
+            id: apolloProps.variables.id
+          }
+        }
+      }, apolloProps);
+    }
+    return result[0](apolloProps);
+  };
+  return [ deleteCard, result[1] ];
 }
 
 export function useCardCollectionFetcherCache(cache, deleteCard) {

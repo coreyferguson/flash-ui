@@ -27,7 +27,7 @@ export default function PracticeController({ useMutation, useQuery, useState, us
   const getPracticeCardsState = usePracticeDeckFetcher();
   const [ newPracticeDeck, newPracticeDeckState ] = usePracticeDeckCreator();
   const [ viewState, setViewState ] = useState(ViewState.DEFAULT);
-  const [ saveCard, saveCardState ] = useCardSaver(false);
+  const [ saveCard ] = useCardSaver(false);
 
   // all loading states
   const loading =
@@ -77,7 +77,7 @@ export default function PracticeController({ useMutation, useQuery, useState, us
 
   const handleRemindImmediately = () => {
     const card = Object.assign({}, cards.items[0], { userId, lastTestTime: new Date().toISOString() });
-    saveCard({ variables: card }, { optimistically: true });
+    saveCard({ variables: card }, { optimistic: true });
   };
   const handleRemindOften = () => {
     let labels = cards.items[0].labels;
@@ -87,7 +87,7 @@ export default function PracticeController({ useMutation, useQuery, useState, us
       label!=='practice');
     labels.push('frequency-often');
     const card = Object.assign({}, cards.items[0], { userId, labels, lastTestTime: new Date().toISOString() });
-    saveCard({ variables: card }, { optimistically: true });
+    saveCard({ variables: card }, { optimistic: true });
   };
   const handleRemindSometimes = () => {};
   const handleRemindNever = () => {};

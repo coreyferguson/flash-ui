@@ -39,11 +39,6 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
   useMemo(() => setSideBImageUrl(card.sideBImageUrl), [card.sideBImageUrl]);
   useMemo(() => setSideBText(card.sideBText), [card.sideBText]);
   useMemo(() => setLabels(card.labels), [card.labels]);
-  const finishedSaving = saveCardState.called && !saveCardState.loading && !saveCardState.error;
-  const finishedDelete = deleteCardState.called && !deleteCardState.loading && !deleteCardState.error;
-  useMemo(() => {
-    if (finishedSaving || finishedDelete) redirectAfterSave()
-  }, [ finishedSaving, finishedDelete ]);
 
   // images
   const [ sideAImage, setSideAImage ] = useImageFetcher(sideAImageUrl);
@@ -54,9 +49,6 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
   if (saveCardState.loading || getCardState.loading || deleteCardState.loading)
     return <Interim />
 
-  // redirect after successful save or delete
-  if (finishedSaving || finishedDelete) return <Interim />;
-
   function handleCancel() {
     redirectAfterSave();
     return <Interim />;
@@ -65,7 +57,8 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
   function handleDelete() {
     const card = { userId, id: cardId };
     if (window.confirm('This operation cannot be undone. Are you sure you want to delete?')) {
-      deleteCard({ variables: card });
+      deleteCard({ variables: card }, { optimistic: true });
+      redirectAfterSave();
     }
   }
 
@@ -77,13 +70,14 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
     const card = {
       id: cardId,
       userId,
-      labels: labels.filter(label => label !== ''),
+      labels: labels ? labels.filter(label => label !== '') : undefined,
       sideAText,
       sideAImageUrl,
       sideBText,
       sideBImageUrl
     };
-    saveCard({ variables: card });
+    saveCard({ variables: card }, { optimistic: true });
+    redirectAfterSave();
   }
 
   function handleImageChange(file, setImageUrl, setImage, setImageLoading) {

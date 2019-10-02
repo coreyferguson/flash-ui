@@ -50,8 +50,8 @@ export default function useCardSaver(isCreatingCard) {
     }
   });
   const saveCard = (apolloProps, extraOptions) => {
-    const { optimistically } = extraOptions || {};
-    if (optimistically) {
+    const { optimistic } = extraOptions || {};
+    if (optimistic) {
       apolloProps = Object.assign({
         optimisticResponse: {
           __typename: 'Mutation',
