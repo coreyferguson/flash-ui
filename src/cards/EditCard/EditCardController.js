@@ -39,6 +39,11 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
   useMemo(() => setSideBImageUrl(card.sideBImageUrl), [card.sideBImageUrl]);
   useMemo(() => setSideBText(card.sideBText), [card.sideBText]);
   useMemo(() => setLabels(card.labels), [card.labels]);
+  const finishedSaving = saveCardState.called && !saveCardState.loading && !saveCardState.error;
+  const finishedDelete = deleteCardState.called && !deleteCardState.loading && !deleteCardState.error;
+  useMemo(() => {
+    if (finishedSaving || finishedDelete) redirectAfterSave()
+  }, [ finishedSaving, finishedDelete ]);
 
   // images
   const [ sideAImage, setSideAImage ] = useImageFetcher(sideAImageUrl);
@@ -50,15 +55,11 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
     return <Interim />
 
   // redirect after successful save or delete
-  const finishedSaving = saveCardState.called && !saveCardState.loading && !saveCardState.error;
-  const finishedDelete = deleteCardState.called && !deleteCardState.loading && !deleteCardState.error;
-  if (finishedSaving || finishedDelete) {
-    redirectAfterSave();
-    return <Interim />;
-  }
+  if (finishedSaving || finishedDelete) return <Interim />;
 
   function handleCancel() {
     redirectAfterSave();
+    return <Interim />;
   }
 
   function handleDelete() {
