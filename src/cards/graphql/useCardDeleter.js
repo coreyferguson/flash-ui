@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost';
 import { LIST_CARDS } from '../CardList/CardListGraphqlProvider';
 import { useMutation } from '@apollo/react-hooks';
 import client from '../../apolloProvider/apolloClient';
+import { GQL_GET_PRACTICE_DECK } from '././usePracticeDeckFetcher';
 
 export const DELETE_CARD = gql`
   mutation deleteCard($userId: String!, $id: String!) {
@@ -20,6 +21,7 @@ export default function useCardDeleter() {
     client,
     update(cache, { data: { deleteCard } }) {
       useCardCollectionFetcherCache(cache, deleteCard);
+      usePracticeDeckFetcherCache(cache, deleteCard);
     }
   });
   const deleteCard = (apolloProps, extraOptions) => {
@@ -43,8 +45,11 @@ export default function useCardDeleter() {
 export function useCardCollectionFetcherCache(cache, deleteCard) {
   const data = cache.readQuery({ query: LIST_CARDS });
   data.me.cards.items = data.me.cards.items.filter(card => card.id !== deleteCard.id);
-  cache.writeQuery({
-    query: LIST_CARDS,
-    data
-  });
+  cache.writeQuery({ query: LIST_CARDS, data });
+}
+
+export function usePracticeDeckFetcherCache(cache, deleteCard) {
+  const data = cache.readQuery({ query: GQL_GET_PRACTICE_DECK });
+  data.me.cards.items = data.me.cards.items.filter(card => card.id !== deleteCard.id);
+  cache.writeQuery({ query: GQL_GET_PRACTICE_DECK, data });
 }
