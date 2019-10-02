@@ -52,15 +52,20 @@ export default function useCardSaver(isCreatingCard) {
   const saveCard = (apolloProps, extraOptions) => {
     const { optimistic } = extraOptions || {};
     if (optimistic) {
-      apolloProps = Object.assign({
-        optimisticResponse: {
-          __typename: 'Mutation',
-          upsertCard: {
-            __typename: 'Card',
-            ...apolloProps.variables
-          }
+      const optimisticResponse = {
+        __typename: 'Mutation',
+        upsertCard: {
+          __typename: 'Card',
+          id: apolloProps.variables.id || new Date().toISOString(),
+          labels: apolloProps.variables.labels || null,
+          sideAText: apolloProps.variables.sideAText || null,
+          sideAImageUrl: apolloProps.variables.sideAImageUrl || null,
+          sideBText: apolloProps.variables.sideBText || null,
+          sideBImageUrl: apolloProps.variables.sideBImageUrl || null,
+          lastTestTime: apolloProps.variables.lastTestTime || null,
         }
-      }, apolloProps);
+      };
+      apolloProps = Object.assign({ optimisticResponse }, apolloProps);
     }
     return result[0](apolloProps);
   };

@@ -27,6 +27,7 @@ export default function useCardDeleter() {
     if (optimistic) {
       apolloProps = Object.assign({
         optimisticResponse: {
+          __typename: 'Mutation',
           deleteCard: {
             __typename: 'Card',
             id: apolloProps.variables.id
