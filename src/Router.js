@@ -1,4 +1,5 @@
 
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ErrorBoundary from './ErrorBoundary';
 import Landing from './Landing';
 import OAuthCallbackView from './authentication/OAuthCallbackView';
@@ -8,7 +9,6 @@ import React, { useState } from 'react';
 import sessionService from './authentication/sessionService';
 import SigninView from './authentication/SigninView';
 import SignoutView from './authentication/SignoutView';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './index.scss';
 
