@@ -17,6 +17,8 @@ export function CardSideView({ id, text, imageUrl, image, className, side, onSho
   useMemo(() => {
     if (text) {
       setMarkdown(DomPurify.sanitize(marked(text)));
+    } else {
+      setMarkdown();
     }
   }, [text])
 
