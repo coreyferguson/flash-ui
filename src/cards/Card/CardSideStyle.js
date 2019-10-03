@@ -39,6 +39,19 @@ export default function styled(component) {
       flex-flow: column nowrap;
       justify-content: center;
       align-items: center;
+
+      ul, p {
+        margin: 0;
+      }
+
+      ol, ul, code, pre {
+        width: 100%;
+        text-align: left;
+      }
+
+      hr {
+        width: 100%;
+      }
     }
 
     > .image {
