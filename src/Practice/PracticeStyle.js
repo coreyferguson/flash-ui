@@ -5,7 +5,13 @@ export default function styled(component) {
   return _(component)`
     flex-grow: 1;
     display: flex;
-    flex-flow: row nowrap;
+
+    @media screen and (min-width: 800px) {
+      flex-flow: row nowrap;
+    }
+    @media screen and (max-width: 799px) {
+      flex-flow: column nowrap;
+    }
 
     > .card {
       flex-grow: 1;

@@ -1,7 +1,7 @@
 
 import config from 'config';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from './CardSideStyle';
 import InlineLoading from '../../Loading/InlineLoadingView';
 import { Link } from 'react-router-dom';
@@ -13,10 +13,10 @@ const loadingImageUrl = `${config.assets.domain}/loading.jpg`;
 export function CardSideView({ id, text, imageUrl, image, className, side, onShowFront, onShowBack }) {
   className = className || '';
 
-  let markdown;
+  const [ markdown, setMarkdown ] = useState();
   useMemo(() => {
     if (text) {
-      markdown = DomPurify.sanitize(marked(text));
+      setMarkdown(DomPurify.sanitize(marked(text)));
     }
   }, [text])
 
