@@ -1,15 +1,24 @@
 
 import config from 'config';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from './CardSideStyle';
 import InlineLoading from '../../Loading/InlineLoadingView';
 import { Link } from 'react-router-dom';
+import marked from 'marked';
+import DomPurify from 'dompurify';
 
 const loadingImageUrl = `${config.assets.domain}/loading.jpg`;
 
 export function CardSideView({ id, text, imageUrl, image, className, side, onShowFront, onShowBack }) {
   className = className || '';
+
+  let markdown;
+  useMemo(() => {
+    if (text) {
+      markdown = DomPurify.sanitize(marked(text));
+    }
+  }, [text])
 
   function flip() {
     if (side === 'front') onShowBack();
@@ -18,7 +27,7 @@ export function CardSideView({ id, text, imageUrl, image, className, side, onSho
 
   return (
     <div className={className} onClick={flip}>
-      {text && <span className='text'>{text}</span>}
+      {markdown && <span className='text' dangerouslySetInnerHTML={{__html: markdown}} />}
       {(!image && imageUrl) && <InlineLoading />}
       {image && <span className='image grow' style={{ backgroundImage: `url(${image})` }}></span>}
       <div className='actions'>

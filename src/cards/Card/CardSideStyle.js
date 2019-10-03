@@ -35,6 +35,10 @@ export default function styled(component) {
     > .text {
       width: 100%;
       text-align: center;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
     }
 
     > .image {
@@ -72,10 +76,3 @@ export default function styled(component) {
     }
   `;
 }
-
-
-
-
-
-
-
