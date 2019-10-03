@@ -7,7 +7,7 @@ import { LIST_CARDS, useQueryCacheState } from '../CardList/CardListGraphqlProvi
 
 export const GQL_NEW_PRACTICE_DECK = gql`
   mutation newPracticeDeck($userId: String!) {
-    newPracticeDeck(userId: $userId, pageSize: 2) {
+    newPracticeDeck(userId: $userId, pageSize: 10) {
       items {
         id
         labels
