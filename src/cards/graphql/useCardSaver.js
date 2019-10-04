@@ -12,8 +12,10 @@ export const SAVE_CARD = gql`
     $labels: [String]
     $sideAText: String
     $sideAImageUrl: String
+    $sideAFontSize: Int
     $sideBText: String
     $sideBImageUrl: String
+    $sideBFontSize: Int
     $lastTestTime: String
   ) {
     upsertCard(
@@ -22,20 +24,26 @@ export const SAVE_CARD = gql`
       labels: $labels
       sideAText: $sideAText
       sideAImageUrl: $sideAImageUrl
+      sideAFontSize: $sideAFontSize
       sideBText: $sideBText
       sideBImageUrl: $sideBImageUrl
+      sideBFontSize: $sideBFontSize
       lastTestTime: $lastTestTime
     ) {
       id
       labels
       sideAText
       sideAImageUrl
+      sideAFontSize
       sideBText
       sideBImageUrl
+      sideBFontSize
       lastTestTime
     }
   }
 `;
+
+export const GQL_SAVE_CARD = SAVE_CARD;
 
 /**
  * @param {Boolean} isCreatingCard indicates whether current operation is creating a new card
@@ -45,8 +53,7 @@ export default function useCardSaver(isCreatingCard) {
   const result = useMutation(SAVE_CARD, {
     client,
     update(cache, { data: { upsertCard } }) {
-      useCardCollectionFetcherCacheUpdater(cache, upsertCard, isCreatingCard);
-      usePracticeDeckFetcherCacheUpdater(cache, upsertCard);
+      cacheUpdater(cache, upsertCard, isCreatingCard);
     }
   });
   const saveCard = (apolloProps, extraOptions) => {
@@ -70,6 +77,11 @@ export default function useCardSaver(isCreatingCard) {
     return result[0](apolloProps);
   };
   return [ saveCard, result[1] ];
+}
+
+export function cacheUpdater(cache, upsertCard, isCreatingCard) {
+  useCardCollectionFetcherCacheUpdater(cache, upsertCard, isCreatingCard);
+  usePracticeDeckFetcherCacheUpdater(cache, upsertCard);
 }
 
 export function useCardCollectionFetcherCacheUpdater(cache, upsertCard, isCreatingCard) {

@@ -20,6 +20,7 @@ export default function CardController({ card }) {
       id={card.id}
       text={card[`${sideKey}Text`]}
       imageUrl={card[`${sideKey}ImageUrl`]}
+      fontSize={card[`${sideKey}FontSize`]}
       image={images[sideKey]}
       side={side}
       onShowFront={() => setSide('front')}

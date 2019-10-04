@@ -4,40 +4,26 @@ import DomPurify from 'dompurify';
 import InlineLoading from '../../Loading/InlineLoadingView';
 import marked from 'marked';
 import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from './CardSideStyle';
+import { autoSizeText } from '../graphql/fontResizeClient';
 
-export function CardSideView({ id, text, imageUrl, image, className, side, onShowFront, onShowBack }) {
+export function CardSideView({ id, text, imageUrl, image, fontSize, className, side, onShowFront, onShowBack }) {
   className = className || '';
 
+  const thisElement = useRef();
   const [ markdown, setMarkdown ] = useState();
-  const [ fontSize, setFontSize ] = useState('100%');
   useMemo(() => {
     if (text) {
       setMarkdown(DomPurify.sanitize(marked(text, { breaks: true })));
-      // a terrible auto font-sizing solution... it kinda works :)
-      let fontSize = '100%';
-      let curWidth = 0;
-      let maxWidth = 0;
-      let maxHeight = 0;
-      for (let char of text) {
-        if (char === '\n') {
-          curWidth = 0;
-          maxHeight++;
-        } else {
-          curWidth++;
-          maxWidth = Math.max(maxWidth, curWidth);
-        }
-      }
-      if (maxWidth <= 30 && maxHeight <= 9) fontSize = '100%';
-      else if (maxWidth <= 40 && maxHeight <= 11) fontSize = '80%';
-      else fontSize = '60%';
-      console.log('here', text, fontSize);
-      setFontSize(fontSize);
     } else {
       setMarkdown();
     }
   }, [text]);
+
+  useEffect(() => {
+    if (!fontSize) autoSizeText(id, side, thisElement.current, !!imageUrl);
+  }, [ markdown, fontSize ])
 
   function flip() {
     if (side === 'front') onShowBack();
@@ -45,8 +31,8 @@ export function CardSideView({ id, text, imageUrl, image, className, side, onSho
   }
 
   return (
-    <div className={className} onClick={flip}>
-      {markdown && <span className='text' dangerouslySetInnerHTML={{__html: markdown}} style={{ fontSize }}/>}
+    <div className={className} onClick={flip} ref={thisElement}>
+      {markdown && <span className='text' dangerouslySetInnerHTML={{__html: markdown}} />}
       {(!image && imageUrl) && <InlineLoading />}
       {image && <span className='image grow' style={{ backgroundImage: `url(${image})` }}></span>}
       <div className='actions'>
@@ -63,6 +49,7 @@ CardSideView.propTypes = {
   text: PropTypes.string,
   imageUrl: PropTypes.string,
   image: PropTypes.string,
+  fontSize: PropTypes.number,
   className: PropTypes.string,
   side: PropTypes.string.isRequired,
   onShowFront: PropTypes.func.isRequired,

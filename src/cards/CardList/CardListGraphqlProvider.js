@@ -14,8 +14,10 @@ export const LIST_CARDS = gql`
         items {
           id
           labels
+          sideAFontSize
           sideAText
           sideAImageUrl
+          sideBFontSize
           sideBText
           sideBImageUrl
         }

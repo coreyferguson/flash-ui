@@ -11,8 +11,10 @@ export const GQL_FETCH_CARD = gql`
         labels
         sideAText
         sideAImageUrl
+        sideAFontSize
         sideBText
         sideBImageUrl
+        sideBFontSize
         lastTestTime
       }
     }
