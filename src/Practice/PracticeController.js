@@ -89,8 +89,25 @@ export default function PracticeController({ useMutation, useQuery, useState, us
     const card = Object.assign({}, cards.items[0], { userId, labels, lastTestTime: new Date().toISOString() });
     saveCard({ variables: card }, { optimistic: true });
   };
-  const handleRemindSometimes = () => {};
-  const handleRemindNever = () => {};
+  const handleRemindSometimes = () => {
+    let labels = cards.items[0].labels;
+    labels = labels.filter(label =>
+      label!=='frequency-sometimes' &&
+      label!=='frequency-often' &&
+      label!=='practice');
+    labels.push('frequency-sometimes');
+    const card = Object.assign({}, cards.items[0], { userId, labels, lastTestTime: new Date().toISOString() });
+    saveCard({ variables: card }, { optimistic: true });
+  };
+  const handleRemindNever = () => {
+    let labels = cards.items[0].labels;
+    labels = labels.filter(label =>
+      label!=='frequency-sometimes' &&
+      label!=='frequency-often' &&
+      label!=='practice');
+    const card = Object.assign({}, cards.items[0], { userId, labels, lastTestTime: new Date().toISOString() });
+    saveCard({ variables: card }, { optimistic: true });
+  };
 
   return <PracticeView
       key={cards.items[0].id}

@@ -9,7 +9,7 @@ const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 export async function autoSizeText(cardId, side, element, hasImage, defaultFontSize) {
   const setSize = value => element.setAttribute('style', `font-size: ${value}%`);
   const removeSize = () => element.removeAttribute('style');
-  const maxAllowedWidth = Math.min(element.offsetWidth, element.parentElement.offsetWidth-10);
+  const maxAllowedWidth = Math.min(element.offsetWidth, element.parentElement.offsetWidth-15);
   const maxAllowedHeight = !hasImage ? 250 : 100;
 
   let node = element;
