@@ -9,9 +9,11 @@ export const GQL_FETCH_CARD = gql`
       card(id: $id) {
         id
         labels
+        sideAFontSize
         sideAText
         sideAImageUrl
         sideAFontSize
+        sideBFontSize
         sideBText
         sideBImageUrl
         sideBFontSize

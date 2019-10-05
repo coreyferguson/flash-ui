@@ -6,7 +6,9 @@ import sessionService from '../../authentication/sessionService';
 
 const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function autoSizeText(cardId, side, element, hasImage) {
+export async function autoSizeText(cardId, side, element, hasImage, defaultFontSize) {
+  const setSize = value => element.setAttribute('style', `font-size: ${value}%`);
+  const removeSize = () => element.removeAttribute('style');
   const maxAllowedWidth = 500;
   const maxAllowedHeight = !hasImage ? 250 : 100;
 
@@ -25,8 +27,7 @@ export async function autoSizeText(cardId, side, element, hasImage) {
     }
   }
 
-  const setSize = value => element.setAttribute('style', `font-size: ${value}%`);
-  let size=300;
+  let size = defaultFontSize || 200;
   do {
     setSize(size);
     size -= 5;
@@ -39,7 +40,9 @@ export async function autoSizeText(cardId, side, element, hasImage) {
     size -= 5;
   } while (size > 0 && textSpan && textSpan.offsetHeight > maxAllowedHeight);
   size += 5;
-  return saveFontSize(cardId, side, size);
+  if (size !== defaultFontSize) await saveFontSize(cardId, side, size);
+  removeSize();
+  return size;
 }
 
 export async function saveFontSize(id, side, fontSize) {

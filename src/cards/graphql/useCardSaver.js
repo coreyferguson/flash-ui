@@ -65,8 +65,10 @@ export default function useCardSaver(isCreatingCard) {
           __typename: 'Card',
           id: apolloProps.variables.id || new Date().toISOString(),
           labels: apolloProps.variables.labels || null,
+          sideAFontSize: apolloProps.variables.sideAFontSize || null,
           sideAText: apolloProps.variables.sideAText || null,
           sideAImageUrl: apolloProps.variables.sideAImageUrl || null,
+          sideBFontSize: apolloProps.variables.sideBFontSize || null,
           sideBText: apolloProps.variables.sideBText || null,
           sideBImageUrl: apolloProps.variables.sideBImageUrl || null,
           lastTestTime: apolloProps.variables.lastTestTime || null,
@@ -97,9 +99,9 @@ export function useCardCollectionFetcherCacheUpdater(cache, upsertCard, isCreati
 
 export function usePracticeDeckFetcherCacheUpdater(cache, upsertCard) {
   if (!usePracticeDeckFetcherCacheState.hasCache) return;
+  const data = cache.readQuery({ query: GQL_GET_PRACTICE_DECK });
   // when removed from practice deck
   if (!upsertCard.labels || !upsertCard.labels.includes('practice')) {
-    const data = cache.readQuery({ query: GQL_GET_PRACTICE_DECK });
     data.me.cards.items = data.me.cards.items.filter(card => card.id!==upsertCard.id);
     cache.writeQuery({
       query: GQL_GET_PRACTICE_DECK,
@@ -108,7 +110,6 @@ export function usePracticeDeckFetcherCacheUpdater(cache, upsertCard) {
   }
   // when lastTestTime has changed
   if (upsertCard.labels && upsertCard.labels.includes('practice')) {
-    const data = cache.readQuery({ query: GQL_GET_PRACTICE_DECK });
     data.me.cards.items.sort((a, b) => a.lastTestTime > b.lastTestTime ? 1 : -1);
     cache.writeQuery({
       query: GQL_GET_PRACTICE_DECK,

@@ -11,8 +11,10 @@ export const GQL_NEW_PRACTICE_DECK = gql`
       items {
         id
         labels
+        sideAFontSize
         sideAText
         sideAImageUrl
+        sideBFontSize
         sideBText
         sideBImageUrl
         lastTestTime

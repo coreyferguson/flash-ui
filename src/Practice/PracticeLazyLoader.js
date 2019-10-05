@@ -6,7 +6,7 @@ const PracticePage = React.lazy(() => import(/* webpackChunkName: "PracticePage"
 
 export default function PracticeLazyLoader() {
   return (
-    <React.Suspense fallback={Interim}>
+    <React.Suspense fallback={<Interim />}>
       <PracticePage />
     </React.Suspense>
   );

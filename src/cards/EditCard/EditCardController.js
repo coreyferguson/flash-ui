@@ -25,6 +25,7 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
   const [ sideBImageUrl, setSideBImageUrl ] = useState();
   const [ sideBText, setSideBText ] = useState();
   const [ labels, setLabels ] = useState();
+  const [ lastTestTime, setLastTestTime ] = useState();
 
   // card CRUD hooks
   const getCardState = useCardFetcher({ cardId, skip: isCreatingCard });
@@ -39,6 +40,7 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
   useMemo(() => setSideBImageUrl(card.sideBImageUrl), [card.sideBImageUrl]);
   useMemo(() => setSideBText(card.sideBText), [card.sideBText]);
   useMemo(() => setLabels(card.labels), [card.labels]);
+  useMemo(() => setLastTestTime(card.lastTestTime), [card.lastTestTime]);
 
   // images
   const [ sideAImage, setSideAImage ] = useImageFetcher(sideAImageUrl);
@@ -74,7 +76,8 @@ export default function EditCardController({ cardId, redirectAfterSave }) {
       sideAText,
       sideAImageUrl,
       sideBText,
-      sideBImageUrl
+      sideBImageUrl,
+      lastTestTime
     };
     saveCard({ variables: card }, { optimistic: true });
     redirectAfterSave();

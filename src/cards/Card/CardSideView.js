@@ -22,8 +22,8 @@ export function CardSideView({ id, text, imageUrl, image, fontSize, className, s
   }, [text]);
 
   useEffect(() => {
-    if (!fontSize) autoSizeText(id, side, thisElement.current, !!imageUrl);
-  }, [ markdown, fontSize ])
+    autoSizeText(id, side, thisElement.current, !!imageUrl, fontSize);
+  }, [ markdown ]);
 
   function flip() {
     if (side === 'front') onShowBack();
