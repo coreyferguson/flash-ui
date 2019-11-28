@@ -4,9 +4,8 @@ import DomPurify from 'dompurify';
 import InlineLoading from '../../Loading/InlineLoadingView';
 import marked from 'marked';
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import styled from './CardSideStyle';
-import { autoSizeText } from '../graphql/fontResizeClient';
 
 export function CardSideView({ id, text, imageUrl, image, fontSize, className, side, onShowFront, onShowBack }) {
   className = className || '';
@@ -20,10 +19,6 @@ export function CardSideView({ id, text, imageUrl, image, fontSize, className, s
       setMarkdown();
     }
   }, [text]);
-
-  useEffect(() => {
-    autoSizeText(id, side, thisElement.current, !!imageUrl, fontSize);
-  }, [ markdown ]);
 
   function flip() {
     if (side === 'front') onShowBack();
