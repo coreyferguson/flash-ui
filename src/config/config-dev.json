@@ -1,25 +1,25 @@
 {
   "api": {
-    "uri": "https://flash-api-dev.overattribution.com/graphql"
+    "uri": "https://flash-api-dev.growme.fyi/graphql"
   },
   "assets": {
-    "domain": "https://flash-dev-assets.overattribution.com"
+    "domain": "https://flash-dev-assets.growme.fyi"
   },
   "auth": {
-    "identityPoolId": "us-west-2:cac0f1e3-7c9d-4284-9b86-e93ff2192e03",
+    "identityPoolId": "us-west-2:a11a7ec9-d220-4b53-bfb8-1359e0c1d255",
     "userPool": {
       "client": {
-        "id": "sue4ujmsbvio5f7s5on55pjvf",
+        "id": "6iom9hen34tqsau86np1b9c163",
         "name": "flash",
-        "redirectCallback": "https://flash-dev.overattribution.com/oauth/callback",
-        "redirectSignout": "https://flash-dev.overattribution.com/oauth/signout"
+        "redirectCallback": "https://flash-dev.growme.fyi/oauth/callback",
+        "redirectSignout": "https://flash-dev.growme.fyi/oauth/signout"
       },
-      "id": "us-west-2_voHSskzvL",
-      "webDomain": "auth-dev.overattribution.com"
+      "id": "us-west-2_GdupGub69",
+      "webDomain": "auth-dev.growme.fyi"
     }
   },
   "media": {
-    "s3Bucket": "overattribution-flash-dev-media"
+    "s3Bucket": "growme-flash-dev-media"
   },
   "stage": "dev"
 }

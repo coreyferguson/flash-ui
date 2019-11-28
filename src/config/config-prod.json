@@ -1,25 +1,25 @@
 {
   "api": {
-    "uri": "https://flash-api.overattribution.com/graphql"
+    "uri": "https://flash-api.growme.fyi/graphql"
   },
   "assets": {
-    "domain": "https://flash-assets.overattribution.com"
+    "domain": "https://flash-assets.growme.fyi"
   },
   "auth": {
-    "identityPoolId": "us-west-2:3e2253f7-17ab-42ad-aa81-b6bc15ae9f1d",
+    "identityPoolId": "us-west-2:3755a091-5105-4c6f-87ef-61533fda2d4c",
     "userPool": {
       "client": {
-        "id": "1c0e5q6bvrsek9agaufqgvh7fu",
+        "id": "ggvbos35lfsb3p7l94jijsrsl",
         "name": "flash",
-        "redirectCallback": "https://flash.overattribution.com/oauth/callback",
-        "redirectSignout": "https://flash.overattribution.com/oauth/signout"
+        "redirectCallback": "https://flash.growme.fyi/oauth/callback",
+        "redirectSignout": "https://flash.growme.fyi/oauth/signout"
       },
-      "id": "us-west-2_hR7h3U4gQ",
-      "webDomain": "auth.overattribution.com"
+      "id": "us-west-2_1miVK7F7Y",
+      "webDomain": "auth.growme.fyi"
     }
   },
   "media": {
-    "s3Bucket": "overattribution-flash-prod-media"
+    "s3Bucket": "growme-flash-prod-media"
   },
   "stage": "prod"
 }

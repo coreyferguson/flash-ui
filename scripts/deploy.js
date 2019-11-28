@@ -20,5 +20,5 @@ function webpack() {
 
 function synchronize() {
   console.info('Starting synchronize');
-  return exec(`aws s3 sync dist s3://overattribution-flash-${stage}-flash-ui`);
+  return exec(`aws s3 sync dist s3://growme-flash-${stage}-ui`);
 }

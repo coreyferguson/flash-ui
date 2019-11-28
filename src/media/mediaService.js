@@ -11,13 +11,15 @@ export class MediaService {
   }
 
   async upload(file) {
-    const name = uuid() + '.jpg';
+    const id = uuid();
+    const name = id + '.jpg';
+    const processed_name = id + '_500x300.jpg';
     await this._configureAws();
     const identityId = AWS.config.credentials.identityId;
     const key = `${identityId}/${name}`;
     const params = { Body: file, Key: key };
     await this._getS3().putObject(params).promise();
-    return name;
+    return processed_name;
   }
 
   async getUrl(name) {

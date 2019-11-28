@@ -12,7 +12,7 @@ module.exports = merge(common, {
   ],
   devServer: {
     contentBase: './dist',
-    host: 'flash-local.overattribution.com',
+    host: 'flash-local.growme.fyi',
     port: 9000,
     https: true,
     historyApiFallback: {
