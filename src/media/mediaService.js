@@ -3,6 +3,8 @@ import sessionService from '../../src/authentication/sessionService';
 import config from 'config';
 import uuid from 'uuid/v4';
 
+const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 export class MediaService {
   constructor(options) {
     options = options || {};
@@ -13,13 +15,14 @@ export class MediaService {
   async upload(file) {
     const id = uuid();
     const name = id + '.jpg';
-    const processed_name = id + '_500x300.jpg';
+    const processedName = id + '_500x300.jpg';
     await this._configureAws();
     const identityId = AWS.config.credentials.identityId;
     const key = `${identityId}/${name}`;
     const params = { Body: file, Key: key };
     await this._getS3().putObject(params).promise();
-    return processed_name;
+    await timeout(500);
+    return processedName;
   }
 
   async getUrl(name) {
