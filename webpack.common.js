@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const stage = process.env.stage || 'dev';
-const envConfig = path.resolve(__dirname, `src/config/config-${stage}.json`);
+const envConfig = path.resolve(__dirname, `src/context/config/config-${stage}.json`);
 
 module.exports = {
   entry: './src/index.js',
