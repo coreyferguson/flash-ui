@@ -11,6 +11,6 @@ module.exports = merge(common, {
   ],
   performance: {
     hints: 'error',
-    maxEntrypointSize: 112640
+    // maxEntrypointSize: 112640
   }
 });
