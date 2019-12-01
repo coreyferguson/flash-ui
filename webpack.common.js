@@ -9,7 +9,8 @@ const envConfig = path.resolve(__dirname, `src/context/config/config-${stage}.js
 module.exports = {
   entry: './src/index.js',
   resolve: {
-    alias: { config: envConfig }
+    alias: { config: envConfig },
+    extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -25,7 +26,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.js$/,
+      test: /\.jsx?$/,
       exclude: /node_modules/,
       use: {
         loader: 'babel-loader'

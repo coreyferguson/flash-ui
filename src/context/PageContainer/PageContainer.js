@@ -1,5 +1,5 @@
 
-import Nav from '../Nav';
+import Navigation from '../Navigation';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from './PageContainerStyle';
@@ -11,7 +11,7 @@ export class PageContainer extends React.PureComponent {
     if (this.props.className) className += ` ${this.props.className}`;
     return (
       <div className={className}>
-        <Nav />
+        <Navigation showLogo={this.props.showLogo} />
         <div className='page-content'>
           {{...this.props.children}}
         </div>
@@ -22,7 +22,12 @@ export class PageContainer extends React.PureComponent {
 }
 
 PageContainer.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  showLogo: PropTypes.bool
+};
+
+PageContainer.defaultProps = {
+  showLogo: true
 };
 
 export default styled(PageContainer);

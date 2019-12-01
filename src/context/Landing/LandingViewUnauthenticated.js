@@ -11,7 +11,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer className='landing-view-unauthenticated-wrapper'>
+      <PageContainer className='landing-view-unauthenticated-wrapper' showLogo={false}>
         <div className='landing-view-unauthenticated'>
           <div className='content'>
             <h1>learn in a flash</h1>
