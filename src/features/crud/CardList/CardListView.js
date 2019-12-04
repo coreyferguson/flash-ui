@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from './CardListStyle';
 import CardListShortcuts from './CardListShortcuts';
+import { Link } from 'react-router-dom';
 
 export function CardListView({ cards, className }) {
   if (!cards) throw new Error('CardListView: invalid prop types');
@@ -14,7 +15,7 @@ export function CardListView({ cards, className }) {
     <div className={`card-list-view ${className}`}>
       <CardListShortcuts />
       <div className='actions'>
-        <Button to='/cards/edit'>create card</Button>
+        <Button component={<Link to='/cards/edit'>create card</Link>} />
       </div>
       <div className='list'>
         {cards.items.map(card => <Card key={card.id} card={card} />)}

@@ -27,15 +27,14 @@ export default function styled(component) {
       justify-content: center;
 
       > span {
+        width: 100%;
         text-align: center;
       }
 
-      > span:not(:first-child) {
-        margin-top: 20px;
-      }
-
-      > button {
-        margin: 0 0 5px 0;
+      button {
+        width: 100%;
+        margin: 5px 0 5px 0;
+        min-height: 50px;
       }
     }
   `;

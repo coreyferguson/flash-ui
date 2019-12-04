@@ -57,6 +57,12 @@
       @media (max-width: 799px) {
         margin-top: 20px;
       }
+      > a {
+        margin: 0;
+        width: 160px;
+        display: flex;
+        justify-content: center;
+      }
     }
   }
 

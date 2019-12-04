@@ -7,7 +7,6 @@ export default function PracticePage(props) {
   return (
     <PageContainer>
       <React.Fragment>
-        <h1>practice</h1>
         <PracticeController {...props} />
       </React.Fragment>
     </PageContainer>

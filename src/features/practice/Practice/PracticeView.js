@@ -3,6 +3,7 @@ import Card from '../../crud/Card';
 import React from 'react';
 import styled from './PracticeStyle';
 import PropTypes from 'prop-types';
+import Button from '@bit/overattribution.growme.button';
 
 export function PracticeView(props) {
   const className = props.className || '';
@@ -17,9 +18,9 @@ export function PracticeView(props) {
           props.canHandleImmediately &&
           <button className='remind-immediately' onClick={props.onRemindImmediately}>immediately</button>
         }
-        <button className='remind-often' onClick={props.onRemindOften}>often</button>
-        <button className='remind-sometimes' onClick={props.onRemindSometimes}>sometimes</button>
-        <button className='remind-never' onClick={props.onRemindNever}>never</button>
+        <Button className='remind-often' onClick={props.onRemindOften}>often</Button>
+        <Button className='remind-sometimes' onClick={props.onRemindSometimes}>sometimes</Button>
+        <Button className='remind-never' onClick={props.onRemindNever}>never</Button>
       </section>
     </div>
   );
