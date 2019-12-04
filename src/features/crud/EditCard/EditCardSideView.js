@@ -1,6 +1,6 @@
 
 import './EditCardSideView.scss';
-import InlineLoading from '../../../context/Loading/InlineLoadingView';
+import InlineLoading from '@bit/overattribution.growme.loading-inline';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';

@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import DomPurify from 'dompurify';
-import InlineLoading from '../../../context/Loading/InlineLoadingView';
+import InlineLoading from '@bit/overattribution.growme.loading-inline';
 import marked from 'marked';
 import PropTypes from 'prop-types';
 import React, { useMemo, useRef, useState } from 'react';

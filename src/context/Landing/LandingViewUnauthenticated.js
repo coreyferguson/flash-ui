@@ -2,7 +2,8 @@
 import React from 'react';
 import PageContainer from '../PageContainer';
 import './LandingViewUnauthenticated.scss';
-import Button from '../form/Button';
+import Button from '@bit/overattribution.growme.button';
+import { Link } from 'react-router-dom';
 import config from 'config';
 
 const imageUrl = `${config.assets.domain}/walnut-xlarge-40.jpg`;
@@ -17,7 +18,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
             <h1>learn in a flash</h1>
             <h2>learn with flashcards</h2>
             <h2>that learn with you</h2>
-            <Button to='/signin'>try it</Button>
+            <Button component={<Link to='/signin'>try it</Link>} className='button' />
           </div>
           <div className='imagery'>
             <img src={imageUrl} alt='' />

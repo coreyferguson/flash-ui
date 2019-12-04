@@ -2,7 +2,7 @@
 import { default as useCardSaverDefault } from '../../crud/graphql/useCardSaver';
 import { useMutation as useMutationDefault, useQuery as useQueryDefault } from '@apollo/react-hooks';
 import ErrorMessage, { UnknownError } from '../../../context/error/ErrorMessage';
-import Loading from '../../../context/Loading';
+import Loading from '@bit/overattribution.growme.loading-page';
 import PracticeView from './PracticeView';
 import PropTypes from 'prop-types';
 import React, { useState as useStateDefault } from 'react';

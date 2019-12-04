@@ -3,7 +3,7 @@ import './Interim.scss';
 import PageContainer from '../PageContainer';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loading from '../Loading';
+import Loading from '@bit/overattribution.growme.loading-page';
 
 export default class InterimView extends React.PureComponent {
 

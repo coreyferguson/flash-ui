@@ -1,5 +1,5 @@
 
-import Button from '../../../context/form/Button';
+import Button from '@bit/overattribution.growme.button';
 import Card from '../Card';
 import cardPropType from '../Card/cardPropType';
 import PropTypes from 'prop-types';
