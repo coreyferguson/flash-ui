@@ -19,7 +19,7 @@ export default function styled(component) {
     justify-content: center;
     padding: 10px;
     cursor: pointer;
-    font-size: ${props => props.fontSize ? props.fontSize + '%' : '100%'};
+    font-size: ${props => props.fontSize ? props.fontSize : '14px'};
 
     @media screen and (max-width: 799px) {
       margin: 5px;
