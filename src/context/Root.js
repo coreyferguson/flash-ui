@@ -1,7 +1,8 @@
 
 import React from 'react';
 import Router from './Router';
+import ReduxContainer from './ReduxContainer';
 
 export default function Root() {
-  return <Router />;
+  return <ReduxContainer><Router /></ReduxContainer>;
 }

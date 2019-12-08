@@ -5,7 +5,7 @@ import Unauthenticated from './LandingViewUnauthenticated';
 import AuthSwitch from '../authentication/AuthSwitch';
 import './index.scss';
 
-const LandingView = props => (
+const LandingView = () => (
   <AuthSwitch authenticated={Authenticated} unauthenticated={Unauthenticated} />
 );
 

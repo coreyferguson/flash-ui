@@ -1,5 +1,5 @@
 
-import config from 'config';
+import config from 'appConfig';
 import { CognitoAuth } from 'amazon-cognito-auth-js';
 
 export class SessionService {

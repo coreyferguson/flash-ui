@@ -61,53 +61,6 @@ html, body {
     color: $primary;
   }
 
-  button, a.button {
-    margin: 10px 5px;
-    cursor: pointer;
-    background-color: $primary;
-    border: 0;
-    border-radius: 10px 5px 10px 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 24px;
-    color: $foreground-2;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    outline: none;
-    @media (min-width: 800px) {
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-    @media (max-width: 799px) {
-      padding-top: 6px;
-      padding-bottom: 6px;
-    }
-  }
-
-  button.primary, a.button.primary {
-    background-color: $secondary;
-  }
-
-  button:hover, a.button:hover {
-    background-color: $primary-darken-2;
-  }
-
-  button.primary:hover, a.button.primary:hover {
-    background-color: $secondary-darken-2;
-  }
-
-  button:focus, a.button:focus {
-    border-bottom: 2px solid $foreground-2;
-  }
-
-  button.icon {
-    background-color: $background-1;
-    border: 0px;
-    color: $foreground-2;
-    cursor: pointer;
-  }
-
   textarea {
     background-color: $background-2;
     color: $foreground-2;

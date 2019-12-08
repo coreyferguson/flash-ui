@@ -9,7 +9,7 @@ const envConfig = path.resolve(__dirname, `src/context/config/config-${stage}.js
 module.exports = {
   entry: './src/index.js',
   resolve: {
-    alias: { config: envConfig },
+    alias: { appConfig: envConfig },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx']
   },
   plugins: [

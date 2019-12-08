@@ -1,7 +1,7 @@
 
 import ApolloClient from 'apollo-boost';
 import sessionService from '../authentication/sessionService';
-import config from 'config';
+import config from 'appConfig';
 
 const client = new ApolloClient({
   uri: config.api.uri,

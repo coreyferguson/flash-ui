@@ -1,6 +1,6 @@
 
 import sessionService from '../../context/authentication/sessionService';
-import config from 'config';
+import config from 'appConfig';
 import uuid from 'uuid/v4';
 
 const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));

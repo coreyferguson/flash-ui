@@ -4,7 +4,7 @@ import PageContainer from '../PageContainer';
 import './LandingViewUnauthenticated.scss';
 import Button from '@bit/overattribution.growme.button';
 import { Link } from 'react-router-dom';
-import config from 'config';
+import config from 'appConfig';
 
 const imageUrl = `${config.assets.domain}/walnut-xlarge-40.jpg`;
 

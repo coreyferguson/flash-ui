@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navigation from '@bit/overattribution.growme.navigation';
 import sessionService from './authentication/sessionService';
 import { Link, NavLink } from 'react-router-dom';
-import config from 'config';
+import config from 'appConfig';
 
 export default function NavigationWrapper(props) {
   const [ authenticated, setAuthenticated ] = useState(false);

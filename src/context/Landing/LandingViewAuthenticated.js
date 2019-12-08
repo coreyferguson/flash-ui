@@ -1,6 +1,6 @@
 
 import React from 'react';
-import CardList from '../../features/crud/CardList';
+import CardList from '../../features/cards/CardList';
 
 export default class LandingViewAuthenticated extends React.PureComponent {
 
