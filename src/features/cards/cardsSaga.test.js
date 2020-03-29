@@ -1,7 +1,8 @@
-import watchFetchCards, { fetchImageSaga, fetchCardSaga, fetchCardsSaga } from './cardsSaga';
+import watchFetchCards, { fetchImageSaga, fetchCardSaga, fetchCardsSaga, saveCardSaga } from './cardsSaga';
 import { call, put, select, take, takeLeading } from 'redux-saga/effects';
 import GQL_GET_CARD from './CardList/GQL_GET_CARD';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
+import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
 import { actions, fetchImageResponse, fetchImageError } from './cardsSlice';
 import mediaService from '../media/mediaService';
 
@@ -11,8 +12,9 @@ describe('cardsSaga', () => {
     const gen = watchFetchCards();
     const sagas = [];
     for (let saga of gen) sagas.push(saga);
-    const expected = takeLeading([actions.fetchCards.type], fetchCardsSaga);
-    expect(sagas).toContainEqual(expected);
+    expect(sagas).toContainEqual(takeLeading([actions.fetchCard.type], fetchCardSaga));
+    expect(sagas).toContainEqual(takeLeading([actions.fetchCards.type], fetchCardsSaga));
+    expect(sagas).toContainEqual(takeLeading([actions.saveCard.type], saveCardSaga));
   });
 
   describe('fetchCardSaga', () => {
@@ -102,6 +104,32 @@ describe('cardsSaga', () => {
       const gen = fetchImageSaga({ payload: { id: 'idValue1', side: 'A', imageUrl: 'imageUrlValue' } });
       expect(gen.next().value).toEqual(call([mediaService, mediaService.getUrl], 'imageUrlValue'));
       expect(gen.throw(new Error('oops')).value).toEqual(put(fetchImageError(new Error('oops'))));
+    });
+  });
+
+  describe('saveCardSaga', () => {
+    test('save card', () => {
+      const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
+      const actual = gen.next().value;
+      expect(actual.type).toBe('CALL');
+      expect(actual.payload.args[0].query).toBe(GQL_SAVE_CARD);
+      expect(actual.payload.args[0].variables.id).toBe('id value');
+    });
+
+    test('successful response', () => {
+      const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
+      expect(gen.next().value.type).toBe('CALL');
+      const actual = gen.next('response value').value;
+      const expected = put(actions.saveCardResponse('response value'));
+      expect(actual).toEqual(expected);
+    });
+
+    test('error', () => {
+      const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
+      expect(gen.next().value.type).toBe('CALL');
+      const actual = gen.throw(new Error('oops')).value;
+      expect(actual.payload.action.payload.message).toEqual('Error: oops');
+      expect(actual.payload.action.payload.stackTrace).not.toBeNull();
     });
   });
 });

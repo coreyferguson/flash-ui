@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchCard } from '../cardsSlice';
+import { fetchCard, saveCard } from '../cardsSlice';
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.id;
@@ -15,6 +15,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchCard({ variables: { id } }));
   },
   onSave: card => {
+    dispatch(saveCard({ variables: card }));
   }
 });
 

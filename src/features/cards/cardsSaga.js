@@ -3,6 +3,7 @@ import { actions } from './cardsSlice';
 import client from '../../context/apolloProvider/apolloClient';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
 import GQL_GET_CARD from './CardList/GQL_GET_CARD';
+import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
 import mediaService from '../media/mediaService';
 
 export function* fetchCardSaga(props) {
@@ -49,8 +50,21 @@ export function* fetchImageSaga(props) {
   }
 }
 
+export function* saveCardSaga(props) {
+  const variables = props && props.payload && props.payload.variables
+    ? props.payload.variables
+    : undefined;
+  try {
+    const res = yield call(client.query, { query: GQL_SAVE_CARD, variables });
+    yield put(actions.saveCardResponse(res));
+  } catch (err) {
+    yield put(actions.saveCardError({ message: err.toString(), stackTrace: err.stack }));
+  }
+}
+
 export default function* watchCardsSaga() {
   yield takeLeading([ actions.fetchCard.type ], fetchCardSaga);
   yield takeLeading([ actions.fetchCards.type ], fetchCardsSaga);
   yield takeLeading([ actions.fetchImage.type ], fetchImageSaga);
+  yield takeLeading([ actions.saveCard.type ], saveCardSaga);
 }
