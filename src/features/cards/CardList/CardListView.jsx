@@ -12,12 +12,13 @@ export default function CardListView(props={}) {
   if (props.isLoading && props.items.length === 0) return <LoadingPage style={{ height: '100%' }} />;
   const items = props.itemOrder.map(itemId => {
     return (
-      <li key={itemId}><CardView
-          activeSide={!props.activeSides || !props.activeSides[itemId] ? 'A' : props.activeSides[itemId]}
-          image={props.images[itemId]}
-          item={props.items[itemId]}
-          onFetchImage={props.onFetchImage}
-          onFlipCard={() => {}} />
+      <li key={itemId}>
+        <CardView
+            activeSide={props.activeSides && props.activeSides[itemId]}
+            image={props.images[itemId]}
+            item={props.items[itemId]}
+            onFetchImage={props.onFetchImage}
+            onFlipCard={() => {}} />
       </li>
     );
   });

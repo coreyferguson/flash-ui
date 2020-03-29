@@ -26,12 +26,14 @@ export default function CardView(props) {
   )
 }
 
-// export default React.memo(CardView);
-
 CardView.propTypes = {
   activeSide: PropTypes.string.isRequired,
   image: PropTypes.object,
   item: PropTypes.object.isRequired,
   onFetchImage: PropTypes.func.isRequired,
   onFlipCard: PropTypes.func.isRequired
-}
+};
+
+CardView.defaultProps = {
+  activeSide: 'A'
+};
