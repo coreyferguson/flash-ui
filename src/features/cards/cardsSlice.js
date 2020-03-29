@@ -6,10 +6,13 @@ export const initialState = {
   isLoading: false,
   isLoadingFetchCard: false,
   isLoadingFetchCards: false,
+  isLoadingSaveCard: false,
   images: {}, // Map<id, { (A && B): { isLoading, source } }>
   cardOrder: [], // List<id>
   cardMap: {} // Map<id, card>
 };
+
+const isAnyLoading = state => !!(state.isLoadingFetchCard || state.isLoadingFetchCards || state.isLoadingSaveCard);
 
 const slice = createSlice({
   name: 'cards',
@@ -20,8 +23,8 @@ const slice = createSlice({
       state.isLoadingFetchCard = true;
     },
     fetchCardError: (state, action) => {
-      state.isLoading = !!state.isLoadingFetchCards;
       state.isLoadingFetchCard = false;
+      state.isLoading = isAnyLoading(state);
       state.error = action.payload;
     },
     fetchCardResponse: (state, action) => {
@@ -34,7 +37,7 @@ const slice = createSlice({
         })
       });
       return Object.assign({}, state, {
-        isLoading: !!state.isLoadingFetchCards,
+        isLoading: isAnyLoading(state),
         isLoadingFetchCard: false,
         images,
         cardOrder,
@@ -46,8 +49,8 @@ const slice = createSlice({
       state.isLoadingFetchCards = true;
     },
     fetchCardsError: (state, action) => {
-      state.isLoading = !!state.isLoadingFetchCard;
       state.isLoadingFetchCards = false;
+      state.isLoading = isAnyLoading(state);
       state.error = action.payload;
     },
     fetchCardsResponse: (state, action) => {
@@ -61,8 +64,8 @@ const slice = createSlice({
       for (let itemId of state.cardOrder) newItemIdSet.delete(itemId);
       for (let itemId of newItemIdSet) newcardOrder.push(itemId);
       return Object.assign({}, state, {
-        isLoading: !!state.isLoadingFetchCard,
         isLoadingFetchCards: false,
+        isLoading: isAnyLoading(state),
         cardOrder: newcardOrder,
         cardMap: Object.assign({}, state.cardMap, newcardMap),
         next: action.payload.data.me.cards.next
@@ -109,6 +112,27 @@ const slice = createSlice({
           [action.payload]: !activeSide || activeSide === 'A' ? 'B' : 'A'
         })
       });
+    },
+    saveCard: (state, action) => {
+      state.isLoading = true;
+      state.isLoadingSaveCard = true;
+    },
+    /**
+     * @param {Object} action.payload updated card data
+     */
+    saveCardResponse: (state, action) => {
+      state.isLoadingSaveCard = false;
+      state.isLoading = isAnyLoading(state);
+      const existingCard = state.cardMap[action.payload.id];
+      if (!existingCard) state.cardOrder = [ ...state.cardOrder, action.payload.id ];
+      else state.cardOrder.sort((a, b) => state.cardMap[a].lastTestTime > state.cardMap[b].lastTestTime ? -1 : 1);
+      state.cardMap[action.payload.id] = action.payload;
+    },
+    saveCardError: (state, action) => {
+      state.isLoadingSaveCard = false;
+      state.isLoading = isAnyLoading(state);
+      state.errorMessage = action.payload.message;
+      state.errorStackTrace = action.payload.stackTrace;
     }
   }
 });
@@ -119,5 +143,6 @@ export const {
   fetchCard, fetchCardError, fetchCardResponse,
   fetchCards, fetchCardsError, fetchCardsResponse,
   fetchImage, fetchImageError, fetchImageResponse,
-  flipCard
+  flipCard,
+  saveCard, saveCardError, saveCardResponse,
 } = slice.actions;

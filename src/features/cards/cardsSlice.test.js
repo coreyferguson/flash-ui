@@ -3,7 +3,8 @@ import {
   fetchCards, fetchCardsError, fetchCardsResponse,
   fetchImage, fetchImageError, fetchImageResponse,
   flipCard,
-  initialState, reducer
+  initialState, reducer,
+  saveCard, saveCardError, saveCardResponse,
 } from './cardsSlice';
 
 describe('cardsSlice', () => {
@@ -258,6 +259,112 @@ describe('cardsSlice', () => {
       const stateAfter = reducer(initialState, fetchImageResponse({ id: 'idValue1', side: 'A', source: 'imageSourceValue' }));
       expect(stateAfter.images.idValue1.A.isLoading).toBe(false);
       expect(stateAfter.images.idValue1.A.source).toBe('imageSourceValue');
+    });
+  });
+
+  describe('saveCard', () => {
+    test('saveCard - set loading to true', () => {
+      const stateBefore = Object.assign({}, initialState);
+      const stateAfter = reducer(stateBefore, saveCard());
+      expect(stateAfter.isLoading).toBe(true);
+      expect(stateAfter.isLoadingSaveCard).toBe(true);
+    });
+  });
+
+  describe('saveCardResponse', () => {
+    test('saveCardResponse - set loading to false', () => {
+      const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingSaveCard: true });
+      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1' }));
+      expect(stateAfter.isLoading).toBe(false);
+      expect(stateAfter.isLoadingSaveCard).toBe(false);
+    });
+
+    test('saveCardResponse - continue loading if other actions still in-progress', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingSaveCard: true,
+        isLoadingFetchCard: true
+      });
+      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1' }));
+      expect(stateAfter.isLoading).toBe(true);
+      expect(stateAfter.isLoadingSaveCard).toBe(false);
+      expect(stateAfter.isLoadingFetchCard).toBe(true);
+    });
+
+    test('saveCardResponse - add a new card', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingSaveCard: true,
+        cardOrder: ['1'],
+        cardMap: { '1': { id: '1' } }
+      });
+      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '2' }));
+      expect(stateAfter.cardOrder).toEqual(['1', '2']);
+      expect(stateAfter.cardMap['2']).toEqual({ id: '2' });
+    });
+
+    test('saveCardResponse - update existing card', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingSaveCard: true,
+        cardOrder: ['1'],
+        cardMap: { '1': { id: '1', sideAText: 'sideAText value' } }
+      });
+      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', sideAText: 'sideAText updated value' }));
+      expect(stateAfter.cardOrder).toEqual(['1']);
+      expect(stateAfter.cardMap['1']).toEqual({ id: '1', sideAText: 'sideAText updated value' });
+    });
+
+    test('saveCardResponse - reorder cards when lastTestTime was changed', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingSaveCard: true,
+        cardOrder: ['1', '2'],
+        cardMap: {
+          '1': { id: '1', lastTestTime: '2020-01-01' },
+          '2': { id: '2', lastTestTime: '2020-01-02' }
+        }
+      });
+      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', lastTestTime: '2020-01-03' }));
+      expect(stateAfter.cardOrder).toEqual(['2', '1']);
+      expect(stateAfter.cardMap['1']).toEqual({ id: '1', lastTestTime: '2020-01-03' });
+    });
+  });
+
+  describe('saveCardError', () => {
+    test('saveCardError - set loading to false', () => {
+      const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingSaveCard: true });
+      const stateAfter = reducer(stateBefore, saveCardError({
+        message: 'message value',
+        stackTrace: 'stack trace value'
+      }));
+      expect(stateAfter.isLoading).toBe(false);
+      expect(stateAfter.isLoadingSaveCard).toBe(false);
+    });
+
+    test('saveCardError - continue loading if fetchCards is in-progress', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingFetchCards: true,
+        isLoadingSaveCard: true
+      });
+      const stateAfter = reducer(stateBefore, saveCardError({
+        message: 'message value',
+        stackTrace: 'stack trace value'
+      }));
+      expect(stateAfter.isLoading).toBe(true);
+      expect(stateAfter.isLoadingFetchCards).toBe(true);
+      expect(stateAfter.isLoadingSaveCard).toBe(false);
+    });
+
+    test('saveCardError - set error properties', () => {
+      const stateBefore = Object.assign({}, initialState, { isLoading: true });
+      const stateAfter = reducer(stateBefore, saveCardError({
+        message: 'message value',
+        stackTrace: 'stack trace value'
+      }));
+      expect(stateAfter.errorMessage).toBe('message value');
+      expect(stateAfter.errorStackTrace).toBe('stack trace value');
     });
   });
 });
