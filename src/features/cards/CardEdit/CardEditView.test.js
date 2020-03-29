@@ -28,6 +28,63 @@ describe('CardEditView', () => {
     wrapper.find('Button[data-name="cancel"]').props().onClick();
     expect(onCancel).toHaveBeenCalled();
   });
+
+  describe('onSave', () => {
+    test('sideAText changed', () => {
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { getValues: () => ({ text: 'sideAText updated value' }) }
+      }));
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { getValues: () => ({ text: 'sideBText value' }) }
+      }));
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { value: 'label1 label2' }
+      }));
+      const onSave = jest.fn();
+      const view = shallow(newView({ onSave }));
+      view.find('form').props().onSubmit();
+      expect(onSave.mock.calls[0][0].id).toBe('id value');
+      expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText updated value');
+      expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText value');
+    });
+
+    test('sideBText changed', () => {
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { getValues: () => ({ text: 'sideAText value' }) }
+      }));
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { getValues: () => ({ text: 'sideBText updated value' }) }
+      }));
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { value: 'label1 label2' }
+      }));
+      const onSave = jest.fn();
+      const view = shallow(newView({ onSave }));
+      view.find('form').props().onSubmit();
+      expect(onSave.mock.calls[0][0].id).toBe('id value');
+      expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText value');
+      expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText updated value');
+    });
+
+    test('labels changed', () => {
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { getValues: () => ({ text: 'sideAText value' }) }
+      }));
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { getValues: () => ({ text: 'sideBText value' }) }
+      }));
+      jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
+        current: { value: 'label1 label2 label3' }
+      }));
+      const onSave = jest.fn();
+      const view = shallow(newView({ onSave }));
+      view.find('form').props().onSubmit();
+      expect(onSave.mock.calls[0][0].id).toBe('id value');
+      expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText value');
+      expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText value');
+      expect(onSave.mock.calls[0][0].labels).toEqual(['label1', 'label2', 'label3']);
+    });
+  });
 });
 
 function newView(propOverrides, itemOverrides) {
@@ -38,8 +95,9 @@ function newView(propOverrides, itemOverrides) {
     onSave: jest.fn(),
     isFetchNeeded: false,
     card: {
+      labels: ['label1', 'label2'],
       sideAText: 'sideAText value',
-      sideBText: 'sideBText value'
+      sideBText: 'sideBText value',
     }
   }, propOverrides);
   return <View {...props} />;

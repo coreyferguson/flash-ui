@@ -15,7 +15,7 @@ export default function CardEditView(props) {
   const labelsToString = labels => labels ? labels.join(' ') : '';
   const labelsToArray = labels => labels.split(' ');
   const handleSave = e => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const sideA = sideARef.current.getValues();
     const sideB = sideBRef.current.getValues();
     const labels = labelsRef.current.value;
@@ -39,7 +39,7 @@ export default function CardEditView(props) {
       </LabelsStyle>
       <MenuStyle>
         <Button onClick={props.onCancel} data-name='cancel'>cancel</Button>
-        <Button isCta={true} onClick={handleSave}>save</Button>
+        <Button isCta={true} onClick={handleSave} data-name='save'>save</Button>
       </MenuStyle>
     </form>
   );
