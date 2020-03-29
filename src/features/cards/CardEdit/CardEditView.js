@@ -30,12 +30,12 @@ export default function CardEditView(props) {
   return (
     <form onSubmit={handleSave}>
       <SidesStyle>
-        <SideStyle><CardEditSide ref={sideARef} sideName='A' text={props.item.sideAText} /></SideStyle>
-        <SideStyle><CardEditSide ref={sideBRef} sideName='B' text={props.item.sideBText} /></SideStyle>
+        <SideStyle><CardEditSide ref={sideARef} sideName='A' text={props.card.sideAText} /></SideStyle>
+        <SideStyle><CardEditSide ref={sideBRef} sideName='B' text={props.card.sideBText} /></SideStyle>
       </SidesStyle>
       <LabelsStyle>
         <span>labels</span>
-        <input ref={labelsRef} type='text' defaultValue={labelsToString(props.labels)} className='mousetrap' />
+        <input ref={labelsRef} type='text' defaultValue={labelsToString(props.card.labels)} className='mousetrap' />
       </LabelsStyle>
       <MenuStyle>
         <Button>cancel</Button>
@@ -46,11 +46,13 @@ export default function CardEditView(props) {
 }
 
 CardEditView.propTypes = {
+  card: PropTypes.object,
+  id: PropTypes.string.isRequired,
   isFetchNeeded: PropTypes.bool,
   onFetch: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired
 };
 
 CardEditView.defaultProps = {
-  isFetchNeeded: false
+  isFetchNeeded: true
 };
