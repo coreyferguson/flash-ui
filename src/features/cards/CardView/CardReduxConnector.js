@@ -6,7 +6,7 @@ export const mapStateToProps = (state, ownProps) => {
   return {
     activeSide: state.activeSides && state.activeSides[id],
     image: state.images[id],
-    item: state.items[id]
+    item: state.cardMap[id]
   };
 };
 

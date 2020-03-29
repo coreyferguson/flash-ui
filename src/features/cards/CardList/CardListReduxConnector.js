@@ -5,8 +5,8 @@ export const mapStateToProps = state => {
   return {
     error: state.error,
     isLoading: state.isLoading,
-    itemOrder: state.itemOrder,
-    items: state.items
+    cardMap: state.cardMap,
+    cardOrder: state.cardOrder
   };
 };
 

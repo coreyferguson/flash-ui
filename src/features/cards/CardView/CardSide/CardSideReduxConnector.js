@@ -6,10 +6,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     id,
     imageSource: state.images && state.images[id] && state.images[id][side] && state.images[id][side].source,
-    imageUrl: state.items[id][`side${side}ImageUrl`],
+    imageUrl: state.cardMap[id][`side${side}ImageUrl`],
     isImageLoading: state.images && state.images[id] && state.images[id][side] && state.images[id][side].isLoading,
     side,
-    text: state.items[id][`side${side}Text`]
+    text: state.cardMap[id][`side${side}Text`]
   };
 };
 

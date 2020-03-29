@@ -7,8 +7,8 @@ export const initialState = {
   isLoadingFetchCard: false,
   isLoadingFetchCards: false,
   images: {}, // Map<id, { (A && B): { isLoading, source } }>
-  itemOrder: [], // List<id>
-  items: {} // Map<id, card>
+  cardOrder: [], // List<id>
+  cardMap: {} // Map<id, card>
 };
 
 const slice = createSlice({
@@ -26,7 +26,7 @@ const slice = createSlice({
     },
     fetchCardResponse: (state, action) => {
       const id = action.payload.data.me.card.id;
-      const itemOrder = state.items[id] ? state.itemOrder : [...state.itemOrder, id];
+      const cardOrder = state.cardMap[id] ? state.cardOrder : [...state.cardOrder, id];
       const images = Object.assign({}, state.images, {
         [id]: Object.assign({}, state.images[id], {
           A: !state.images[id] ? { isLoading: false } : state.images[id].A,
@@ -37,8 +37,8 @@ const slice = createSlice({
         isLoading: !!state.isLoadingFetchCards,
         isLoadingFetchCard: false,
         images,
-        itemOrder,
-        items: Object.assign({}, state.items, { [id]: action.payload.data.me.card })
+        cardOrder,
+        cardMap: Object.assign({}, state.cardMap, { [id]: action.payload.data.me.card })
       });
     },
     fetchCards: state => {
@@ -52,19 +52,19 @@ const slice = createSlice({
     },
     fetchCardsResponse: (state, action) => {
       const newItemIdSet = new Set();
-      const newItems = action.payload.data.me.cards.items.reduce((agg, item) => {
+      const newcardMap = action.payload.data.me.cards.items.reduce((agg, item) => {
         agg[item.id] = item;
         newItemIdSet.add(item.id);
         return agg;
       }, {});
-      const newItemOrder = [...state.itemOrder];
-      for (let itemId of state.itemOrder) newItemIdSet.delete(itemId);
-      for (let itemId of newItemIdSet) newItemOrder.push(itemId);
+      const newcardOrder = [...state.cardOrder];
+      for (let itemId of state.cardOrder) newItemIdSet.delete(itemId);
+      for (let itemId of newItemIdSet) newcardOrder.push(itemId);
       return Object.assign({}, state, {
         isLoading: !!state.isLoadingFetchCard,
         isLoadingFetchCards: false,
-        itemOrder: newItemOrder,
-        items: Object.assign({}, state.items, newItems),
+        cardOrder: newcardOrder,
+        cardMap: Object.assign({}, state.cardMap, newcardMap),
         next: action.payload.data.me.cards.next
       });
     },

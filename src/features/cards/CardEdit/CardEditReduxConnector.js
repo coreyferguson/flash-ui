@@ -5,8 +5,8 @@ const mapStateToProps = (state, ownProps) => {
   const id = ownProps.id;
   return {
     id,
-    isFetchNeeded: !state.items[id],
-    item: state.items[id]
+    isFetchNeeded: !state.cardMap[id],
+    item: state.cardMap[id]
   };
 };
 
