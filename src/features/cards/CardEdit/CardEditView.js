@@ -38,7 +38,7 @@ export default function CardEditView(props) {
         <input ref={labelsRef} type='text' defaultValue={labelsToString(props.card.labels)} className='mousetrap' />
       </LabelsStyle>
       <MenuStyle>
-        <Button>cancel</Button>
+        <Button onClick={props.onCancel} data-name='cancel'>cancel</Button>
         <Button isCta={true} onClick={handleSave}>save</Button>
       </MenuStyle>
     </form>
@@ -49,10 +49,12 @@ CardEditView.propTypes = {
   card: PropTypes.object,
   id: PropTypes.string.isRequired,
   isFetchNeeded: PropTypes.bool,
+  onCancel: PropTypes.func,
   onFetch: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired
 };
 
 CardEditView.defaultProps = {
-  isFetchNeeded: true
+  isFetchNeeded: true,
+  onCancel: () => window.history.back()
 };
