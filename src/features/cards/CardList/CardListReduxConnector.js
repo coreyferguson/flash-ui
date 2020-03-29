@@ -3,20 +3,14 @@ import { actions } from '../cardsSlice';
 
 export const mapStateToProps = state => {
   return {
-    activeSides: state.activeSides,
     error: state.error,
     isLoading: state.isLoading,
-    images: state.images,
     itemOrder: state.itemOrder,
-    items: state.items,
-    next: state.next
+    items: state.items
   };
 };
 
 export const mapDispatchToProps = dispatch => ({
-  onFetchImage: (id, side, imageUrl) => {
-    dispatch(actions.fetchImage({ id, side, imageUrl }));
-  },
   onLoad: () => {
     dispatch(actions.fetchCards());
   },

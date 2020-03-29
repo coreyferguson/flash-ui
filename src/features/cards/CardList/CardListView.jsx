@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingPage from '@bit/overattribution.growme.loading-page';
-import CardView from '../CardView/CardView';
+import CardView from '../CardView';
 import CardListStyle, { Menu, ListStyle } from './CardListStyle';
 import Navigation from '../../../context/Navigation';
 import Button from '@bit/overattribution.growme.button';
@@ -10,18 +10,7 @@ export default function CardListView(props={}) {
   React.useEffect(() => { props.onLoad() }, []);
   if (props.error) return <p>error</p>;
   if (props.isLoading && props.items.length === 0) return <LoadingPage style={{ height: '100%' }} />;
-  const items = props.itemOrder.map(itemId => {
-    return (
-      <li key={itemId}>
-        <CardView
-            activeSide={props.activeSides && props.activeSides[itemId]}
-            image={props.images[itemId]}
-            item={props.items[itemId]}
-            onFetchImage={props.onFetchImage}
-            onFlipCard={() => {}} />
-      </li>
-    );
-  });
+  const items = props.itemOrder.map(itemId => <li key={itemId}><CardView id={itemId} /></li>);
   const handleLoadNextPage = props.next && !props.isLoading
     ? () => { props.onLoadNextPage(props.next) }
     : null;
@@ -38,16 +27,14 @@ export default function CardListView(props={}) {
 
 CardListView.propTypes = {
   error: PropTypes.object,
-  isLoadingWithExistingData: PropTypes.bool,
-  isLoadingWithoutExistingData: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  itemOrder: PropTypes.arrayOf(PropTypes.string),
   items: PropTypes.object,
-  images: PropTypes.object,
   onLoad: PropTypes.func.isRequired,
   onLoadNextPage: PropTypes.func.isRequired
 };
 
 CardListView.defaultProps = {
   items: {},
-  isLoadingWithExistingData: false,
-  isLoadingWithoutExistingData: true
+  isLoading: true,
 };
