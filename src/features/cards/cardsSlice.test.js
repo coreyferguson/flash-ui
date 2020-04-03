@@ -185,31 +185,31 @@ describe('cardsSlice', () => {
     it('fetchCards - maintains order', () => {
       const res = mockFetchCardsResponse({ items: [{ id: 'idValue1' }, { id: 'idValue2' }] });
       const stateAfter = reducer(initialState, fetchCardsResponse(res));
-      expect(stateAfter.cardOrder).toEqual([ 'idValue1', 'idValue2' ]);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue1', 'idValue2' ]);
     });
 
     it('fetchCards - does not change order of existing cardMap', () => {
-      const stateBefore = Object.assign({}, initialState, { cardOrder: ['idValue2'] });
+      const stateBefore = Object.assign({}, initialState, { cardsOrderByCreationDate: ['idValue2'] });
       const res = mockFetchCardsResponse({ items: [{ id: 'idValue1' }, { id: 'idValue2' }, { id: 'idValue3' }] });
       const stateAfter = reducer(stateBefore, fetchCardsResponse(res));
-      expect(stateAfter.cardOrder).toEqual([ 'idValue2', 'idValue1', 'idValue3' ]);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue2', 'idValue1', 'idValue3' ]);
     });
 
     it('fetchCardResponse - maintains order', () => {
-      const stateBefore = Object.assign({}, initialState, { cardOrder: ['idValue2'] });
+      const stateBefore = Object.assign({}, initialState, { cardsOrderByCreationDate: ['idValue2'] });
       const res = mockFetchCardResponse({ card: { id: 'idValue1',  } });
       const stateAfter = reducer(stateBefore, fetchCardResponse(res));
-      expect(stateAfter.cardOrder).toEqual([ 'idValue2', 'idValue1' ]);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue2', 'idValue1' ]);
     });
 
     it('fetchCardResponse - does not change order of existing cardMap', () => {
       const stateBefore = Object.assign({}, initialState, {
-        cardOrder: ['idValue1', 'idValue2'],
+        cardsOrderByCreationDate: ['idValue1', 'idValue2'],
         cardMap: { 'idValue1': { id: 'idValue1' }, 'idValue2': { id: 'idValue2' } }
       });
       const res = mockFetchCardResponse({ card: { id: 'idValue1' } });
       const stateAfter = reducer(stateBefore, fetchCardResponse(res));
-      expect(stateAfter.cardOrder).toEqual([ 'idValue1', 'idValue2' ]);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue1', 'idValue2' ]);
     });
   });
 
@@ -294,11 +294,11 @@ describe('cardsSlice', () => {
       const stateBefore = Object.assign({}, initialState, {
         isLoading: true,
         isLoadingSaveCard: true,
-        cardOrder: ['1'],
+        cardsOrderByCreationDate: ['1'],
         cardMap: { '1': { id: '1' } }
       });
       const stateAfter = reducer(stateBefore, saveCardResponse({ id: '2' }));
-      expect(stateAfter.cardOrder).toEqual(['2', '1']);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual(['2', '1']);
       expect(stateAfter.cardMap['2']).toEqual({ id: '2' });
     });
 
@@ -306,11 +306,11 @@ describe('cardsSlice', () => {
       const stateBefore = Object.assign({}, initialState, {
         isLoading: true,
         isLoadingSaveCard: true,
-        cardOrder: ['1'],
+        cardsOrderByCreationDate: ['1'],
         cardMap: { '1': { id: '1', sideAText: 'sideAText value' } }
       });
       const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', sideAText: 'sideAText updated value' }));
-      expect(stateAfter.cardOrder).toEqual(['1']);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual(['1']);
       expect(stateAfter.cardMap['1']).toEqual({ id: '1', sideAText: 'sideAText updated value' });
     });
 
@@ -381,11 +381,11 @@ describe('cardsSlice', () => {
       const stateBefore = Object.assign({}, initialState, {
         isLoading: true,
         isLoadingDeleteCard: true,
-        cardOrder: ['1', '2'],
+        cardsOrderByCreationDate: ['1', '2'],
         cardMap: { '1': { id: '1' }, '2': { id: '2' } }
       });
       const stateAfter = reducer(stateBefore, deleteCardResponse('2'));
-      expect(stateAfter.cardOrder).toEqual(['1']);
+      expect(stateAfter.cardsOrderByCreationDate).toEqual(['1']);
       expect(stateAfter.cardMap['1']).toEqual({ id: '1' });
       expect(stateAfter.cardMap['2']).toBeUndefined();
     });

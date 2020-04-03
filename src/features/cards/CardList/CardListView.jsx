@@ -11,7 +11,7 @@ export default function CardListView(props={}) {
   React.useEffect(() => { props.onLoad() }, []);
   if (props.error) return <p>error</p>;
   if (props.isLoading && props.cardMap.length === 0) return <LoadingPage style={{ height: '100%' }} />;
-  const cards = props.cardOrder.map(itemId => <li key={itemId}><CardView id={itemId} /></li>);
+  const cards = props.cardsOrderByCreationDate.map(itemId => <li key={itemId}><CardView id={itemId} /></li>);
   const handleLoadNextPage = props.next && !props.isLoading
     ? () => { props.onLoadNextPage(props.next) }
     : null;
@@ -29,7 +29,7 @@ export default function CardListView(props={}) {
 CardListView.propTypes = {
   error: PropTypes.object,
   isLoading: PropTypes.bool,
-  cardOrder: PropTypes.arrayOf(PropTypes.string),
+  cardsOrderByCreationDate: PropTypes.arrayOf(PropTypes.string),
   cardMap: PropTypes.object,
   onLoad: PropTypes.func.isRequired,
   onLoadNextPage: PropTypes.func.isRequired

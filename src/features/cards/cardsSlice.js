@@ -8,7 +8,7 @@ export const initialState = {
   isLoadingFetchCards: false,
   isLoadingSaveCard: false,
   images: {}, // Map<id, { (A && B): { isLoading, source } }>
-  cardOrder: [], // List<id>
+  cardsOrderByCreationDate: [], // List<id>
   cardMap: {} // Map<id, card>
 };
 
@@ -29,7 +29,7 @@ const slice = createSlice({
     },
     fetchCardResponse: (state, action) => {
       const id = action.payload.data.me.card.id;
-      const cardOrder = state.cardMap[id] ? state.cardOrder : [...state.cardOrder, id];
+      const cardsOrderByCreationDate = state.cardMap[id] ? state.cardsOrderByCreationDate : [...state.cardsOrderByCreationDate, id];
       const images = Object.assign({}, state.images, {
         [id]: Object.assign({}, state.images[id], {
           A: !state.images[id] ? { isLoading: false } : state.images[id].A,
@@ -40,7 +40,7 @@ const slice = createSlice({
         isLoading: isAnyLoading(state),
         isLoadingFetchCard: false,
         images,
-        cardOrder,
+        cardsOrderByCreationDate,
         cardMap: Object.assign({}, state.cardMap, { [id]: action.payload.data.me.card })
       });
     },
@@ -56,19 +56,19 @@ const slice = createSlice({
     },
     fetchCardsResponse: (state, action) => {
       const newItemIdSet = new Set();
-      const newcardMap = action.payload.data.me.cards.items.reduce((agg, item) => {
+      const newCardMap = action.payload.data.me.cards.items.reduce((agg, item) => {
         agg[item.id] = item;
         newItemIdSet.add(item.id);
         return agg;
       }, {});
-      const newcardOrder = [...state.cardOrder];
-      for (let itemId of state.cardOrder) newItemIdSet.delete(itemId);
-      for (let itemId of newItemIdSet) newcardOrder.push(itemId);
+      const newCardsOrderByCreationDate = [...state.cardsOrderByCreationDate];
+      for (let itemId of state.cardsOrderByCreationDate) newItemIdSet.delete(itemId);
+      for (let itemId of newItemIdSet) newCardsOrderByCreationDate.push(itemId);
       return Object.assign({}, state, {
         isLoadingFetchCards: false,
         isLoading: isAnyLoading(state),
-        cardOrder: newcardOrder,
-        cardMap: Object.assign({}, state.cardMap, newcardMap),
+        cardsOrderByCreationDate: newCardsOrderByCreationDate,
+        cardMap: Object.assign({}, state.cardMap, newCardMap),
         next: action.payload.data.me.cards.next
       });
     },
@@ -128,7 +128,7 @@ const slice = createSlice({
       state.isLoadingSaveCard = false;
       state.isLoading = isAnyLoading(state);
       const existingCard = state.cardMap[action.payload.id];
-      if (!existingCard) state.cardOrder = [ action.payload.id, ...state.cardOrder ];
+      if (!existingCard) state.cardsOrderByCreationDate = [ action.payload.id, ...state.cardsOrderByCreationDate ];
       state.cardMap[action.payload.id] = action.payload;
     },
     saveCardError: (state, action) => {
@@ -152,7 +152,7 @@ const slice = createSlice({
       state.isLoadingDeleteCard = false;
       state.isLoading = isAnyLoading(state);
       delete state.cardMap[action.payload];
-      state.cardOrder = state.cardOrder.filter(cardId => cardId !== action.payload);
+      state.cardsOrderByCreationDate = state.cardsOrderByCreationDate.filter(cardId => cardId !== action.payload);
     },
     /**
      * @param {String} action.payload card id
