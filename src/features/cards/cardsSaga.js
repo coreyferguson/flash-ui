@@ -4,7 +4,25 @@ import client from '../../context/apolloProvider/apolloClient';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
 import GQL_GET_CARD from './CardList/GQL_GET_CARD';
 import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
+import GQL_DELETE_CARD from './CardList/GQL_DELETE_CARD';
 import mediaService from '../media/mediaService';
+
+export function* deleteCardSaga(props) {
+  const variables = props && props.payload && props.payload.variables
+    ? props.payload.variables
+    : undefined;
+  const cardId = props.payload.variables.id;
+  try {
+    yield call(client.mutate, { mutation: GQL_DELETE_CARD, variables });
+    yield put(actions.deleteCardResponse(cardId));
+  } catch (err) {
+    yield put(actions.deleteCardError({
+      cardId,
+      message: err.toString(),
+      stackTrace: err.stack
+    }));
+  }
+}
 
 export function* fetchCardSaga(props) {
   const variables = props && props.payload && props.payload.variables
@@ -63,6 +81,7 @@ export function* saveCardSaga(props) {
 }
 
 export default function* watchCardsSaga() {
+  yield takeLeading([ actions.deleteCard.type ], deleteCardSaga);
   yield takeLeading([ actions.fetchCard.type ], fetchCardSaga);
   yield takeLeading([ actions.fetchCards.type ], fetchCardsSaga);
   yield takeLeading([ actions.fetchImage.type ], fetchImageSaga);

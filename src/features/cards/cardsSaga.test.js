@@ -1,8 +1,9 @@
-import watchFetchCards, { fetchImageSaga, fetchCardSaga, fetchCardsSaga, saveCardSaga } from './cardsSaga';
+import watchFetchCards, { deleteCardSaga, fetchImageSaga, fetchCardSaga, fetchCardsSaga, saveCardSaga } from './cardsSaga';
 import { call, put, select, take, takeLeading } from 'redux-saga/effects';
 import GQL_GET_CARD from './CardList/GQL_GET_CARD';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
 import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
+import GQL_DELETE_CARD from './CardList/GQL_DELETE_CARD';
 import { actions, fetchImageResponse, fetchImageError } from './cardsSlice';
 import mediaService from '../media/mediaService';
 
@@ -130,6 +131,33 @@ describe('cardsSaga', () => {
       const actual = gen.throw(new Error('oops')).value;
       expect(actual.payload.action.payload.message).toEqual('Error: oops');
       expect(actual.payload.action.payload.stackTrace).not.toBeNull();
+    });
+  });
+
+  describe('deleteCardSaga', () => {
+    test('delete card', () => {
+      const gen = deleteCardSaga({ payload: { variables: { id: 'id value' } } });
+      const actual = gen.next().value;
+      expect(actual.type).toBe('CALL');
+      expect(actual.payload.args[0].mutation).toBe(GQL_DELETE_CARD);
+      expect(actual.payload.args[0].variables.id).toBe('id value');
+    });
+
+    test('successful response', () => {
+      const gen = deleteCardSaga({ payload: { variables: { id: 'id value' } } });
+      expect(gen.next().value.type).toBe('CALL');
+      const actual = gen.next().value;
+      const expected = put(actions.deleteCardResponse('id value'));
+      expect(actual).toEqual(expected);
+    });
+
+    test('error', () => {
+      const gen = deleteCardSaga({ payload: { variables: { id: 'id value' } } });
+      expect(gen.next().value.type).toBe('CALL');
+      const actual = gen.throw(new Error('oops')).value;
+      expect(actual.payload.action.payload.message).toEqual('Error: oops');
+      expect(actual.payload.action.payload.stackTrace).not.toBeNull();
+      expect(actual.payload.action.payload.cardId).toEqual('id value');
     });
   });
 });
