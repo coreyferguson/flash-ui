@@ -17,10 +17,13 @@ export default function CardEditView(props) {
   const labelsToArray = labels => labels.split(' ');
   const handleDelete = e => {
     if (e) e.preventDefault();
-    props.onDelete({
-      id: props.id,
-      userId: sessionService.getSignInUserSession().idToken.payload.sub
-    });
+    if (confirm('Are you sure you want to delete this card? This cannot be undone.')) {
+      props.onDelete({
+        id: props.id,
+        userId: sessionService.getSignInUserSession().idToken.payload.sub
+      });
+      window.history.back();
+    }
   };
   const handleSave = e => {
     if (e) e.preventDefault();

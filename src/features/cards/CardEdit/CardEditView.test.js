@@ -30,7 +30,7 @@ describe('CardEditView', () => {
     expect(onCancel).toHaveBeenCalled();
   });
 
-  test('delete clicked', () => {
+  test('delete clicked and user confirmed', () => {
     jest.spyOn(sessionService, 'getSignInUserSession').mockImplementation(() => ({
       idToken: {
         payload: {
@@ -38,10 +38,26 @@ describe('CardEditView', () => {
         }
       }
     }));
+    jest.spyOn(window, 'confirm').mockImplementation(() => true);
     const onDelete = jest.fn();
     const wrapper = shallow(newView({ onDelete, id: 'id value' }));
     wrapper.find('Button[data-name="delete"]').props().onClick();
     expect(onDelete).toHaveBeenCalledWith({ id: 'id value', userId: 'user id value' });
+  });
+
+  test('delete clicked and user does not confirm', () => {
+    jest.spyOn(sessionService, 'getSignInUserSession').mockImplementation(() => ({
+      idToken: {
+        payload: {
+          sub: 'user id value'
+        }
+      }
+    }));
+    jest.spyOn(window, 'confirm').mockImplementation(() => false);
+    const onDelete = jest.fn();
+    const wrapper = shallow(newView({ onDelete, id: 'id value' }));
+    wrapper.find('Button[data-name="delete"]').props().onClick();
+    expect(onDelete).not.toHaveBeenCalled();
   });
 
   describe('onSave', () => {
