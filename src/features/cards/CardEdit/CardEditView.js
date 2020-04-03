@@ -15,6 +15,13 @@ export default function CardEditView(props) {
   }
   const labelsToString = labels => labels ? labels.join(' ') : '';
   const labelsToArray = labels => labels.split(' ');
+  const handleDelete = e => {
+    if (e) e.preventDefault();
+    props.onDelete({
+      id: props.id,
+      userId: sessionService.getSignInUserSession().idToken.payload.sub
+    });
+  };
   const handleSave = e => {
     if (e) e.preventDefault();
     const sideA = sideARef.current.getValues();
@@ -45,6 +52,7 @@ export default function CardEditView(props) {
       </LabelsStyle>
       <MenuStyle>
         <Button onClick={props.onCancel} data-name='cancel'>cancel</Button>
+        <Button onClick={handleDelete} data-name='delete'>delete</Button>
         <Button isCta={true} onClick={handleSave} data-name='save'>save</Button>
       </MenuStyle>
     </form>
@@ -56,6 +64,7 @@ CardEditView.propTypes = {
   id: PropTypes.string,
   isFetchNeeded: PropTypes.bool,
   onCancel: PropTypes.func,
+  onDelete: PropTypes.func.isRequired,
   onFetch: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired
 };

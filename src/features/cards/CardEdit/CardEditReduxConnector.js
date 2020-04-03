@@ -11,6 +11,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
+  onDelete: id => {
+    dispatch(deleteCard(id));
+  },
   onFetch: id => {
     dispatch(fetchCard({ variables: { id } }));
   },

@@ -30,6 +30,20 @@ describe('CardEditView', () => {
     expect(onCancel).toHaveBeenCalled();
   });
 
+  test('delete clicked', () => {
+    jest.spyOn(sessionService, 'getSignInUserSession').mockImplementation(() => ({
+      idToken: {
+        payload: {
+          sub: 'user id value'
+        }
+      }
+    }));
+    const onDelete = jest.fn();
+    const wrapper = shallow(newView({ onDelete, id: 'id value' }));
+    wrapper.find('Button[data-name="delete"]').props().onClick();
+    expect(onDelete).toHaveBeenCalledWith({ id: 'id value', userId: 'user id value' });
+  });
+
   describe('onSave', () => {
     beforeAll(() => {
       jest.spyOn(sessionService, 'getSignInUserSession').mockImplementation(() => ({
@@ -103,6 +117,7 @@ function newView(propOverrides, itemOverrides) {
   const props = Object.assign({
     id: 'id value',
     onCancel: jest.fn(),
+    onDelete: jest.fn(),
     onFetch: jest.fn(),
     onSave: jest.fn(),
     isFetchNeeded: false,
