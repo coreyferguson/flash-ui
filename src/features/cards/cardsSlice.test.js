@@ -299,7 +299,7 @@ describe('cardsSlice', () => {
         cardMap: { '1': { id: '1' } }
       });
       const stateAfter = reducer(stateBefore, saveCardResponse({ id: '2' }));
-      expect(stateAfter.cardOrder).toEqual(['1', '2']);
+      expect(stateAfter.cardOrder).toEqual(['2', '1']);
       expect(stateAfter.cardMap['2']).toEqual({ id: '2' });
     });
 
@@ -313,21 +313,6 @@ describe('cardsSlice', () => {
       const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', sideAText: 'sideAText updated value' }));
       expect(stateAfter.cardOrder).toEqual(['1']);
       expect(stateAfter.cardMap['1']).toEqual({ id: '1', sideAText: 'sideAText updated value' });
-    });
-
-    test('saveCardResponse - reorder cards when lastTestTime was changed', () => {
-      const stateBefore = Object.assign({}, initialState, {
-        isLoading: true,
-        isLoadingSaveCard: true,
-        cardOrder: ['1', '2'],
-        cardMap: {
-          '1': { id: '1', lastTestTime: '2020-01-01' },
-          '2': { id: '2', lastTestTime: '2020-01-02' }
-        }
-      });
-      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', lastTestTime: '2020-01-03' }));
-      expect(stateAfter.cardOrder).toEqual(['2', '1']);
-      expect(stateAfter.cardMap['1']).toEqual({ id: '1', lastTestTime: '2020-01-03' });
     });
   });
 

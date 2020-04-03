@@ -55,8 +55,8 @@ export function* saveCardSaga(props) {
     ? props.payload.variables
     : undefined;
   try {
-    const res = yield call(client.query, { query: GQL_SAVE_CARD, variables });
-    yield put(actions.saveCardResponse(res));
+    const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables });
+    yield put(actions.saveCardResponse(res.data.upsertCard));
   } catch (err) {
     yield put(actions.saveCardError({ message: err.toString(), stackTrace: err.stack }));
   }

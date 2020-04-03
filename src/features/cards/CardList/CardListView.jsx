@@ -5,6 +5,7 @@ import CardView from '../CardView';
 import CardListStyle, { Menu, ListStyle } from './CardListStyle';
 import Navigation from '../../../context/Navigation';
 import Button from '@bit/overattribution.growme.button';
+import { Link } from 'react-router-dom';
 
 export default function CardListView(props={}) {
   React.useEffect(() => { props.onLoad() }, []);
@@ -17,7 +18,7 @@ export default function CardListView(props={}) {
   return (
     <CardListStyle>
       <Navigation />
-      <Menu><Button>create card</Button></Menu>
+      <Menu><Button component={<Link to='/cards/edit'>create card</Link>} /></Menu>
       <ListStyle>
         {cards}
       </ListStyle>

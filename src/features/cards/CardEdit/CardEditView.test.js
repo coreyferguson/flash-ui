@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import View from './CardEditView';
+import sessionService from '../../../context/authentication/sessionService';
 
 describe('CardEditView', () => {
   test('defaults isFetchNeeded to true', () => {
@@ -30,6 +31,16 @@ describe('CardEditView', () => {
   });
 
   describe('onSave', () => {
+    beforeAll(() => {
+      jest.spyOn(sessionService, 'getSignInUserSession').mockImplementation(() => ({
+        idToken: {
+          payload: {
+            sub: 'user id value'
+          }
+        }
+      }));
+    });
+
     test('sideAText changed', () => {
       jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
         current: { getValues: () => ({ text: 'sideAText updated value' }) }
@@ -46,6 +57,7 @@ describe('CardEditView', () => {
       expect(onSave.mock.calls[0][0].id).toBe('id value');
       expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText updated value');
       expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText value');
+      expect(onSave.mock.calls[0][0].userId).toBe('user id value');
     });
 
     test('sideBText changed', () => {

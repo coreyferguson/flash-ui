@@ -112,14 +112,14 @@ describe('cardsSaga', () => {
       const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
       const actual = gen.next().value;
       expect(actual.type).toBe('CALL');
-      expect(actual.payload.args[0].query).toBe(GQL_SAVE_CARD);
+      expect(actual.payload.args[0].mutation).toBe(GQL_SAVE_CARD);
       expect(actual.payload.args[0].variables.id).toBe('id value');
     });
 
     test('successful response', () => {
       const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
       expect(gen.next().value.type).toBe('CALL');
-      const actual = gen.next('response value').value;
+      const actual = gen.next({ data: { upsertCard: 'response value' } }).value;
       const expected = put(actions.saveCardResponse('response value'));
       expect(actual).toEqual(expected);
     });

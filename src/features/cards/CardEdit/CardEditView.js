@@ -3,6 +3,7 @@ import { LabelsStyle, MenuStyle, SidesStyle, SideStyle } from './CardEditStyle';
 import CardEditSide from './CardEditSide';
 import PropTypes from 'prop-types';
 import Button from '@bit/overattribution.growme.button';
+import sessionService from '../../../context/authentication/sessionService';
 
 export default function CardEditView(props) {
   const sideARef = React.useRef();
@@ -21,21 +22,26 @@ export default function CardEditView(props) {
     const labels = labelsRef.current.value;
     props.onSave({
       id: props.id,
+      userId: sessionService.getSignInUserSession().idToken.payload.sub,
       lastTestTime: new Date().toISOString(),
       sideAText: sideA.text,
       sideBText: sideB.text,
       labels: labelsToArray(labels)
     });
+    window.history.back();
   };
+  const sideAText = props.card && props.card.sideAText;
+  const sideBText = props.card && props.card.sideBText;
+  const labels = props.card && props.card.labels;
   return (
     <form onSubmit={handleSave}>
       <SidesStyle>
-        <SideStyle><CardEditSide ref={sideARef} sideName='A' text={props.card.sideAText} /></SideStyle>
-        <SideStyle><CardEditSide ref={sideBRef} sideName='B' text={props.card.sideBText} /></SideStyle>
+        <SideStyle><CardEditSide ref={sideARef} sideName='A' text={sideAText} /></SideStyle>
+        <SideStyle><CardEditSide ref={sideBRef} sideName='B' text={sideBText} /></SideStyle>
       </SidesStyle>
       <LabelsStyle>
         <span>labels</span>
-        <input ref={labelsRef} type='text' defaultValue={labelsToString(props.card.labels)} className='mousetrap' />
+        <input ref={labelsRef} type='text' defaultValue={labelsToString(labels)} className='mousetrap' />
       </LabelsStyle>
       <MenuStyle>
         <Button onClick={props.onCancel} data-name='cancel'>cancel</Button>
@@ -47,7 +53,7 @@ export default function CardEditView(props) {
 
 CardEditView.propTypes = {
   card: PropTypes.object,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   isFetchNeeded: PropTypes.bool,
   onCancel: PropTypes.func,
   onFetch: PropTypes.func.isRequired,

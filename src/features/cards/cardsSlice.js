@@ -124,8 +124,7 @@ const slice = createSlice({
       state.isLoadingSaveCard = false;
       state.isLoading = isAnyLoading(state);
       const existingCard = state.cardMap[action.payload.id];
-      if (!existingCard) state.cardOrder = [ ...state.cardOrder, action.payload.id ];
-      else state.cardOrder.sort((a, b) => state.cardMap[a].lastTestTime > state.cardMap[b].lastTestTime ? -1 : 1);
+      if (!existingCard) state.cardOrder = [ action.payload.id, ...state.cardOrder ];
       state.cardMap[action.payload.id] = action.payload;
     },
     saveCardError: (state, action) => {
