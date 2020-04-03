@@ -1,4 +1,5 @@
 import {
+  deleteCard, deleteCardError, deleteCardResponse,
   fetchCard, fetchCardError, fetchCardResponse,
   fetchCards, fetchCardsError, fetchCardsResponse,
   fetchImage, fetchImageError, fetchImageResponse,
@@ -269,9 +270,7 @@ describe('cardsSlice', () => {
       expect(stateAfter.isLoading).toBe(true);
       expect(stateAfter.isLoadingSaveCard).toBe(true);
     });
-  });
 
-  describe('saveCardResponse', () => {
     test('saveCardResponse - set loading to false', () => {
       const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingSaveCard: true });
       const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1' }));
@@ -314,9 +313,7 @@ describe('cardsSlice', () => {
       expect(stateAfter.cardOrder).toEqual(['1']);
       expect(stateAfter.cardMap['1']).toEqual({ id: '1', sideAText: 'sideAText updated value' });
     });
-  });
 
-  describe('saveCardError', () => {
     test('saveCardError - set loading to false', () => {
       const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingSaveCard: true });
       const stateAfter = reducer(stateBefore, saveCardError({
@@ -351,6 +348,82 @@ describe('cardsSlice', () => {
       expect(stateAfter.errorMessage).toBe('message value');
       expect(stateAfter.errorStackTrace).toBe('stack trace value');
     });
+  });
+
+  describe('deleteCard', () => {
+    test('deleteCard - set loading to true', () => {
+      const stateBefore = Object.assign({}, initialState);
+      const stateAfter = reducer(stateBefore, deleteCard());
+      expect(stateAfter.isLoading).toBe(true);
+      expect(stateAfter.isLoadingDeleteCard).toBe(true);
+    });
+
+    test('deleteCard - set loading to false', () => {
+      const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingDeleteCard: true });
+      const stateAfter = reducer(stateBefore, deleteCardResponse('1'));
+      expect(stateAfter.isLoading).toBe(false);
+      expect(stateAfter.isLoadingDeleteCard).toBe(false);
+    });
+
+    test('deleteCardResponse - continue loading if other actions still in-progress', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingDeleteCard: true,
+        isLoadingFetchCard: true
+      });
+      const stateAfter = reducer(stateBefore, deleteCardResponse('1'));
+      expect(stateAfter.isLoading).toBe(true);
+      expect(stateAfter.isLoadingDeleteCard).toBe(false);
+      expect(stateAfter.isLoadingFetchCard).toBe(true);
+    });
+
+    test('deleteCardResponse - delete a card', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingDeleteCard: true,
+        cardOrder: ['1', '2'],
+        cardMap: { '1': { id: '1' }, '2': { id: '2' } }
+      });
+      const stateAfter = reducer(stateBefore, deleteCardResponse('2'));
+      expect(stateAfter.cardOrder).toEqual(['1']);
+      expect(stateAfter.cardMap['1']).toEqual({ id: '1' });
+      expect(stateAfter.cardMap['2']).toBeUndefined();
+    });
+  });
+
+  test('deleteCardError - set loading to false', () => {
+    const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingDeleteCard: true });
+    const stateAfter = reducer(stateBefore, deleteCardError({
+      message: 'message value',
+      stackTrace: 'stack trace value'
+    }));
+    expect(stateAfter.isLoading).toBe(false);
+    expect(stateAfter.isLoadingDeleteCard).toBe(false);
+  });
+
+  test('deleteCardError - continue loading if fetchCards is in-progress', () => {
+    const stateBefore = Object.assign({}, initialState, {
+      isLoading: true,
+      isLoadingFetchCards: true,
+      isLoadingDeleteCard: true
+    });
+    const stateAfter = reducer(stateBefore, deleteCardError({
+      message: 'message value',
+      stackTrace: 'stack trace value'
+    }));
+    expect(stateAfter.isLoading).toBe(true);
+    expect(stateAfter.isLoadingFetchCards).toBe(true);
+    expect(stateAfter.isLoadingDeleteCard).toBe(false);
+  });
+
+  test('deleteCardError - set error properties', () => {
+    const stateBefore = Object.assign({}, initialState, { isLoading: true });
+    const stateAfter = reducer(stateBefore, deleteCardError({
+      message: 'message value',
+      stackTrace: 'stack trace value'
+    }));
+    expect(stateAfter.errorMessage).toBe('message value');
+    expect(stateAfter.errorStackTrace).toBe('stack trace value');
   });
 });
 

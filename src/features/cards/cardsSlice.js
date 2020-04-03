@@ -44,6 +44,7 @@ const slice = createSlice({
         cardMap: Object.assign({}, state.cardMap, { [id]: action.payload.data.me.card })
       });
     },
+
     fetchCards: state => {
       state.isLoading = true;
       state.isLoadingFetchCards = true;
@@ -71,6 +72,7 @@ const slice = createSlice({
         next: action.payload.data.me.cards.next
       });
     },
+
     fetchImage: (state, action) => {
       const { id, side } = action.payload;
       return Object.assign({}, state, {
@@ -105,6 +107,7 @@ const slice = createSlice({
           : Object.assign({}, state.images[id], updatedSide)
       });
     },
+
     flipCard: (state, action) => {
       const activeSide = state.activeSides[action.payload];
       return Object.assign({}, state, {
@@ -113,6 +116,7 @@ const slice = createSlice({
         })
       });
     },
+
     saveCard: (state, action) => {
       state.isLoading = true;
       state.isLoadingSaveCard = true;
@@ -132,6 +136,32 @@ const slice = createSlice({
       state.isLoading = isAnyLoading(state);
       state.errorMessage = action.payload.message;
       state.errorStackTrace = action.payload.stackTrace;
+    },
+
+    /**
+     * @param {String} action.payload card id
+     */
+    deleteCard: (state, action) => {
+      state.isLoading = true;
+      state.isLoadingDeleteCard = true;
+    },
+    /**
+     * @param {String} action.payload card id
+     */
+    deleteCardResponse: (state, action) => {
+      state.isLoadingDeleteCard = false;
+      state.isLoading = isAnyLoading(state);
+      delete state.cardMap[action.payload];
+      state.cardOrder = state.cardOrder.filter(cardId => cardId !== action.payload);
+    },
+    /**
+     * @param {String} action.payload card id
+     */
+    deleteCardError: (state, action) => {
+      state.isLoadingDeleteCard = false;
+      state.isLoading = isAnyLoading(state);
+      state.errorMessage = action.payload.message;
+      state.errorStackTrace = action.payload.stackTrace;
     }
   }
 });
@@ -139,6 +169,7 @@ const slice = createSlice({
 export default slice;
 export const { actions, reducer } = slice;
 export const {
+  deleteCard, deleteCardError, deleteCardResponse,
   fetchCard, fetchCardError, fetchCardResponse,
   fetchCards, fetchCardsError, fetchCardsResponse,
   fetchImage, fetchImageError, fetchImageResponse,
