@@ -1,5 +1,14 @@
-import watchFetchCards, { deleteCardSaga, fetchImageSaga, fetchCardSaga, fetchCardsSaga, saveCardSaga } from './cardsSaga';
-import { call, put, select, take, takeLeading } from 'redux-saga/effects';
+import watchFetchCards, {
+  deleteCardSaga,
+  fetchImageSaga,
+  fetchCardSaga,
+  fetchCardsSaga,
+  saveCardSaga,
+  waitForDeleteCardSaga,
+  waitForFetchCardSaga,
+  waitForFetchCardsSaga,
+} from './cardsSaga';
+import { call, put, takeEvery, takeLeading } from 'redux-saga/effects';
 import GQL_GET_CARD from './CardList/GQL_GET_CARD';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
 import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
@@ -13,24 +22,23 @@ describe('cardsSaga', () => {
     const gen = watchFetchCards();
     const sagas = [];
     for (let saga of gen) sagas.push(saga);
-    expect(sagas).toContainEqual(takeLeading([actions.fetchCard.type], fetchCardSaga));
+    expect(sagas).toContainEqual(takeEvery([actions.deleteCard.type], deleteCardSaga));
+    expect(sagas).toContainEqual(takeEvery([actions.fetchCard.type], fetchCardSaga));
     expect(sagas).toContainEqual(takeLeading([actions.fetchCards.type], fetchCardsSaga));
-    expect(sagas).toContainEqual(takeLeading([actions.saveCard.type], saveCardSaga));
+    expect(sagas).toContainEqual(takeEvery([actions.fetchImage.type], fetchImageSaga));
+    expect(sagas).toContainEqual(takeEvery([actions.saveCard.type], saveCardSaga));
   });
 
   describe('fetchCardSaga', () => {
-    test('waits for fetchCards before starting', () => {
-      const gen = fetchCardSaga({ payload: { variables: { id: 'idValue1' } } });
+    test('waitForFetchCardSaga', () => {
+      const gen = waitForFetchCardSaga();
       expect(gen.next().value.type).toBe('SELECT');
-      const actual = gen.next(true).value;
-      expect(actual.type).toBe('RACE');
-      expect(actual.payload.error).toEqual(take(actions.fetchCardsError.type));
-      expect(actual.payload.response).toEqual(take(actions.fetchCardsResponse.type));
+      expect(gen.next(true).value.type).toBe('TAKE');
     });
 
     test('does not wait for fetchCards before starting', () => {
       const gen = fetchCardSaga({ payload: { variables: { id: 'idValue1' } } });
-      expect(gen.next().value.type).toBe('SELECT');
+      gen.next(); // yield waitForFetchCardsSaga();
       const actual = gen.next(false).value;
       expect(actual.type).toBe('CALL');
       expect(actual.payload.args[0].query).toBe(GQL_GET_CARD);
@@ -39,7 +47,7 @@ describe('cardsSaga', () => {
 
     test('successful response', () => {
       const gen = fetchCardSaga({ payload: { variables: { id: 'idValue1' } } });
-      expect(gen.next().value.type).toBe('SELECT');
+      gen.next(); // yield waitForFetchCardsSaga();
       expect(gen.next(false).value.type).toBe('CALL');
       const actual = gen.next('responseValue').value;
       const expected = put(actions.fetchCardResponse('responseValue'));
@@ -48,7 +56,7 @@ describe('cardsSaga', () => {
 
     test('error', () => {
       const gen = fetchCardSaga({ payload: { variables: { id: 'idValue1' } } });
-      expect(gen.next().value.type).toBe('SELECT');
+      gen.next(); // yield waitForFetchCardsSaga();
       expect(gen.next(false).value.type).toBe('CALL');
       const actual = gen.throw(new Error('oops')).value;
       const expected = put(actions.fetchCardError(new Error('oops')));
@@ -57,18 +65,17 @@ describe('cardsSaga', () => {
   });
 
   describe('fetchCardsSaga', () => {
-    test('waits for fetchCard before starting', () => {
-      const gen = fetchCardsSaga();
+
+    test('waitForFetchCardsSaga', () => {
+      const gen = waitForFetchCardsSaga();
       expect(gen.next().value.type).toBe('SELECT');
-      const actual = gen.next(true).value;
-      expect(actual.type).toBe('RACE');
-      expect(actual.payload.error).toEqual(take(actions.fetchCardError.type));
-      expect(actual.payload.response).toEqual(take(actions.fetchCardResponse.type));
+      expect(gen.next(true).value.type).toBe('TAKE');
     });
 
     test('does not wait for fetchCard before starting', () => {
       const gen = fetchCardsSaga();
-      expect(gen.next().value.type).toBe('SELECT');
+      gen.next(); // yield waitForFetchCardSaga();
+      gen.next(); // yield waitForDeleteCardSaga();
       const actual = gen.next(false).value;
       expect(actual.type).toBe('CALL');
       expect(actual.payload.args[0].query).toBe(GQL_LIST_CARDS);
@@ -76,7 +83,8 @@ describe('cardsSaga', () => {
 
     test('successful response', () => {
       const gen = fetchCardsSaga();
-      expect(gen.next().value.type).toBe('SELECT');
+      gen.next(); // yield waitForFetchCardSaga();
+      gen.next(); // yield waitForDeleteCardSaga();
       expect(gen.next(false).value.type).toBe('CALL');
       const actual = gen.next('responseValue').value;
       const expected = put(actions.fetchCardsResponse('responseValue'));
@@ -85,7 +93,8 @@ describe('cardsSaga', () => {
 
     test('error', () => {
       const gen = fetchCardsSaga();
-      expect(gen.next().value.type).toBe('SELECT');
+      gen.next(); // yield waitForFetchCardSaga();
+      gen.next(); // yield waitForDeleteCardSaga();
       expect(gen.next(false).value.type).toBe('CALL');
       const actual = gen.throw(new Error('oops')).value;
       const expected = put(actions.fetchCardsError(new Error('oops')));
@@ -135,6 +144,12 @@ describe('cardsSaga', () => {
   });
 
   describe('deleteCardSaga', () => {
+    test('waitForDeleteCardSaga', () => {
+      const gen = waitForDeleteCardSaga();
+      expect(gen.next().value.type).toBe('SELECT');
+      expect(gen.next(true).value.type).toBe('TAKE');
+    });
+
     test('delete card', () => {
       const gen = deleteCardSaga({ payload: { variables: { id: 'id value' } } });
       const actual = gen.next().value;

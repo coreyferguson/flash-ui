@@ -40,6 +40,10 @@ export default function CardEditView(props) {
     });
     window.history.back();
   };
+  const handleCancel = e => {
+    if (e) e.preventDefault();
+    props.onCancel();
+  };
   const sideAText = props.card && props.card.sideAText;
   const sideBText = props.card && props.card.sideBText;
   const labels = props.card && props.card.labels;
@@ -54,7 +58,7 @@ export default function CardEditView(props) {
         <input ref={labelsRef} type='text' defaultValue={labelsToString(labels)} className='mousetrap' />
       </LabelsStyle>
       <MenuStyle>
-        <Button onClick={props.onCancel} data-name='cancel'>cancel</Button>
+        <Button onClick={handleCancel} data-name='cancel'>cancel</Button>
         <Button onClick={handleDelete} data-name='delete'>delete</Button>
         <Button isCta={true} onClick={handleSave} data-name='save'>save</Button>
       </MenuStyle>

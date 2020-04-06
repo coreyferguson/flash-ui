@@ -1,4 +1,4 @@
-import { call, put, race, select, takeLeading, take } from 'redux-saga/effects';
+import { call, put, race, select, takeEvery, takeLeading, take } from 'redux-saga/effects';
 import { actions } from './cardsSlice';
 import client from '../../context/apolloProvider/apolloClient';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
@@ -24,14 +24,17 @@ export function* deleteCardSaga(props) {
   }
 }
 
+export function* waitForDeleteCardSaga() {
+  if (yield select(state => state.isLoadingDeleteCard)) {
+    yield take([ actions.deleteCardError.type, actions.deleteCardResponse.type ]);
+  }
+}
+
 export function* fetchCardSaga(props) {
   const variables = props && props.payload && props.payload.variables
     ? props.payload.variables
     : undefined;
-  // wait for "fetchCards" to complete if that's already running
-  if (yield select(state => state.isLoadingFetchCards)) {
-    yield race({ error: take(actions.fetchCardsError.type), response: take(actions.fetchCardsResponse.type) });
-  }
+  yield waitForFetchCardsSaga();
   try {
     const res = yield call(client.query, { query: GQL_GET_CARD, variables });
     yield put(actions.fetchCardResponse(res));
@@ -40,19 +43,29 @@ export function* fetchCardSaga(props) {
   }
 }
 
+export function* waitForFetchCardSaga() {
+  if (yield select(state => state.isLoadingFetchCard)) {
+    yield take([ actions.fetchCardError.type, actions.fetchCardResponse.type ]);
+  }
+}
+
 export function* fetchCardsSaga(props) {
   const variables = props && props.payload && props.payload.variables
     ? props.payload.variables
     : undefined;
-  // wait for "fetchCard" to complete if that's already running
-  if (yield select(state => state.isLoadingFetchCard)) {
-    yield race({ error: take(actions.fetchCardError.type), response: take(actions.fetchCardResponse.type) });
-  }
+  yield waitForFetchCardSaga();
+  yield waitForDeleteCardSaga();
   try {
-    const res = yield call(client.query, { query: GQL_LIST_CARDS, variables });
+    const res = yield call(client.query, { query: GQL_LIST_CARDS, variables, fetchPolicy: 'network-only' });
     yield put(actions.fetchCardsResponse(res));
   } catch (err) {
     yield put(actions.fetchCardsError(err))
+  }
+}
+
+export function* waitForFetchCardsSaga() {
+  if (yield select(state => state.isLoadingFetchCards)) {
+    yield take([ actions.fetchCardsError.type, actions.fetchCardsResponse.type ]);
   }
 }
 
@@ -81,9 +94,9 @@ export function* saveCardSaga(props) {
 }
 
 export default function* watchCardsSaga() {
-  yield takeLeading([ actions.deleteCard.type ], deleteCardSaga);
-  yield takeLeading([ actions.fetchCard.type ], fetchCardSaga);
+  yield takeEvery([ actions.deleteCard.type ], deleteCardSaga);
+  yield takeEvery([ actions.fetchCard.type ], fetchCardSaga);
   yield takeLeading([ actions.fetchCards.type ], fetchCardsSaga);
-  yield takeLeading([ actions.fetchImage.type ], fetchImageSaga);
-  yield takeLeading([ actions.saveCard.type ], saveCardSaga);
+  yield takeEvery([ actions.fetchImage.type ], fetchImageSaga);
+  yield takeEvery([ actions.saveCard.type ], saveCardSaga);
 }
