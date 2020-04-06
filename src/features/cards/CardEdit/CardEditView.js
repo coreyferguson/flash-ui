@@ -4,11 +4,14 @@ import CardEditSide from './CardEditSide';
 import PropTypes from 'prop-types';
 import Button from '@bit/overattribution.growme.button';
 import sessionService from '../../../context/authentication/sessionService';
+import { useHistory } from 'react-router-dom';
+import HotkeyShortcut from '../../shortcuts/Shortcuts/HotkeyShortcut';
 
 export default function CardEditView(props) {
   const sideARef = React.useRef();
   const sideBRef = React.useRef();
   const labelsRef = React.useRef();
+  const history = useHistory();
   if (props.isFetchNeeded) {
     props.onFetch(props.id);
     return <h2>loading</h2>;
@@ -22,7 +25,7 @@ export default function CardEditView(props) {
         id: props.id,
         userId: sessionService.getSignInUserSession().idToken.payload.sub
       });
-      window.history.back();
+      history.goBack();
     }
   };
   const handleSave = e => {
@@ -49,6 +52,7 @@ export default function CardEditView(props) {
   const labels = props.card && props.card.labels;
   return (
     <form onSubmit={handleSave}>
+      <HotkeyShortcut combination='ctrl+enter' callback={handleSave} />
       <SidesStyle>
         <SideStyle><CardEditSide ref={sideARef} sideName='A' text={sideAText} /></SideStyle>
         <SideStyle><CardEditSide ref={sideBRef} sideName='B' text={sideBText} /></SideStyle>

@@ -3,6 +3,13 @@ import { shallow } from 'enzyme';
 import View from './CardEditView';
 import sessionService from '../../../context/authentication/sessionService';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useHistory: () => ({
+    goBack: jest.fn()
+  })
+}));
+
 describe('CardEditView', () => {
   test('defaults isFetchNeeded to true', () => {
     const wrapper = shallow(newView({ isFetchNeeded: true }));
