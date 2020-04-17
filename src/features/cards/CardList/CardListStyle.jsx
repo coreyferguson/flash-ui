@@ -20,10 +20,6 @@ export default styled.section`
   display: flex;
   flex-flow: column nowrap;
   box-sizing: border-box;
-
-  > * {
-    flex-grow: 1;
-  }
 `;
 
 export const ListStyle = styled.ul`
@@ -39,7 +35,6 @@ export const ListStyle = styled.ul`
   > li {
     box-sizing: border-box;
     max-width: 100%;
-    position: relative;
 
     @media screen and (max-width: 799px) {
       padding: 5px;

@@ -12,7 +12,7 @@ export default function CardListView(props={}) {
   React.useEffect(() => { props.onLoad() }, []);
   const history = useHistory();
   if (props.error) return <p>error</p>;
-  if (props.isLoading && props.cardMap.length === 0) return <LoadingPage style={{ height: '100%' }} />;
+  if (props.isLoading && Object.keys(props.cardMap).length === 0) return <LoadingPage style={{ height: '100%' }} />;
   const cards = props.cardsOrderByCreationDate.map(itemId => <li key={itemId}><CardView id={itemId} /></li>);
   const handleLoadNextPage = props.next && !props.isLoading
     ? () => { props.onLoadNextPage(props.next) }
