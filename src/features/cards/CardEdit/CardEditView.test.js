@@ -142,6 +142,7 @@ function newView(propOverrides, itemOverrides) {
     onCancel: jest.fn(),
     onDelete: jest.fn(),
     onFetch: jest.fn(),
+    onFetchImage: jest.fn(),
     onSave: jest.fn(),
     isFetchNeeded: false,
     card: {

@@ -48,14 +48,39 @@ export default function CardEditView(props) {
     props.onCancel();
   };
   const sideAText = props.card && props.card.sideAText;
+  const sideAImageIsLoading = props.cardImages && props.cardImages.A.isLoading;
+  const sideAImageSource = props.cardImages && props.cardImages.A.source;
+  const sideAImageUrl = props.card && props.card.sideAImageUrl;
   const sideBText = props.card && props.card.sideBText;
+  const sideBImageIsLoading = props.cardImages && props.cardImages.B.isLoading;
+  const sideBImageSource = props.cardImages && props.cardImages.B.source;
+  const sideBImageUrl = props.card && props.card.sideBImageUrl;
   const labels = props.card && props.card.labels;
+  const handleFetchImage = (side, imageUrl) => props.onFetchImage(props.id, side, imageUrl);
   return (
     <form onSubmit={handleSave}>
       <HotkeyShortcut combination='ctrl+enter' callback={handleSave} />
       <SidesStyle>
-        <SideStyle><CardEditSide ref={sideARef} sideName='A' text={sideAText} /></SideStyle>
-        <SideStyle><CardEditSide ref={sideBRef} sideName='B' text={sideBText} /></SideStyle>
+        <SideStyle>
+          <CardEditSide
+              imageSource={sideAImageSource}
+              imageUrl={sideAImageUrl}
+              isImageLoading={sideAImageIsLoading}
+              onFetchImage={handleFetchImage}
+              ref={sideARef}
+              sideName='A'
+              text={sideAText} />
+        </SideStyle>
+        <SideStyle>
+          <CardEditSide
+              imageSource={sideBImageSource}
+              imageUrl={sideBImageUrl}
+              isImageLoading={sideBImageIsLoading}
+              onFetchImage={handleFetchImage}
+              ref={sideBRef}
+              sideName='B'
+              text={sideBText} />
+        </SideStyle>
       </SidesStyle>
       <LabelsStyle>
         <span>labels</span>
@@ -72,12 +97,14 @@ export default function CardEditView(props) {
 
 CardEditView.propTypes = {
   card: PropTypes.object,
+  cardImages: PropTypes.object,
   id: PropTypes.string,
   isFetchNeeded: PropTypes.bool,
   onCancel: PropTypes.func,
   onDelete: PropTypes.func.isRequired,
   onFetch: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired
+  onFetchImage: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 CardEditView.defaultProps = {

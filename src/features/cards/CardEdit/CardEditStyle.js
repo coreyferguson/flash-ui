@@ -36,4 +36,7 @@ export const SideStyle = styled.div`
   textarea {
     width: 100%;
   }
+  img {
+    height: 100px;
+  }
 `;

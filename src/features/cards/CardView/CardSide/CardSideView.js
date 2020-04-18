@@ -7,8 +7,8 @@ export default function CardSideView(props) {
   const side = props.side;
   let imageSource, isImageLoading;
   if (props.image && props.image[side]) {
-    imageSource = props.image[side].source
-    isImageLoading = props.image[side].isLoading
+    imageSource = props.image[side].source;
+    isImageLoading = props.image[side].isLoading;
   }
   React.useEffect(() => {
     if (!imageSource && !isImageLoading && props.imageUrl && props.onFetchImage) {
