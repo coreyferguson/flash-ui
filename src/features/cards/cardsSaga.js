@@ -55,6 +55,7 @@ export function* fetchCardsSaga(props) {
     : undefined;
   yield waitForFetchCardSaga();
   yield waitForDeleteCardSaga();
+  yield waitForSaveCardSaga();
   try {
     const res = yield call(client.query, { query: GQL_LIST_CARDS, variables, fetchPolicy: 'network-only' });
     yield put(actions.fetchCardsResponse(res));
@@ -82,14 +83,20 @@ export function* fetchImageSaga(props) {
 }
 
 export function* saveCardSaga(props) {
-  const variables = props && props.payload && props.payload.variables
-    ? props.payload.variables
-    : undefined;
+  const { card, cardImages } = props && props.payload;
   try {
-    const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables });
+    if (cardImages && cardImages[0]) card.sideAImageUrl = yield call([mediaService, mediaService.upload], cardImages[0]);
+    if (cardImages && cardImages[1]) card.sideBImageUrl = yield call([mediaService, mediaService.upload], cardImages[1]);
+    const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...card } });
     yield put(actions.saveCardResponse(res.data.upsertCard));
   } catch (err) {
     yield put(actions.saveCardError({ message: err.toString(), stackTrace: err.stack }));
+  }
+}
+
+export function* waitForSaveCardSaga() {
+  if (yield select(state => state.isLoadingSaveCard)) {
+    yield take([ actions.saveCardError.type, actions.saveCardResponse.type ]);
   }
 }
 

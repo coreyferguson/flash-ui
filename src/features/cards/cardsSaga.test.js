@@ -76,6 +76,7 @@ describe('cardsSaga', () => {
       const gen = fetchCardsSaga();
       gen.next(); // yield waitForFetchCardSaga();
       gen.next(); // yield waitForDeleteCardSaga();
+      gen.next(); // yield waitForSaveCardSaga();
       const actual = gen.next(false).value;
       expect(actual.type).toBe('CALL');
       expect(actual.payload.args[0].query).toBe(GQL_LIST_CARDS);
@@ -85,6 +86,7 @@ describe('cardsSaga', () => {
       const gen = fetchCardsSaga();
       gen.next(); // yield waitForFetchCardSaga();
       gen.next(); // yield waitForDeleteCardSaga();
+      gen.next(); // yield waitForSaveCardSaga();
       expect(gen.next(false).value.type).toBe('CALL');
       const actual = gen.next('responseValue').value;
       const expected = put(actions.fetchCardsResponse('responseValue'));
@@ -95,6 +97,7 @@ describe('cardsSaga', () => {
       const gen = fetchCardsSaga();
       gen.next(); // yield waitForFetchCardSaga();
       gen.next(); // yield waitForDeleteCardSaga();
+      gen.next(); // yield waitForSaveCardSaga();
       expect(gen.next(false).value.type).toBe('CALL');
       const actual = gen.throw(new Error('oops')).value;
       const expected = put(actions.fetchCardsError(new Error('oops')));
@@ -119,7 +122,7 @@ describe('cardsSaga', () => {
 
   describe('saveCardSaga', () => {
     test('save card', () => {
-      const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
+      const gen = saveCardSaga({ payload: { card: { id: 'id value' } } });
       const actual = gen.next().value;
       expect(actual.type).toBe('CALL');
       expect(actual.payload.args[0].mutation).toBe(GQL_SAVE_CARD);
@@ -135,7 +138,7 @@ describe('cardsSaga', () => {
     });
 
     test('error', () => {
-      const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
+      const gen = saveCardSaga({ payload: { card: { id: 'id value' } } });
       expect(gen.next().value.type).toBe('CALL');
       const actual = gen.throw(new Error('oops')).value;
       expect(actual.payload.action.payload.message).toEqual('Error: oops');

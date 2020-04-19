@@ -24,8 +24,8 @@ const mapDispatchToProps = dispatch => ({
   onFetchImage: (id, side, imageUrl) => {
     dispatch(fetchImage({ id, side, imageUrl }))
   },
-  onSave: card => {
-    dispatch(saveCard({ variables: card }));
+  onSave: ({ card, cardImages }) => {
+    dispatch(saveCard({ card, cardImages }));
   },
 });
 

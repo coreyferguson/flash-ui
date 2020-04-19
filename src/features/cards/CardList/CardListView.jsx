@@ -9,7 +9,9 @@ import { Link, useHistory } from 'react-router-dom';
 import HotkeyShortcut from '../../shortcuts/Shortcuts/HotkeyShortcut';
 
 export default function CardListView(props={}) {
-  React.useEffect(() => { props.onLoad() }, []);
+  React.useEffect(() => {
+    if (!props.isFetchCardsAlreadyCompletedOnce) props.onLoad();
+  }, [ props.isFetchCardsAlreadyCompletedOnce ]);
   const history = useHistory();
   if (props.error) return <p>error</p>;
   if (props.isLoading && Object.keys(props.cardMap).length === 0) return <LoadingPage style={{ height: '100%' }} />;
@@ -36,6 +38,7 @@ export default function CardListView(props={}) {
 CardListView.propTypes = {
   error: PropTypes.object,
   isLoading: PropTypes.bool,
+  isFetchCardsAlreadyCompletedOnce: PropTypes.bool,
   cardsOrderByCreationDate: PropTypes.arrayOf(PropTypes.string),
   cardMap: PropTypes.object,
   onLoad: PropTypes.func.isRequired,

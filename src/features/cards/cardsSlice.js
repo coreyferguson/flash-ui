@@ -65,11 +65,12 @@ const slice = createSlice({
       for (let itemId of state.cardsOrderByCreationDate) newItemIdSet.delete(itemId);
       for (let itemId of newItemIdSet) newCardsOrderByCreationDate.push(itemId);
       return Object.assign({}, state, {
+        isFetchCardsAlreadyCompletedOnce: true,
         isLoadingFetchCards: false,
         isLoading: isAnyLoading(state),
         cardsOrderByCreationDate: newCardsOrderByCreationDate,
         cardMap: Object.assign({}, state.cardMap, newCardMap),
-        next: action.payload.data.me.cards.next
+        next: action.payload.data.me.cards.next,
       });
     },
 
@@ -129,6 +130,14 @@ const slice = createSlice({
       state.isLoading = isAnyLoading(state);
       const existingCard = state.cardMap[action.payload.id];
       if (!existingCard) state.cardsOrderByCreationDate = [ action.payload.id, ...state.cardsOrderByCreationDate ];
+      else {
+        if (existingCard.sideAImageUrl !== action.payload.sideAImageUrl && state.images[action.payload.id]) {
+         state.images[action.payload.id].A.source = undefined;
+        }
+        if (existingCard.sideBImageUrl !== action.payload.sideBImageUrl && state.images[action.payload.id]) {
+          state.images[action.payload.id].B.source = undefined;
+        }
+      }
       state.cardMap[action.payload.id] = action.payload;
     },
     saveCardError: (state, action) => {

@@ -73,6 +73,12 @@ describe('cardsSlice', () => {
       expect(actual.next).toBe(undefined);
     });
 
+    test('fetchCardsResponse - set isFetchCardsAlreadyCompletedOnce to true on first completion', () => {
+      const res = mockFetchCardsResponse();
+      const actual = reducer(initialState, fetchCardsResponse(res));
+      expect(actual.isFetchCardsAlreadyCompletedOnce).toBe(true);
+    });
+
     test('fetchCardsError - set loading to false', () => {
       const state = Object.assign({}, initialState, { isLoading: true });
       const actual = reducer(state, fetchCardsError(new Error('oops')));
@@ -312,6 +318,16 @@ describe('cardsSlice', () => {
       const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', sideAText: 'sideAText updated value' }));
       expect(stateAfter.cardsOrderByCreationDate).toEqual(['1']);
       expect(stateAfter.cardMap['1']).toEqual({ id: '1', sideAText: 'sideAText updated value' });
+    });
+
+    test('saveCardResponse - delete image from existing card', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        cardMap: { '1': { id: '1', sideAText: 'sideAText value', sideAImageUrl: 'sideAImageUrl value', sideBImageUrl: 'sideBImageUrl value' } },
+        images: { '1': { A: { source: 'side A source value' }, B: { source: 'side B source value' } } }
+      });
+      const stateAfter = reducer(stateBefore, saveCardResponse({ id: '1', sideAText: 'sideAText value' }));
+      expect(stateAfter.images['1'].A.source).toBeUndefined();
+      expect(stateAfter.images['1'].B.source).toBeUndefined();
     });
 
     test('saveCardError - set loading to false', () => {

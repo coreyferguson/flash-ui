@@ -91,10 +91,10 @@ describe('CardEditView', () => {
       const onSave = jest.fn();
       const view = shallow(newView({ onSave }));
       view.find('form').props().onSubmit();
-      expect(onSave.mock.calls[0][0].id).toBe('id value');
-      expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText updated value');
-      expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText value');
-      expect(onSave.mock.calls[0][0].userId).toBe('user id value');
+      expect(onSave.mock.calls[0][0].card.id).toBe('id value');
+      expect(onSave.mock.calls[0][0].card.sideAText).toBe('sideAText updated value');
+      expect(onSave.mock.calls[0][0].card.sideBText).toBe('sideBText value');
+      expect(onSave.mock.calls[0][0].card.userId).toBe('user id value');
     });
 
     test('sideBText changed', () => {
@@ -110,9 +110,9 @@ describe('CardEditView', () => {
       const onSave = jest.fn();
       const view = shallow(newView({ onSave }));
       view.find('form').props().onSubmit();
-      expect(onSave.mock.calls[0][0].id).toBe('id value');
-      expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText value');
-      expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText updated value');
+      expect(onSave.mock.calls[0][0].card.id).toBe('id value');
+      expect(onSave.mock.calls[0][0].card.sideAText).toBe('sideAText value');
+      expect(onSave.mock.calls[0][0].card.sideBText).toBe('sideBText updated value');
     });
 
     test('labels changed', () => {
@@ -128,10 +128,10 @@ describe('CardEditView', () => {
       const onSave = jest.fn();
       const view = shallow(newView({ onSave }));
       view.find('form').props().onSubmit();
-      expect(onSave.mock.calls[0][0].id).toBe('id value');
-      expect(onSave.mock.calls[0][0].sideAText).toBe('sideAText value');
-      expect(onSave.mock.calls[0][0].sideBText).toBe('sideBText value');
-      expect(onSave.mock.calls[0][0].labels).toEqual(['label1', 'label2', 'label3']);
+      expect(onSave.mock.calls[0][0].card.id).toBe('id value');
+      expect(onSave.mock.calls[0][0].card.sideAText).toBe('sideAText value');
+      expect(onSave.mock.calls[0][0].card.sideBText).toBe('sideBText value');
+      expect(onSave.mock.calls[0][0].card.labels).toEqual(['label1', 'label2', 'label3']);
     });
   });
 });

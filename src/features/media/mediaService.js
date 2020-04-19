@@ -21,7 +21,7 @@ export class MediaService {
     const key = `${identityId}/${name}`;
     const params = { Body: file, Key: key };
     await this._getS3().putObject(params).promise();
-    await timeout(500);
+    await timeout(1000);
     return processedName;
   }
 

@@ -34,12 +34,17 @@ export default function CardEditView(props) {
     const sideB = sideBRef.current.getValues();
     const labels = labelsRef.current.value;
     props.onSave({
-      id: props.id,
-      userId: sessionService.getSignInUserSession().idToken.payload.sub,
-      lastTestTime: new Date().toISOString(),
-      sideAText: sideA.text,
-      sideBText: sideB.text,
-      labels: labelsToArray(labels)
+      card: {
+        id: props.id,
+        userId: sessionService.getSignInUserSession().idToken.payload.sub,
+        lastTestTime: new Date().toISOString(),
+        sideAText: sideA.text,
+        sideAImageUrl: sideA.imageUrl,
+        sideBText: sideB.text,
+        sideBImageUrl: sideB.imageUrl,
+        labels: labelsToArray(labels)
+      },
+      cardImages: [ sideA.imageFile, sideB.imageFile ]
     });
     window.history.back();
   };
@@ -63,6 +68,7 @@ export default function CardEditView(props) {
       <SidesStyle>
         <SideStyle>
           <CardEditSide
+              key={sideAImageSource}
               imageSource={sideAImageSource}
               imageUrl={sideAImageUrl}
               isImageLoading={sideAImageIsLoading}
@@ -73,6 +79,7 @@ export default function CardEditView(props) {
         </SideStyle>
         <SideStyle>
           <CardEditSide
+              key={sideBImageSource}
               imageSource={sideBImageSource}
               imageUrl={sideBImageUrl}
               isImageLoading={sideBImageIsLoading}
