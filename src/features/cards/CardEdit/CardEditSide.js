@@ -21,6 +21,12 @@ export default class CardEditSide extends React.PureComponent {
     if (this.props.imageUrl && !this.state.imageSource && !this.props.isImageLoading) {
       this.props.onFetchImage(this.props.sideName, this.props.imageUrl);
     }
+    // focus textarea
+    if (this.props.focusOnMount) {
+      setTimeout(() => {
+        this.textRef.current.focus();
+      }, 50);
+    }
   }
 
   render() {
@@ -74,7 +80,7 @@ export default class CardEditSide extends React.PureComponent {
 }
 
 CardEditSide.propTypes = {
-  // focusOnMount: PropTypes.bool,
+  focusOnMount: PropTypes.bool,
   imageSource: PropTypes.string,
   isImageLoading: PropTypes.bool,
   onFetchImage: PropTypes.func.isRequired,

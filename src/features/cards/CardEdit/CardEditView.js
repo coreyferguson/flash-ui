@@ -69,6 +69,7 @@ export default function CardEditView(props) {
         <SideStyle>
           <CardEditSide
               key={sideAImageSource}
+              focusOnMount={true}
               imageSource={sideAImageSource}
               imageUrl={sideAImageUrl}
               isImageLoading={sideAImageIsLoading}
@@ -80,6 +81,7 @@ export default function CardEditView(props) {
         <SideStyle>
           <CardEditSide
               key={sideBImageSource}
+              focusOnMount={false}
               imageSource={sideBImageSource}
               imageUrl={sideBImageUrl}
               isImageLoading={sideBImageIsLoading}
