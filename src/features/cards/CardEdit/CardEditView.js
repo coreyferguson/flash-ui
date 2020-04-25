@@ -65,6 +65,7 @@ export default function CardEditView(props) {
   return (
     <form onSubmit={handleSave}>
       <HotkeyShortcut combination='ctrl+enter' callback={handleSave} />
+      <HotkeyShortcut combination='escape' callback={handleCancel} />
       <SidesStyle>
         <SideStyle>
           <CardEditSide
