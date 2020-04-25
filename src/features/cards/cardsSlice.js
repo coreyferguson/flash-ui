@@ -3,16 +3,26 @@ import { createSlice } from '@reduxjs/toolkit';
 export const initialState = {
   activeSides: {}, // Map<id, ('A' || 'B')>
   error: undefined,
+  isFetchCardsAlreadyCompletedOnce: false,
   isLoading: false,
   isLoadingFetchCard: false,
   isLoadingFetchCards: false,
   isLoadingSaveCard: false,
+  isLoadingFetchPracticeCards: false,
+  isCreationOfPracticeCardsPossible: true,
   images: {}, // Map<id, { (A && B): { isLoading, source } }>
   cardsOrderByCreationDate: [], // List<id>
+  cardsOrderByLastTestTime: [], // List<id>
   cardMap: {} // Map<id, card>
 };
 
-const isAnyLoading = state => !!(state.isLoadingFetchCard || state.isLoadingFetchCards || state.isLoadingSaveCard);
+const isAnyLoading = state => !!(
+  state.isLoadingFetchCard ||
+  state.isLoadingFetchCards ||
+  state.isLoadingSaveCard ||
+  state.isLoadingFetchPracticeCards ||
+  state.isLoadingRemindMe
+);
 
 const slice = createSlice({
   name: 'cards',
@@ -67,11 +77,41 @@ const slice = createSlice({
       return Object.assign({}, state, {
         isFetchCardsAlreadyCompletedOnce: true,
         isLoadingFetchCards: false,
-        isLoading: isAnyLoading(state),
+        isLoading: isAnyLoading({ ...state, isLoadingFetchCards: false }),
         cardsOrderByCreationDate: newCardsOrderByCreationDate,
         cardMap: Object.assign({}, state.cardMap, newCardMap),
-        next: action.payload.data.me.cards.next,
+        fetchCardsNextCursor: action.payload.data.me.cards.next,
       });
+    },
+
+    fetchPracticeCards: state => {
+      state.isLoading = true;
+      state.isLoadingFetchPracticeCards = true;
+    },
+    fetchPracticeCardsError: (state, action) => {
+      state.isLoadingFetchCards = false;
+      state.isLoading = isAnyLoading(state);
+      console.error(action.payload); // TODO: Handle errors
+    },
+    fetchPracticeCardsResponse: (state, action) => {
+      const cardsOrderByLastTestTime = [];
+      const newCardMap = action.payload.items.reduce((agg, item) => {
+        agg[item.id] = item;
+        cardsOrderByLastTestTime.push(item.id);
+        return agg;
+      }, {});
+      return Object.assign({}, state, {
+        isCreationOfPracticeCardsPossible: true,
+        isLoadingFetchPracticeCards: false,
+        isLoading: isAnyLoading({ ...state, isLoadingFetchPracticeCards: false }),
+        cardsOrderByLastTestTime,
+        cardMap: Object.assign({}, state.cardMap, newCardMap)
+      });
+    },
+    fetchPracticeCardsCreationNotPossible: state => {
+      state.isCreationOfPracticeCardsPossible = false;
+      state.isLoadingFetchPracticeCards = false;
+      state.isLoading = isAnyLoading(state);
     },
 
     fetchImage: (state, action) => {
@@ -171,7 +211,27 @@ const slice = createSlice({
       state.isLoading = isAnyLoading(state);
       state.errorMessage = action.payload.message;
       state.errorStackTrace = action.payload.stackTrace;
-    }
+    },
+
+    remindMe: state => {
+      state.isLoading = true;
+      state.isLoadingRemindMe = true;
+    },
+    remindMeResponse: (state, action) => {
+      const { cardId, frequency } = action.payload;
+      if (frequency === 'immediately') {
+        state.cardsOrderByLastTestTime = [
+          ...state.cardsOrderByLastTestTime.slice(1),
+          state.cardsOrderByLastTestTime[0]
+        ];
+      } else {
+        state.cardsOrderByLastTestTime = state.cardsOrderByLastTestTime.slice(1)
+      }
+      state.isLoadingRemindMe = false;
+      state.isLoading = isAnyLoading(state);
+    },
+    remindMeError: (state, action) => {
+    },
   }
 });
 
@@ -181,7 +241,9 @@ export const {
   deleteCard, deleteCardError, deleteCardResponse,
   fetchCard, fetchCardError, fetchCardResponse,
   fetchCards, fetchCardsError, fetchCardsResponse,
+  fetchPracticeCards, fetchPracticeCardsError, fetchPracticeCardsResponse, fetchPracticeCardsCreationNotPossible,
   fetchImage, fetchImageError, fetchImageResponse,
   flipCard,
   saveCard, saveCardError, saveCardResponse,
+  remindMe, remindMeResponse, remindMeError,
 } = slice.actions;

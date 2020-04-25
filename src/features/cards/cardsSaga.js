@@ -1,11 +1,24 @@
-import { call, put, race, select, takeEvery, takeLeading, take } from 'redux-saga/effects';
+import { call, put, select, takeEvery, takeLeading, take } from 'redux-saga/effects';
 import { actions } from './cardsSlice';
 import client from '../../context/apolloProvider/apolloClient';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
 import GQL_GET_CARD from './CardList/GQL_GET_CARD';
 import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
 import GQL_DELETE_CARD from './CardList/GQL_DELETE_CARD';
+import GQL_FETCH_PRACTICE_CARDS from './Practice/GQL_FETCH_PRACTICE_CARDS'
+import GQL_CREATE_PRACTICE_CARDS from './Practice/GQL_CREATE_PRACTICE_CARDS';
 import mediaService from '../media/mediaService';
+import sessionService from '../../context/authentication/sessionService';
+
+export default function* watchCardsSaga() {
+  yield takeEvery([ actions.deleteCard.type ], deleteCardSaga);
+  yield takeEvery([ actions.fetchCard.type ], fetchCardSaga);
+  yield takeLeading([ actions.fetchCards.type ], fetchCardsSaga);
+  yield takeLeading([ actions.fetchPracticeCards.type ], fetchPracticeCardsSaga);
+  yield takeEvery([ actions.fetchImage.type ], fetchImageSaga);
+  yield takeEvery([ actions.saveCard.type ], saveCardSaga);
+  yield takeLeading([ actions.remindMe.type ], remindMeSaga);
+}
 
 export function* deleteCardSaga(props) {
   const variables = props && props.payload && props.payload.variables
@@ -16,11 +29,7 @@ export function* deleteCardSaga(props) {
     yield call(client.mutate, { mutation: GQL_DELETE_CARD, variables });
     yield put(actions.deleteCardResponse(cardId));
   } catch (err) {
-    yield put(actions.deleteCardError({
-      cardId,
-      message: err.toString(),
-      stackTrace: err.stack
-    }));
+    yield put(actions.deleteCardError({ cardId, message: err.toString(), stackTrace: err.stack }));
   }
 }
 
@@ -70,6 +79,27 @@ export function* waitForFetchCardsSaga() {
   }
 }
 
+export function* fetchPracticeCardsSaga(props = {}) {
+  yield waitForSaveCardSaga();
+  props.userId = props.userId || sessionService.getSignInUserSession().idToken.payload.sub;
+  try {
+    let res = yield call(client.query, { query: GQL_FETCH_PRACTICE_CARDS, fetchPolicy: 'network-only' });
+    if (res.data.me.cards.items.length > 0) {
+      yield put(actions.fetchPracticeCardsResponse(res.data.me.cards));
+    } else {
+      res = yield call(client.mutate, { mutation: GQL_CREATE_PRACTICE_CARDS, variables: { userId: props.userId } });
+      if (res.data.newPracticeDeck.items.length > 0) {
+        yield put(actions.fetchPracticeCardsResponse(res.data.newPracticeDeck));
+      } else {
+        yield put(actions.fetchPracticeCardsCreationNotPossible());
+      }
+    }
+  } catch (err) {
+    console.log('err :>> ', err);
+    yield put(actions.fetchPracticeCardsError(err));
+  }
+}
+
 export function* fetchImageSaga(props) {
   props = props || {};
   props.payload = props.payload || {};
@@ -84,10 +114,12 @@ export function* fetchImageSaga(props) {
 
 export function* saveCardSaga(props) {
   const { card, cardImages } = props && props.payload;
+  card.userId = card.userId || sessionService.getSignInUserSession().idToken.payload.sub;
+  const existingCard = yield select(state => state.cardMap[card.id]);
   try {
     if (cardImages && cardImages[0]) card.sideAImageUrl = yield call([mediaService, mediaService.upload], cardImages[0]);
     if (cardImages && cardImages[1]) card.sideBImageUrl = yield call([mediaService, mediaService.upload], cardImages[1]);
-    const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...card } });
+    const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...existingCard, ...card } });
     yield put(actions.saveCardResponse(res.data.upsertCard));
   } catch (err) {
     yield put(actions.saveCardError({ message: err.toString(), stackTrace: err.stack }));
@@ -100,10 +132,28 @@ export function* waitForSaveCardSaga() {
   }
 }
 
-export default function* watchCardsSaga() {
-  yield takeEvery([ actions.deleteCard.type ], deleteCardSaga);
-  yield takeEvery([ actions.fetchCard.type ], fetchCardSaga);
-  yield takeLeading([ actions.fetchCards.type ], fetchCardsSaga);
-  yield takeEvery([ actions.fetchImage.type ], fetchImageSaga);
-  yield takeEvery([ actions.saveCard.type ], saveCardSaga);
+export function* remindMeSaga({ payload }) {
+  const { cardId, frequency } = payload;
+  try {
+    if (frequency === 'immediately') {
+      yield saveCardSaga({ payload: { card: { id: cardId, lastTestTime: new Date().toISOString() } } });
+    } else {
+      let labels = yield select(state => state.cardMap[cardId].labels);
+      labels = labels.filter(label => label!=='frequency-sometimes' && label!=='frequency-often' && label!=='practice');
+      if (frequency !== 'never') labels.push(`frequency-${frequency}`);
+      yield saveCardSaga({
+        payload: {
+          card: {
+            id: cardId,
+            labels,
+            lastTestTime: new Date().toISOString()
+          }
+        }
+      });
+    }
+    yield put(actions.remindMeResponse({ cardId, frequency }))
+  } catch (err) {
+    console.log('err :>> ', err);
+    yield put(actions.remindMeError(err));
+  }
 }

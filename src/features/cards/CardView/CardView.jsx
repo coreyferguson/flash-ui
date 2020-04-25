@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CardSideView from './CardSide/CardSideView';
 import { Link } from 'react-router-dom';
+import CardStyle from './CardStyle';
 
 export default function CardView(props) {
   const side = props.activeSide;
   return (
-    <div className='card' onClick={() => props.onFlipCard(props.item.id)}>
+    <CardStyle onClick={() => props.onFlipCard(props.item.id)}>
       <div className='card-content'>
         <CardSideView
           id={props.item.id}
@@ -22,7 +23,7 @@ export default function CardView(props) {
         </Link>
         <i className='material-icons action flip'>{`flip_to_${props.activeSide === 'A' ? 'front' : 'back'}`}</i>
       </menu>
-    </div>
+    </CardStyle>
   )
 }
 

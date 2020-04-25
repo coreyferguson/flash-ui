@@ -7,7 +7,8 @@ export const mapStateToProps = state => {
     isLoading: state.isLoading,
     cardMap: state.cardMap,
     cardsOrderByCreationDate: state.cardsOrderByCreationDate,
-    isFetchCardsAlreadyCompletedOnce: state.isFetchCardsAlreadyCompletedOnce
+    isFetchCardsAlreadyCompletedOnce: state.isFetchCardsAlreadyCompletedOnce,
+    next: state.fetchCardsNextCursor,
   };
 };
 

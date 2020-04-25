@@ -3,6 +3,7 @@ import watchFetchCards, {
   fetchImageSaga,
   fetchCardSaga,
   fetchCardsSaga,
+  fetchPracticeCardsSaga,
   saveCardSaga,
   waitForDeleteCardSaga,
   waitForFetchCardSaga,
@@ -15,6 +16,8 @@ import GQL_SAVE_CARD from './CardList/GQL_SAVE_CARD';
 import GQL_DELETE_CARD from './CardList/GQL_DELETE_CARD';
 import { actions, fetchImageResponse, fetchImageError } from './cardsSlice';
 import mediaService from '../media/mediaService';
+import sessionService from '../../context/authentication/sessionService';
+import client from '../../context/apolloProvider/apolloClient';
 
 describe('cardsSaga', () => {
 
@@ -27,6 +30,7 @@ describe('cardsSaga', () => {
     expect(sagas).toContainEqual(takeLeading([actions.fetchCards.type], fetchCardsSaga));
     expect(sagas).toContainEqual(takeEvery([actions.fetchImage.type], fetchImageSaga));
     expect(sagas).toContainEqual(takeEvery([actions.saveCard.type], saveCardSaga));
+    expect(sagas).toContainEqual(takeLeading([actions.fetchPracticeCards.type], fetchPracticeCardsSaga));
   });
 
   describe('fetchCardSaga', () => {
@@ -176,6 +180,63 @@ describe('cardsSaga', () => {
       expect(actual.payload.action.payload.message).toEqual('Error: oops');
       expect(actual.payload.action.payload.stackTrace).not.toBeNull();
       expect(actual.payload.action.payload.cardId).toEqual('id value');
+    });
+  });
+
+  describe('fetchPracticeCardsSaga', () => {
+    beforeEach(() => {
+      jest.spyOn(sessionService, 'getSignInUserSession').mockImplementationOnce(() => ({
+        idToken: { payload: { sub: 'sub value' } }
+      }));
+    });
+
+    test('fetch practice cards successfully', () => {
+      const gen = fetchPracticeCardsSaga();
+      gen.next(); // yield waitForSaveCardSaga();
+      const fetchRequest = gen.next();
+      const cards = { items: [{ id: 'id value 1' }] };
+      const mockFetchResult = { data: { me: { cards } } };
+      expect(fetchRequest.value.type).toEqual('CALL');
+      expect(fetchRequest.value.payload.fn).toBe(client.query);
+      const putRequest = gen.next(mockFetchResult);
+      expect(putRequest.value.type).toBe('PUT');
+      expect(putRequest.value.payload.action.type).toEqual('cards/fetchPracticeCardsResponse');
+      expect(putRequest.value.payload.action.payload).toEqual(cards);
+    });
+
+    test('create practice cards successfully', () => {
+      const gen = fetchPracticeCardsSaga();
+      gen.next(); // yield waitForSaveCardSaga();
+      const fetchRequest = gen.next();
+      const mockFetchResponse = { data: { me: { cards: { items: [] } } } };
+      expect(fetchRequest.value.type).toEqual('CALL');
+      expect(fetchRequest.value.payload.fn).toBe(client.query);
+      const mutateRequest = gen.next(mockFetchResponse);
+      const cards = { items: [{ id: 'id value' }] };
+      const mockMutateResponse = { data: { newPracticeDeck: cards } };
+      expect(mutateRequest.value.type).toEqual('CALL');
+      expect(mutateRequest.value.payload.fn).toBe(client.mutate);
+      expect(mutateRequest.value.payload.args[0].variables.userId).toEqual('sub value');
+      const putRequest = gen.next(mockMutateResponse);
+      expect(putRequest.value.type).toEqual('PUT');
+      expect(putRequest.value.payload.action.type).toEqual('cards/fetchPracticeCardsResponse');
+    });
+
+    test('creation of practice cards not possible', () => {
+      const gen = fetchPracticeCardsSaga();
+      gen.next(); // yield waitForSaveCardSaga();
+      const fetchRequest = gen.next();
+      const mockFetchResponse = { data: { me: { cards: { items: [] } } } };
+      expect(fetchRequest.value.type).toEqual('CALL');
+      expect(fetchRequest.value.payload.fn).toBe(client.query);
+      const mutateRequest = gen.next(mockFetchResponse);
+      const mockMutateResponse = { data: { newPracticeDeck: { items: [] } } };
+      expect(mutateRequest.value.type).toEqual('CALL');
+      expect(mutateRequest.value.payload.fn).toBe(client.mutate);
+      expect(mutateRequest.value.payload.args[0].variables.userId).toEqual('sub value');
+      const putRequest = gen.next(mockMutateResponse);
+      expect(putRequest.value.type).toEqual('PUT');
+      expect(putRequest.value.payload.action.type).toEqual('cards/fetchPracticeCardsCreationNotPossible');
     });
   });
 });

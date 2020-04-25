@@ -18,11 +18,11 @@ export default function CardListView(props={}) {
   const cards = props.cardsOrderByCreationDate.map(itemId => <li key={itemId}><CardView id={itemId} /></li>);
   const handleLoadNextPage = props.next && !props.isLoading
     ? () => { props.onLoadNextPage(props.next) }
-    : null;
+    : undefined;
   const handleCreateCard = e => {
     if (e) e.preventDefault();
     history.push('/cards/edit');
-  }
+  };
   return (
     <CardListStyle>
       <HotkeyShortcut combination='c' callback={handleCreateCard} />
@@ -31,6 +31,7 @@ export default function CardListView(props={}) {
       <ListStyle>
         {cards}
       </ListStyle>
+      {handleLoadNextPage && <Button onClick={handleLoadNextPage} className='load-more'>load more</Button>}
     </CardListStyle>
   );
 }
