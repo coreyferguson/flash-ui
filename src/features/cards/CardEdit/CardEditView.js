@@ -16,8 +16,8 @@ export default function CardEditView(props) {
     props.onFetch(props.id);
     return <h2>loading</h2>;
   }
-  const labelsToString = labels => labels ? labels.join(' ') : '';
-  const labelsToArray = labels => labels.split(' ');
+  const labelsToString = labels => labels ? labels.join(' ').trim() : '';
+  const labelsToArray = labels => labels.trim().split(' ');
   const handleDelete = e => {
     if (e) e.preventDefault();
     if (confirm('Are you sure you want to delete this card? This cannot be undone.')) {
