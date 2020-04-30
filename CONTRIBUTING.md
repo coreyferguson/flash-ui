@@ -12,3 +12,17 @@ cd flash-ui
 npm install
 npm test
 ```
+
+## Start the app
+
+Add this to `/etc/hosts`:
+
+```
+127.0.1.1 flash-local.growme.fyi
+```
+
+Start the app:
+
+```bash
+npm start
+```

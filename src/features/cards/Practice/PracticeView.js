@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CardView from '../CardView';
 import Style from './PracticeStyle';
 import Button from '@bit/overattribution.growme.button';
+import LoadingPage from '@bit/overattribution.growme.loading-page';
 
 export default function PracticeView(props) {
   React.useEffect(() => {
@@ -19,7 +20,7 @@ export default function PracticeView(props) {
 
 function showLoading(props) {
   if (!props.isLoading) return;
-  return <h1>loading</h1>;
+  return <LoadingPage style={{ height: '100%' }} />;
 }
 
 function showPracticeCardsCreationNotPossible(props) {
