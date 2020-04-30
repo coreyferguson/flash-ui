@@ -50,7 +50,18 @@ export default function CardEditView(props) {
   };
   const handleCancel = e => {
     if (e) e.preventDefault();
-    props.onCancel();
+    const sideA = sideARef.current.getValues();
+    const sideB = sideBRef.current.getValues();
+    const hasChanged =
+      ((sideA.text || "") !== (props.card.sideAText || "")) ||
+      ((sideB.text || "") !== (props.card.sideBText || "")) ||
+      (sideA.imageUrl !== props.card.sideAImageUrl) ||
+      (sideA.imageFile) ||
+      (sideB.imageUrl !== props.card.sideBImageUrl) ||
+      (sideB.imageFile) ||
+      ((labelsRef.current.value || "") !== labelsToString(props.card.labels));
+    if (!hasChanged) props.onCancel();
+    else if (confirm('Your work will be lost if you cancel without saving. Are you sure?')) props.onCancel();
   };
   const sideAText = props.card && props.card.sideAText;
   const sideAImageIsLoading = props.cardImages && props.cardImages.A.isLoading;
