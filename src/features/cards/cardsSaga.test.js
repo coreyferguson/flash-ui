@@ -127,6 +127,7 @@ describe('cardsSaga', () => {
   describe('saveCardSaga', () => {
     test('save card', () => {
       const gen = saveCardSaga({ payload: { card: { id: 'id value' } } });
+      gen.next(); // SELECT existingCard
       const actual = gen.next().value;
       expect(actual.type).toBe('CALL');
       expect(actual.payload.args[0].mutation).toBe(GQL_SAVE_CARD);
@@ -134,7 +135,8 @@ describe('cardsSaga', () => {
     });
 
     test('successful response', () => {
-      const gen = saveCardSaga({ payload: { variables: { id: 'id value' } } });
+      const gen = saveCardSaga({ payload: { card: { id: 'id value' } } });
+      gen.next(); // SELECT existingCard
       expect(gen.next().value.type).toBe('CALL');
       const actual = gen.next({ data: { upsertCard: 'response value' } }).value;
       const expected = put(actions.saveCardResponse('response value'));
@@ -143,6 +145,7 @@ describe('cardsSaga', () => {
 
     test('error', () => {
       const gen = saveCardSaga({ payload: { card: { id: 'id value' } } });
+      gen.next(); // SELECT existingCard
       expect(gen.next().value.type).toBe('CALL');
       const actual = gen.throw(new Error('oops')).value;
       expect(actual.payload.action.payload.message).toEqual('Error: oops');
