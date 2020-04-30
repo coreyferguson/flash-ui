@@ -26,7 +26,19 @@ function showLoading(props) {
 function showPracticeCardsCreationNotPossible(props) {
   if (props.isCreationOfPracticeCardsPossible) return;
   if (props.isLoading) return;
-  return <h1>practice cards could not be created</h1>;
+  return (
+    <React.Fragment>
+      <h1>uh oh</h1>
+      <h2>practice deck could not be created</h2>
+      <p>This may because you have chosen to "never" be reminded on all your cards.</p>
+      <p>Set frequency labels on those cards you'd like to practice again.</p>
+      <p>frequency labels</p>
+      <ul>
+        <li>frequency-often</li>
+        <li>frequency-sometimes</li>
+      </ul>
+    </React.Fragment>
+  );
 }
 
 function showPracticeView(props) {
