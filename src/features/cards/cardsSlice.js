@@ -39,7 +39,6 @@ const slice = createSlice({
     },
     fetchCardResponse: (state, action) => {
       const id = action.payload.data.me.card.id;
-      const cardsOrderByCreationDate = state.cardMap[id] ? state.cardsOrderByCreationDate : [...state.cardsOrderByCreationDate, id];
       const images = Object.assign({}, state.images, {
         [id]: Object.assign({}, state.images[id], {
           A: !state.images[id] ? { isLoading: false } : state.images[id].A,
@@ -50,7 +49,6 @@ const slice = createSlice({
         isLoading: isAnyLoading(state),
         isLoadingFetchCard: false,
         images,
-        cardsOrderByCreationDate,
         cardMap: Object.assign({}, state.cardMap, { [id]: action.payload.data.me.card })
       });
     },

@@ -294,23 +294,6 @@ describe('cardsSlice', () => {
       const stateAfter = reducer(stateBefore, fetchCardsResponse(res));
       expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue2', 'idValue1', 'idValue3' ]);
     });
-
-    it('fetchCardResponse - maintains order', () => {
-      const stateBefore = Object.assign({}, initialState, { cardsOrderByCreationDate: ['idValue2'] });
-      const res = mockFetchCardResponse({ card: { id: 'idValue1',  } });
-      const stateAfter = reducer(stateBefore, fetchCardResponse(res));
-      expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue2', 'idValue1' ]);
-    });
-
-    it('fetchCardResponse - does not change order of existing cardMap', () => {
-      const stateBefore = Object.assign({}, initialState, {
-        cardsOrderByCreationDate: ['idValue1', 'idValue2'],
-        cardMap: { 'idValue1': { id: 'idValue1' }, 'idValue2': { id: 'idValue2' } }
-      });
-      const res = mockFetchCardResponse({ card: { id: 'idValue1' } });
-      const stateAfter = reducer(stateBefore, fetchCardResponse(res));
-      expect(stateAfter.cardsOrderByCreationDate).toEqual([ 'idValue1', 'idValue2' ]);
-    });
   });
 
   describe('fetchImage', () => {
