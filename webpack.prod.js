@@ -10,7 +10,9 @@ module.exports = merge(common, {
     new DynamicCdnWebpackPlugin({ resolver })
   ],
   performance: {
-    hints: 'error',
+    // hints: 'error',
     // maxEntrypointSize: 112640
+
+    hints: false
   }
 });
