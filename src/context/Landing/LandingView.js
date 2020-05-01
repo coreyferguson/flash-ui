@@ -3,10 +3,10 @@ import React from 'react';
 import Authenticated from './LoadableLandingViewAuthenticated'
 import Unauthenticated from './LandingViewUnauthenticated';
 import AuthSwitch from '../authentication/AuthSwitch';
-import './index.scss';
+import Style from './LandingStyle';
 
 const LandingView = () => (
-  <AuthSwitch authenticated={Authenticated} unauthenticated={Unauthenticated} />
+  <Style><AuthSwitch authenticated={Authenticated} unauthenticated={Unauthenticated} /></Style>
 );
 
 export default LandingView;

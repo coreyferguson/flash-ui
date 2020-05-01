@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
 export default styled.div`
-    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
 
     > .landing-view-unauthenticated {
         display: flex;
-
-        @media (min-width: 800px) {
-            height: 100%;
-        }
+        flex-grow: 1;
 
         @media (max-width: 799px) {
             flex-wrap: wrap;
