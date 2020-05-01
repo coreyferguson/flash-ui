@@ -1,20 +1,19 @@
 
-import './Interim.scss';
-import PageContainer from '../PageContainer';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loading from '@bit/overattribution.growme.loading-page';
+import Style from './InterimStyle';
+import Navigation from '../Navigation';
 
 export default class InterimView extends React.PureComponent {
 
   render() {
     return (
-      <PageContainer className='interim-view'>
-        <React.Fragment>
-          <Loading />
-          {this.props.children}
-        </React.Fragment>
-      </PageContainer>
+      <Style>
+        <Navigation />
+        <Loading />
+        {this.props.children}
+      </Style>
     );
   }
 
