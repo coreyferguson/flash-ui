@@ -182,13 +182,14 @@ describe('CardEditView', () => {
 
   describe('onCancel dirty checks', () => {
     function onCancel({
-      sideATextBefore='a', sideATextAfter='a',
-      sideAImageUrlBefore='a', sideAImageUrlAfter='a',
+      card,
+      sideATextBefore='', sideATextAfter='',
+      sideAImageUrlBefore='', sideAImageUrlAfter='',
       sideAImageFile,
-      sideBTextBefore='a', sideBTextAfter='a',
-      sideBImageUrlBefore='a', sideBImageUrlAfter='a',
+      sideBTextBefore='', sideBTextAfter='',
+      sideBImageUrlBefore='', sideBImageUrlAfter='',
       sideBImageFile,
-      labelsBefore='a', labelsAfter='a',
+      labelsBefore='', labelsAfter='',
     }) {
       jest.spyOn(window, 'confirm').mockImplementationOnce(() => false);
       jest.spyOn(React, 'useRef').mockImplementationOnce(() => ({
@@ -213,7 +214,7 @@ describe('CardEditView', () => {
       const onCancel = jest.fn();
       const view = shallow(newView({
         onCancel,
-        card: {
+        card: card !== undefined ? card : {
           sideAText: sideATextBefore,
           sideAImageUrl: sideAImageUrlBefore,
           sideBText: sideBTextBefore,
@@ -226,6 +227,8 @@ describe('CardEditView', () => {
     }
 
     test('onCancel every permutation of dirty', () => {
+      expect(onCancel({})).toHaveBeenCalled();
+      expect(onCancel({ card: null })).toHaveBeenCalled();
       // sideAText
       expect(onCancel({ sideATextBefore: null, sideATextAfter: null })).toHaveBeenCalled();
       expect(onCancel({ sideATextBefore: 'a', sideATextAfter: 'a' })).toHaveBeenCalled();
@@ -233,6 +236,7 @@ describe('CardEditView', () => {
       expect(onCancel({ sideATextBefore: '', sideATextAfter: '' })).toHaveBeenCalled();
       expect(onCancel({ sideATextBefore: null, sideATextAfter: '' })).toHaveBeenCalled();
       expect(onCancel({ sideATextBefore: '', sideATextAfter: null })).toHaveBeenCalled();
+      expect(onCancel({ card: null, sideATextAfter: 'a' })).not.toHaveBeenCalled();
       // sideBText
       expect(onCancel({ sideBTextBefore: null, sideBTextAfter: null })).toHaveBeenCalled();
       expect(onCancel({ sideBTextBefore: 'a', sideBTextAfter: 'a' })).toHaveBeenCalled();
@@ -240,28 +244,32 @@ describe('CardEditView', () => {
       expect(onCancel({ sideBTextBefore: '', sideBTextAfter: '' })).toHaveBeenCalled();
       expect(onCancel({ sideBTextBefore: null, sideBTextAfter: '' })).toHaveBeenCalled();
       expect(onCancel({ sideBTextBefore: '', sideBTextAfter: null })).toHaveBeenCalled();
+      expect(onCancel({ card: null, sideBTextAfter: 'a' })).not.toHaveBeenCalled();
       // sideAImageUrl
       expect(onCancel({ sideAImageUrlBefore: null, sideAImageUrlAfter: null })).toHaveBeenCalled();
       expect(onCancel({ sideAImageUrlBefore: 'a', sideAImageUrlAfter: 'a' })).toHaveBeenCalled();
       expect(onCancel({ sideAImageUrlBefore: null, sideAImageUrlAfter: 'a' })).not.toHaveBeenCalled();
       expect(onCancel({ sideAImageUrlBefore: 'a', sideAImageUrlAfter: null })).not.toHaveBeenCalled();
-      expect(onCancel({ sideAImageUrlBefore: 'a', sideAImageFile: null })).toHaveBeenCalled();
+      expect(onCancel({ sideAImageUrlBefore: 'a', sideAImageUrlAfter: 'a', sideAImageFile: null })).toHaveBeenCalled();
       expect(onCancel({ sideAImageUrlBefore: null, sideAImageFile: 'a' })).not.toHaveBeenCalled();
       expect(onCancel({ sideAImageUrlBefore: 'a', sideAImageFile: 'b' })).not.toHaveBeenCalled();
+      expect(onCancel({ card: null, sideAImageFile: 'a' })).not.toHaveBeenCalled();
       // sideBImageUrl
       expect(onCancel({ sideBImageUrlBefore: null, sideBImageUrlAfter: null })).toHaveBeenCalled();
       expect(onCancel({ sideBImageUrlBefore: 'a', sideBImageUrlAfter: 'a' })).toHaveBeenCalled();
       expect(onCancel({ sideBImageUrlBefore: null, sideBImageUrlAfter: 'a' })).not.toHaveBeenCalled();
       expect(onCancel({ sideBImageUrlBefore: 'a', sideBImageUrlAfter: null })).not.toHaveBeenCalled();
-      expect(onCancel({ sideBImageUrlBefore: 'a', sideBImageFile: null })).toHaveBeenCalled();
+      expect(onCancel({ sideBImageUrlBefore: 'a', sideBImageUrlAfter: 'a', sideBImageFile: null })).toHaveBeenCalled();
       expect(onCancel({ sideBImageUrlBefore: null, sideBImageFile: 'a' })).not.toHaveBeenCalled();
       expect(onCancel({ sideBImageUrlBefore: 'a', sideBImageFile: 'b' })).not.toHaveBeenCalled();
+      expect(onCancel({ card: null, sideBImageFile: 'a' })).not.toHaveBeenCalled();
       // labels
       expect(onCancel({ labelsBefore: null, labelsAfter: null })).toHaveBeenCalled();
       expect(onCancel({ labelsBefore: 'a', labelsAfter: 'a' })).toHaveBeenCalled();
       expect(onCancel({ labelsBefore: 'a', labelsAfter: null })).not.toHaveBeenCalled();
       expect(onCancel({ labelsBefore: null, labelsAfter: 'a' })).not.toHaveBeenCalled();
       expect(onCancel({ labelsBefore: 'a', labelsAfter: 'b' })).not.toHaveBeenCalled();
+      expect(onCancel({ card: null, labelsAfter: 'a' })).not.toHaveBeenCalled();
     });
   });
 });

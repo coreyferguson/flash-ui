@@ -52,14 +52,18 @@ export default function CardEditView(props) {
     if (e) e.preventDefault();
     const sideA = sideARef.current.getValues();
     const sideB = sideBRef.current.getValues();
+    const propsCard = props.card || {};
+    // console.log('(sideA.imageUrl || "") :>> ', (sideA.imageUrl || ""));
+    // console.log('(propsCard.sideAImageUrl || "") :>> ', (propsCard.sideAImageUrl || ""));
     const hasChanged =
-      ((sideA.text || "") !== (props.card.sideAText || "")) ||
-      ((sideB.text || "") !== (props.card.sideBText || "")) ||
-      (sideA.imageUrl !== props.card.sideAImageUrl) ||
+      ((sideA.text || "") !== (propsCard.sideAText || "")) ||
+      ((sideB.text || "") !== (propsCard.sideBText || "")) ||
+      ((sideA.imageUrl || "") !== (propsCard.sideAImageUrl || "")) ||
       (sideA.imageFile) ||
-      (sideB.imageUrl !== props.card.sideBImageUrl) ||
+      ((sideB.imageUrl || "") !== (propsCard.sideBImageUrl || "")) ||
       (sideB.imageFile) ||
-      ((labelsRef.current.value || "") !== labelsToString(props.card.labels));
+      ((labelsRef.current.value || "") !== labelsToString(propsCard.labels));
+    // console.log('hasChanged :>> ', hasChanged);
     if (!hasChanged) props.onCancel();
     else if (confirm('Your work will be lost if you cancel without saving. Are you sure?')) props.onCancel();
   };
