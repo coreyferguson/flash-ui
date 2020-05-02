@@ -8,6 +8,7 @@ export default styled.div`
   border-radius: ${shapes['border-radius']};
   width: 500px;
   max-width: 100%;
+  box-sizing: border-box;
   height: 300px;
   box-sizing: border-box;
   cursor: pointer;

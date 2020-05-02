@@ -6,6 +6,7 @@ export default styled.section`
   display: flex;
   flex-flow: column nowrap;
   box-sizing: border-box;
+  width: 100%;
 
   > .load-more {
     text-align: center;
