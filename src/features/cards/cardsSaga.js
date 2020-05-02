@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery, takeLeading, take } from 'redux-saga/effects';
+import { call, put, select, takeEvery, takeLeading, take, actionChannel } from 'redux-saga/effects';
 import { actions } from './cardsSlice';
 import client from '../../context/apolloProvider/apolloClient';
 import GQL_LIST_CARDS from './CardList/GQL_LIST_CARDS';
@@ -9,6 +9,7 @@ import GQL_FETCH_PRACTICE_CARDS from './Practice/GQL_FETCH_PRACTICE_CARDS'
 import GQL_CREATE_PRACTICE_CARDS from './Practice/GQL_CREATE_PRACTICE_CARDS';
 import mediaService from '../media/mediaService';
 import sessionService from '../../context/authentication/sessionService';
+import takeQueue from '../../context/saga-effects/takeQueue';
 
 export default function* watchCardsSaga() {
   yield takeEvery([ actions.deleteCard.type ], deleteCardSaga);
@@ -17,7 +18,7 @@ export default function* watchCardsSaga() {
   yield takeLeading([ actions.fetchPracticeCards.type ], fetchPracticeCardsSaga);
   yield takeEvery([ actions.fetchImage.type ], fetchImageSaga);
   yield takeEvery([ actions.saveCard.type ], saveCardSaga);
-  yield takeLeading([ actions.remindMe.type ], remindMeSaga);
+  yield watchRemindMeSaga();
 }
 
 export function* deleteCardSaga(props) {
@@ -95,7 +96,7 @@ export function* fetchPracticeCardsSaga(props = {}) {
       }
     }
   } catch (err) {
-    console.log('err :>> ', err);
+    console.error('err :>> ', err);
     yield put(actions.fetchPracticeCardsError(err));
   }
 }
@@ -132,28 +133,37 @@ export function* waitForSaveCardSaga() {
   }
 }
 
+export function* watchRemindMeSaga() {
+  yield takeQueue({
+    actionType: actions.remindMe.type,
+    actionSaga: remindMeSaga,
+    errorSaga: remindMeSagaError,
+    startQueue: function*() { yield put(actions.remindMeQueueStart()) },
+    endQueue: function*() { yield put(actions.remindMeQueueEnd()) },
+  });
+}
+
 export function* remindMeSaga({ payload }) {
   const { cardId, frequency } = payload;
   try {
+    const userId = sessionService.getSignInUserSession().idToken.payload.sub;
+    const existingCard = yield select(state => state.cardMap[cardId]);
+    const lastTestTime = new Date().toISOString();
     if (frequency === 'immediately') {
-      yield saveCardSaga({ payload: { card: { id: cardId, lastTestTime: new Date().toISOString() } } });
+      const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...existingCard, userId, lastTestTime } });
+      yield put(actions.saveCardResponse(res.data.upsertCard));
     } else {
-      let labels = yield select(state => state.cardMap[cardId].labels);
-      labels = labels.filter(label => label!=='frequency-sometimes' && label!=='frequency-often' && label!=='practice');
+      const labels = existingCard.labels.filter(label => label!=='frequency-sometimes' && label!=='frequency-often' && label!=='practice');
       if (frequency !== 'never') labels.push(`frequency-${frequency}`);
-      yield saveCardSaga({
-        payload: {
-          card: {
-            id: cardId,
-            labels,
-            lastTestTime: new Date().toISOString()
-          }
-        }
-      });
+      const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...existingCard, labels, userId, lastTestTime } });
+      yield put(actions.saveCardResponse(res.data.upsertCard));
     }
-    yield put(actions.remindMeResponse({ cardId, frequency }))
   } catch (err) {
-    console.log('err :>> ', err);
-    yield put(actions.remindMeError(err));
+    return { cardId, frequency };
   }
+}
+
+export function* remindMeSagaError({ action, error }) {
+  const { cardId, frequency } = action.payload;
+  yield put(actions.remindMeError({ cardId, frequency, error }));
 }

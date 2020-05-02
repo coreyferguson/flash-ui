@@ -7,8 +7,8 @@ import LoadingPage from '@bit/overattribution.growme.loading-page';
 
 export default function PracticeView(props) {
   React.useEffect(() => {
-    if (!props.cardId) props.onLoad();
-  }, [props.cardId]);
+    if (!props.cardId && !props.isLoadingRemindMeQueue) props.onLoad();
+  }, [props.cardId, props.isLoadingRemindMeQueue]);
   return (
     <div>
       {showLoading(props)}
@@ -19,13 +19,14 @@ export default function PracticeView(props) {
 }
 
 function showLoading(props) {
-  if (!props.isLoading) return;
-  return <LoadingPage style={{ height: '100%' }} />;
+  if (props.isLoadingFetchPracticeCards || (props.isLoadingRemindMeQueue && !props.cardId)) {
+    return <LoadingPage style={{ height: '100%' }} />;
+  }
 }
 
 function showPracticeCardsCreationNotPossible(props) {
   if (props.isCreationOfPracticeCardsPossible) return;
-  if (props.isLoading) return;
+  if (props.isLoadingFetchPracticeCards) return;
   return (
     <React.Fragment>
       <h1>uh oh</h1>
@@ -42,7 +43,7 @@ function showPracticeCardsCreationNotPossible(props) {
 }
 
 function showPracticeView(props) {
-  if (props.isLoading) return;
+  if (props.isLoadingFetchPracticeCards) return;
   if (!props.isCreationOfPracticeCardsPossible) return;
   if (!props.cardId) return;
   return (

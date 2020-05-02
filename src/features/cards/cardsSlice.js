@@ -211,12 +211,8 @@ const slice = createSlice({
       state.errorStackTrace = action.payload.stackTrace;
     },
 
-    remindMe: state => {
-      state.isLoading = true;
-      state.isLoadingRemindMe = true;
-    },
-    remindMeResponse: (state, action) => {
-      const { cardId, frequency } = action.payload;
+    remindMe: (state, action) => {
+      const { frequency } = action.payload;
       if (frequency === 'immediately') {
         state.cardsOrderByLastTestTime = [
           ...state.cardsOrderByLastTestTime.slice(1),
@@ -225,11 +221,21 @@ const slice = createSlice({
       } else {
         state.cardsOrderByLastTestTime = state.cardsOrderByLastTestTime.slice(1)
       }
-      state.isLoadingRemindMe = false;
-      state.isLoading = isAnyLoading(state);
     },
     remindMeError: (state, action) => {
+      const { cardId } = action.payload;
+      state.cardsOrderByLastTestTime = [
+        cardId,
+        ...state.cardsOrderByLastTestTime.filter(id => cardId !== id)
+      ]
     },
+
+    remindMeQueueStart: state => {
+      state.isLoadingRemindMeQueue = true;
+    },
+    remindMeQueueEnd: state => {
+      state.isLoadingRemindMeQueue = false;
+    }
   }
 });
 
@@ -243,5 +249,6 @@ export const {
   fetchImage, fetchImageError, fetchImageResponse,
   flipCard,
   saveCard, saveCardError, saveCardResponse,
-  remindMe, remindMeResponse, remindMeError,
+  remindMe, remindMeError, remindMeQueueStart, remindMeQueueEnd,
+
 } = slice.actions;

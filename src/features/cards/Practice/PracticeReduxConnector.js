@@ -7,7 +7,8 @@ export const mapStateToProps = state => {
     ? state.cardsOrderByLastTestTime[0]
     : undefined;
   return {
-    isLoading: state.isLoading,
+    isLoadingRemindMeQueue: state.isLoadingRemindMeQueue,
+    isLoadingFetchPracticeCards: state.isLoadingFetchPracticeCards,
     isCreationOfPracticeCardsPossible: state.isCreationOfPracticeCardsPossible,
     cardId
   };
