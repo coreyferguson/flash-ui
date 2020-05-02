@@ -19,7 +19,7 @@ export default function CardSideView(props) {
   const style = { background: `url(${imageSource}) center/contain no-repeat` };
   const res = (
     <React.Fragment>
-      {markdown && <span dangerouslySetInnerHTML={{__html: markdown}} />}
+      {markdown && <span className='markdown' dangerouslySetInnerHTML={{__html: markdown}} />}
       {imageSource && <figure className='contained' style={style} />}
     </React.Fragment>
   );

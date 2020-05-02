@@ -33,6 +33,28 @@ export default styled.div`
     align-items: center;
     width: 100%;
 
+    > .markdown {
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+
+      table {
+        width: 100%;
+      }
+      ul, p {
+        margin: 0;
+      }
+      ol, ul, code, pre {
+        text-align: left;
+      }
+      hr {
+        width: 100%;
+      }
+    }
+
     > span * {
       margin: 0;
       padding: 0;
