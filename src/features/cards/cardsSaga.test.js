@@ -114,13 +114,13 @@ describe('cardsSaga', () => {
       const payload = { id: 'idValue1', side: 'A', imageUrl: 'imageUrlValue' };
       const gen = fetchImageSaga({ payload });
       expect(gen.next().value).toEqual(call([mediaService, mediaService.getUrl], 'imageUrlValue'));
-      expect(gen.next('sourceValue').value).toEqual(put(fetchImageResponse({ id: 'idValue1', side: 'A', source: 'sourceValue' })));
+      expect(gen.next('sourceValue').value).toEqual(put(actions.fetchImageResponse({ id: 'idValue1', side: 'A', source: 'sourceValue' })));
     });
 
     test('error response', () => {
       const gen = fetchImageSaga({ payload: { id: 'idValue1', side: 'A', imageUrl: 'imageUrlValue' } });
       expect(gen.next().value).toEqual(call([mediaService, mediaService.getUrl], 'imageUrlValue'));
-      expect(gen.throw(new Error('oops')).value).toEqual(put(fetchImageError(new Error('oops'))));
+      expect(gen.throw(new Error('oops')).value).toEqual(put(actions.fetchImageError(new Error('oops'))));
     });
   });
 
