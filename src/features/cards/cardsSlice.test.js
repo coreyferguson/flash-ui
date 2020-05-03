@@ -7,6 +7,7 @@ import {
   flipCard,
   initialState, reducer,
   saveCard, saveCardError, saveCardResponse, fetchPracticeCardsCreationNotPossible,
+  remindMe, remindMeError, remindMeQueueStart, remindMeQueueEnd,
 } from './cardsSlice';
 
 describe('cardsSlice', () => {
@@ -482,41 +483,72 @@ describe('cardsSlice', () => {
       expect(stateAfter.cardMap['1']).toEqual({ id: '1' });
       expect(stateAfter.cardMap['2']).toBeUndefined();
     });
-  });
 
-  test('deleteCardError - set loading to false', () => {
-    const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingDeleteCard: true });
-    const stateAfter = reducer(stateBefore, deleteCardError({
-      message: 'message value',
-      stackTrace: 'stack trace value'
-    }));
-    expect(stateAfter.isLoading).toBe(false);
-    expect(stateAfter.isLoadingDeleteCard).toBe(false);
-  });
-
-  test('deleteCardError - continue loading if fetchCards is in-progress', () => {
-    const stateBefore = Object.assign({}, initialState, {
-      isLoading: true,
-      isLoadingFetchCards: true,
-      isLoadingDeleteCard: true
+    test('deleteCardError - set loading to false', () => {
+      const stateBefore = Object.assign({}, initialState, { isLoading: true, isLoadingDeleteCard: true });
+      const stateAfter = reducer(stateBefore, deleteCardError({
+        message: 'message value',
+        stackTrace: 'stack trace value'
+      }));
+      expect(stateAfter.isLoading).toBe(false);
+      expect(stateAfter.isLoadingDeleteCard).toBe(false);
     });
-    const stateAfter = reducer(stateBefore, deleteCardError({
-      message: 'message value',
-      stackTrace: 'stack trace value'
-    }));
-    expect(stateAfter.isLoading).toBe(true);
-    expect(stateAfter.isLoadingFetchCards).toBe(true);
-    expect(stateAfter.isLoadingDeleteCard).toBe(false);
+
+    test('deleteCardError - continue loading if fetchCards is in-progress', () => {
+      const stateBefore = Object.assign({}, initialState, {
+        isLoading: true,
+        isLoadingFetchCards: true,
+        isLoadingDeleteCard: true
+      });
+      const stateAfter = reducer(stateBefore, deleteCardError({
+        message: 'message value',
+        stackTrace: 'stack trace value'
+      }));
+      expect(stateAfter.isLoading).toBe(true);
+      expect(stateAfter.isLoadingFetchCards).toBe(true);
+      expect(stateAfter.isLoadingDeleteCard).toBe(false);
+    });
+
+    test('deleteCardError - set error properties', () => {
+      const stateBefore = Object.assign({}, initialState, { isLoading: true });
+      const stateAfter = reducer(stateBefore, deleteCardError({
+        message: 'message value',
+        stackTrace: 'stack trace value'
+      }));
+      expect(stateAfter.errorMessage).toBe('message value');
+      expect(stateAfter.errorStackTrace).toBe('stack trace value');
+    });
   });
 
-  test('deleteCardError - set error properties', () => {
-    const stateBefore = Object.assign({}, initialState, { isLoading: true });
-    const stateAfter = reducer(stateBefore, deleteCardError({
-      message: 'message value',
-      stackTrace: 'stack trace value'
-    }));
-    expect(stateAfter.errorMessage).toBe('message value');
-    expect(stateAfter.errorStackTrace).toBe('stack trace value');
+  describe('remindMe', () => {
+    test('remind me immediately', () => {
+      const stateBefore = { ...initialState, cardsOrderByLastTestTime: [ '1', '2', '3' ] };
+      const stateAfter = reducer(stateBefore, remindMe({ frequency: 'immediately' }));
+      expect(stateAfter.cardsOrderByLastTestTime).toEqual([ '2', '3', '1' ]);
+    });
+
+    test('remind me often', () => {
+      const stateBefore = { ...initialState, cardsOrderByLastTestTime: [ '1', '2', '3' ] };
+      const stateAfter = reducer(stateBefore, remindMe({ frequency: 'often' }));
+      expect(stateAfter.cardsOrderByLastTestTime).toEqual([ '2', '3' ]);
+    });
+
+    test('remind me sometimes', () => {
+      const stateBefore = { ...initialState, cardsOrderByLastTestTime: [ '1', '2', '3' ] };
+      const stateAfter = reducer(stateBefore, remindMe({ frequency: 'sometimes' }));
+      expect(stateAfter.cardsOrderByLastTestTime).toEqual([ '2', '3' ]);
+    });
+
+    test('flip card to front', () => {
+      const stateBefore = {
+        ...initialState,
+        cardsOrderByLastTestTime: [ '1', '2', '3' ],
+        activeSides: { '1': 'B', '2': 'A', '3': 'A', }
+      };
+      const stateAfter = reducer(stateBefore, remindMe({ frequency: 'immediately' }));
+      expect(stateAfter.cardsOrderByLastTestTime).toEqual([ '2', '3', '1' ]);
+      expect(stateAfter.activeSides['1']).toBe('A');
+    });
   });
 });
 

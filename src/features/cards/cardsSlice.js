@@ -213,10 +213,12 @@ const slice = createSlice({
 
     remindMe: (state, action) => {
       const { frequency } = action.payload;
+      const cardId = state.cardsOrderByLastTestTime[0];
+      state.activeSides[cardId] = 'A';
       if (frequency === 'immediately') {
         state.cardsOrderByLastTestTime = [
           ...state.cardsOrderByLastTestTime.slice(1),
-          state.cardsOrderByLastTestTime[0]
+          cardId
         ];
       } else {
         state.cardsOrderByLastTestTime = state.cardsOrderByLastTestTime.slice(1)
@@ -250,5 +252,4 @@ export const {
   flipCard,
   saveCard, saveCardError, saveCardResponse,
   remindMe, remindMeError, remindMeQueueStart, remindMeQueueEnd,
-
 } = slice.actions;
