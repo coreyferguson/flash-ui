@@ -98,4 +98,12 @@ export default createGlobalStyle`
         outline: none;
         border-bottom: 1px solid ${colors.primary};
     }
+
+    a {
+        color: #EA7711;
+    }
+
+    a:visited {
+        color: #CFA90F;
+    }
 `;

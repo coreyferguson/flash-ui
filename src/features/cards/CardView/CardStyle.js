@@ -46,6 +46,7 @@ export default styled.div`
       }
       p {
         margin: 0;
+        margin-top: 5px;
       }
       ul {
         margin: 0;
@@ -56,6 +57,21 @@ export default styled.div`
       }
       hr {
         width: 100%;
+      }
+      blockquote, pre {
+        text-align: left;
+        border-left: 1px solid ${colors["background-2-border-color"]};
+        background-color: ${colors["background-1"]};
+        padding: 5px 10px 5px 10px;
+        box-sizing: border-box;
+        margin-top: 5px;
+        p {
+          margin-top: 0;
+        }
+      }
+      pre {
+        max-width: 100%;
+        overflow: auto;
       }
     }
 

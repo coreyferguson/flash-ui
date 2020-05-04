@@ -16,5 +16,5 @@ module.exports = {
   "primary-darken-2": "#965821", // = $primary * 0.2
   "secondary": "#5B2CF2",
   "secondary-darken-1": "#562AE7", // = $secondary * 0.1
-  "secondary-darken-2": "#5227DB" // = $secondary * 0.2
+  "secondary-darken-2": "#5227DB", // = $secondary * 0.2
 };
