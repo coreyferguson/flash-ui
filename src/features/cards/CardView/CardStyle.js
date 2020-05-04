@@ -44,8 +44,12 @@ export default styled.div`
       table {
         width: 100%;
       }
-      ul, p {
+      p {
         margin: 0;
+      }
+      ul {
+        margin: 0;
+        padding-left: 20px;
       }
       ol, ul, code, pre {
         text-align: left;

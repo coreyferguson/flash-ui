@@ -1,8 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  deleteCard, fetchCard, saveCard,
-  fetchImage
-} from '../cardsSlice';
+import { actions } from '../cardsSlice';
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.id;
@@ -16,16 +13,16 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   onDelete: ({ id, userId }) => {
-    dispatch(deleteCard({ variables: { id, userId } }));
+    dispatch(actions.deleteCard({ variables: { id, userId } }));
   },
   onFetch: id => {
-    dispatch(fetchCard({ variables: { id } }));
+    dispatch(actions.fetchCard({ variables: { id } }));
   },
   onFetchImage: (id, side, imageUrl) => {
-    dispatch(fetchImage({ id, side, imageUrl }))
+    dispatch(actions.fetchImage({ id, side, imageUrl }))
   },
   onSave: ({ card, cardImages }) => {
-    dispatch(saveCard({ card, cardImages }));
+    dispatch(actions.saveCard({ card, cardImages }));
   },
 });
 

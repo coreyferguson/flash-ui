@@ -53,8 +53,6 @@ export default function CardEditView(props) {
     const sideA = sideARef.current.getValues();
     const sideB = sideBRef.current.getValues();
     const propsCard = props.card || {};
-    // console.log('(sideA.imageUrl || "") :>> ', (sideA.imageUrl || ""));
-    // console.log('(propsCard.sideAImageUrl || "") :>> ', (propsCard.sideAImageUrl || ""));
     const hasChanged =
       ((sideA.text || "") !== (propsCard.sideAText || "")) ||
       ((sideB.text || "") !== (propsCard.sideBText || "")) ||
@@ -63,7 +61,6 @@ export default function CardEditView(props) {
       ((sideB.imageUrl || "") !== (propsCard.sideBImageUrl || "")) ||
       (sideB.imageFile) ||
       ((labelsRef.current.value || "") !== labelsToString(propsCard.labels));
-    // console.log('hasChanged :>> ', hasChanged);
     if (!hasChanged) props.onCancel();
     else if (confirm('Your work will be lost if you cancel without saving. Are you sure?')) props.onCancel();
   };
