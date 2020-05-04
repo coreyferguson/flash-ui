@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.1",
-    "@bit/overattribution.growme.button": "0.0.35",
+    "@bit/overattribution.growme.button": "0.0.36",
     "@bit/overattribution.growme.loading-inline": "0.0.29",
     "@bit/overattribution.growme.loading-page": "^0.0.35",
     "@bit/overattribution.growme.navigation": "0.0.33",

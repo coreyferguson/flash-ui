@@ -46,7 +46,6 @@ export default styled.div`
         margin: 0;
         @media(max-width: 799px) {
           width: 100%;
-          height: 50px;
           font-size: 150%;
           text-align: center;
           justify-content: center;
