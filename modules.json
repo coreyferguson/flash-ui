@@ -1,4 +1,22 @@
 {
+  "dompurify": {
+    "var": "DOMPurify",
+    "versions": {
+      ">=2.0.3": {
+        "development": "https://unpkg.com/dompurify@2.0.3/dist/purify.js",
+        "production": "https://unpkg.com/dompurify@2.0.3/dist/purify.min.js"
+      }
+    }
+  },
+  "styled-components": {
+    "var": "styled",
+    "versions": {
+      ">=4.3.2": {
+        "development": "https://unpkg.com/styled-components@4.3.2/dist/styled-components.min.js",
+        "production": "https://unpkg.com/styled-components@4.3.2/dist/styled-components.js"
+      }
+    }
+  },
   "marked": {
     "var": "marked",
     "versions": {
