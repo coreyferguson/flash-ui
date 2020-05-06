@@ -48,7 +48,7 @@ export default styled.div`
         margin: 0;
         margin-top: 5px;
       }
-      ul {
+      ul, ol {
         margin: 0;
         padding-left: 20px;
       }
