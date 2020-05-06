@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useTextToMarkdownConverter from '../useTextToMarkdownConverter';
 
 export default function CardSideView(props) {
+  const markdownRef = React.useRef();
   const markdown = useTextToMarkdownConverter(props.text);
   const side = props.side;
   let imageSource, isImageLoading;
@@ -16,10 +17,18 @@ export default function CardSideView(props) {
       props.onFetchImage(id, side, imageUrl);
     }
   }, [ imageSource, isImageLoading, props.imageUrl, props.onFetchImage ]);
+  React.useEffect(() => {
+    if (markdownRef.current && markdown) {
+      markdownRef.current.querySelectorAll('a').forEach(a => {
+        a.setAttribute('target', '_blank');
+        a.addEventListener('click', e => e.stopPropagation());
+      });
+    }
+  }, [ markdownRef, markdown ]);
   const style = { background: `url(${imageSource}) center/contain no-repeat` };
   const res = (
     <React.Fragment>
-      {markdown && <span className='markdown' dangerouslySetInnerHTML={{__html: markdown}} />}
+      {markdown && <span ref={markdownRef} className='markdown' dangerouslySetInnerHTML={{__html: markdown}} />}
       {imageSource && <figure className='contained' style={style} />}
     </React.Fragment>
   );
