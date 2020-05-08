@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CardSideView from './CardSide/CardSideView';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import CardStyle from './CardStyle';
+import Button from '@bit/overattribution.growme.button';
 
 export default function CardView(props) {
+  const history = useHistory();
   const side = props.activeSide;
   return (
     <CardStyle onClick={() => props.onFlipCard(props.item.id)}>
@@ -18,10 +20,8 @@ export default function CardView(props) {
           text={props.item[`side${side}Text`]} />
       </div>
       <menu className='card-menu'>
-        <Link to={`/cards/${props.item.id}/edit`} onClick={e => e.stopPropagation() }>
-          <i className='material-icons'>edit</i>
-        </Link>
-        <i className='material-icons action flip'>{`flip_to_${props.activeSide === 'A' ? 'front' : 'back'}`}</i>
+        <Button icon='edit' onClick={() => history.push(`/cards/${props.item.id}/edit`)} />
+        <Button icon={`flip_to_${props.activeSide === 'A' ? 'front' : 'back'}`} />
       </menu>
     </CardStyle>
   )

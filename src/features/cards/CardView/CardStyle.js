@@ -35,6 +35,7 @@ export default styled.div`
 
     > .markdown {
       width: 100%;
+      max-height: 245px;
       text-align: center;
       display: flex;
       flex-flow: column nowrap;
@@ -96,8 +97,14 @@ export default styled.div`
     justify-content: flex-end;
     align-items: center;
 
-    > a {
-      color: ${colors["foreground-1"]}
+    button {
+      background-color: ${colors["background-2"]};
+      margin: 0;
+    }
+
+    button:hover, button:focus {
+      background-color: ${colors["foreground-1"]};
+      color: ${colors["background-1"]};
     }
   }
 `;
