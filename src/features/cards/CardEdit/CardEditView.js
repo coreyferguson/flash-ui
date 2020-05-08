@@ -1,5 +1,5 @@
 import React from 'react';
-import { LabelsStyle, MenuStyle, SidesStyle, SideStyle } from './CardEditStyle';
+import Style from './CardEditStyle';
 import CardEditSide from './CardEditSide';
 import PropTypes from 'prop-types';
 import Button from '@bit/overattribution.growme.button';
@@ -75,45 +75,47 @@ export default function CardEditView(props) {
   const labels = props.card && props.card.labels;
   const handleFetchImage = (side, imageUrl) => props.onFetchImage(props.id, side, imageUrl);
   return (
-    <form onSubmit={handleSave}>
-      <HotkeyShortcut combination='ctrl+enter' callback={handleSave} />
-      <HotkeyShortcut combination='escape' callback={handleCancel} />
-      <SidesStyle>
-        <SideStyle>
-          <CardEditSide
-              key={sideAImageSource}
-              focusOnMount={true}
-              imageSource={sideAImageSource}
-              imageUrl={sideAImageUrl}
-              isImageLoading={sideAImageIsLoading}
-              onFetchImage={handleFetchImage}
-              ref={sideARef}
-              sideName='A'
-              text={sideAText} />
-        </SideStyle>
-        <SideStyle>
-          <CardEditSide
-              key={sideBImageSource}
-              focusOnMount={false}
-              imageSource={sideBImageSource}
-              imageUrl={sideBImageUrl}
-              isImageLoading={sideBImageIsLoading}
-              onFetchImage={handleFetchImage}
-              ref={sideBRef}
-              sideName='B'
-              text={sideBText} />
-        </SideStyle>
-      </SidesStyle>
-      <LabelsStyle>
-        <span>labels</span>
-        <input ref={labelsRef} type='text' defaultValue={labelsToString(labels)} className='mousetrap' />
-      </LabelsStyle>
-      <MenuStyle>
-        <Button onClick={handleCancel} data-name='cancel'>cancel</Button>
-        <Button onClick={handleDelete} data-name='delete'>delete</Button>
-        <Button isCta={true} onClick={handleSave} data-name='save'>save</Button>
-      </MenuStyle>
-    </form>
+    <Style>
+      <form onSubmit={handleSave}>
+        <HotkeyShortcut combination='ctrl+enter' callback={handleSave} />
+        <HotkeyShortcut combination='escape' callback={handleCancel} />
+        <div className='sides'>
+          <div className='side'>
+            <CardEditSide
+                key={sideAImageSource}
+                focusOnMount={true}
+                imageSource={sideAImageSource}
+                imageUrl={sideAImageUrl}
+                isImageLoading={sideAImageIsLoading}
+                onFetchImage={handleFetchImage}
+                ref={sideARef}
+                sideName='A'
+                text={sideAText} />
+          </div>
+          <div className='side'>
+            <CardEditSide
+                key={sideBImageSource}
+                focusOnMount={false}
+                imageSource={sideBImageSource}
+                imageUrl={sideBImageUrl}
+                isImageLoading={sideBImageIsLoading}
+                onFetchImage={handleFetchImage}
+                ref={sideBRef}
+                sideName='B'
+                text={sideBText} />
+          </div>
+        </div>
+        <div className='labels'>
+          <span>labels</span>
+          <input ref={labelsRef} type='text' defaultValue={labelsToString(labels)} className='mousetrap' />
+        </div>
+        <menu className='controls'>
+          <Button className='control' onClick={handleCancel} data-name='cancel'>cancel</Button>
+          <Button className='control' onClick={handleDelete} data-name='delete'>delete</Button>
+          <Button className='control' isCta={true} onClick={handleSave} data-name='save'>save</Button>
+        </menu>
+      </form>
+    </Style>
   );
 }
 
