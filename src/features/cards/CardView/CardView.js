@@ -9,7 +9,7 @@ export default function CardView(props) {
   const history = useHistory();
   const side = props.activeSide;
   return (
-    <CardStyle onClick={() => props.onFlipCard(props.item.id)}>
+    <CardStyle onClick={() => props.onFlipCard(props.item.id)} className='no-select'>
       <div className='card-content'>
         <CardSideView
           id={props.item.id}
