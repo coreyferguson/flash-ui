@@ -18,6 +18,13 @@ export default function PracticeView(props) {
   );
 }
 
+function handleRemindNever(callback) {
+  const confirmed = confirm('Are you sure you never want this flashcard to appear in practice again?');
+  if (confirmed) {
+    callback();
+  }
+}
+
 function showLoading(props) {
   if (props.isLoadingFetchPracticeCards || (props.isLoadingRemindMeQueue && !props.cardId)) {
     return <LoadingPage style={{ height: '100%' }} />;
@@ -56,7 +63,7 @@ function showPracticeView(props) {
         <Button className='control' onClick={() => props.onRemindImmediately(props.cardId)}>immediately</Button>
         <Button className='control' onClick={() => props.onRemindOften(props.cardId)}>often</Button>
         <Button className='control' onClick={() => props.onRemindSometimes(props.cardId)}>sometimes</Button>
-        <Button className='control' onClick={() => props.onRemindNever(props.cardId)}>never</Button>
+        <Button className='control' onClick={() => handleRemindNever(() => props.onRemindNever(props.cardId))}>never</Button>
       </div>
     </Style>
   );

@@ -8,6 +8,10 @@ import Button from '@bit/overattribution.growme.button';
 export default function CardView(props) {
   const history = useHistory();
   const side = props.activeSide;
+  const handleEdit = e => {
+    e.stopPropagation();
+    history.push(`/cards/${props.item.id}/edit`);
+  };
   return (
     <CardStyle onClick={() => props.onFlipCard(props.item.id)} className='no-select'>
       <div className='card-content'>
@@ -20,7 +24,7 @@ export default function CardView(props) {
           text={props.item[`side${side}Text`]} />
       </div>
       <menu className='card-menu'>
-        <Button icon='edit' onClick={() => history.push(`/cards/${props.item.id}/edit`)} />
+        <Button icon='edit' onClick={handleEdit} />
         <Button icon={`flip_to_${props.activeSide === 'A' ? 'front' : 'back'}`} />
       </menu>
     </CardStyle>
