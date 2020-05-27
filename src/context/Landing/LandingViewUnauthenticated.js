@@ -19,7 +19,7 @@ export default class LandingViewUnauthenticated extends React.PureComponent {
             <h1>learn in a flash</h1>
             <h2>learn with flashcards</h2>
             <h2>that learn with you</h2>
-            <Button component={<Link to='/signin' style={{ width: '200px', marginTop: '50px' }}>try it</Link>} />
+            <Button component={<Link className='button' to='/signin' style={{ width: '200px', marginTop: '50px' }}>try it</Link>} />
           </React.Fragment>
         }
         imageSource={imageUrl}
