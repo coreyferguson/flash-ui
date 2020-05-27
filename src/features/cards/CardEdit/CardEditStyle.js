@@ -73,6 +73,7 @@ export default styled.div`
     textarea {
       box-sizing: border-box;
       width: 100%;
+      font-family: monospace;
     }
 
     img {
