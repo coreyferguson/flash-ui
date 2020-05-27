@@ -114,6 +114,12 @@ describe('remindMe', () => {
     expect(stateAfter.cardsOrderByLastTestTime).toEqual([ '2', '3' ]);
   });
 
+  test('remind me rarely', () => {
+    const stateBefore = { ...initialState, cardsOrderByLastTestTime: [ '1', '2', '3' ] };
+    const stateAfter = reducer(stateBefore, actions.remindMe({ frequency: 'rarely' }));
+    expect(stateAfter.cardsOrderByLastTestTime).toEqual([ '2', '3' ]);
+  });
+
   test('flip card to front', () => {
     const stateBefore = {
       ...initialState,

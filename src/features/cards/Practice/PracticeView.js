@@ -44,6 +44,7 @@ function showPracticeCardsCreationNotPossible(props) {
       <ul>
         <li>frequency-often</li>
         <li>frequency-sometimes</li>
+        <li>frequency-rarely</li>
       </ul>
     </React.Fragment>
   );
@@ -63,6 +64,7 @@ function showPracticeView(props) {
         <Button className='control' onClick={() => props.onRemindImmediately(props.cardId)}>immediately</Button>
         <Button className='control' onClick={() => props.onRemindOften(props.cardId)}>often</Button>
         <Button className='control' onClick={() => props.onRemindSometimes(props.cardId)}>sometimes</Button>
+        <Button className='control' onClick={() => props.onRemindRarely(props.cardId)}>rarely</Button>
         <Button className='control' onClick={() => handleRemindNever(() => props.onRemindNever(props.cardId))}>never</Button>
       </div>
     </Style>
@@ -76,5 +78,6 @@ PracticeView.propTypes = {
   onRemindImmediately: PropTypes.func.isRequired,
   onRemindOften: PropTypes.func.isRequired,
   onRemindSometimes: PropTypes.func.isRequired,
+  onRemindRarely: PropTypes.func.isRequired,
   onRemindNever: PropTypes.func.isRequired,
 };

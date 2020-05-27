@@ -153,7 +153,11 @@ export function* remindMeSaga({ payload }) {
       const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...existingCard, userId, lastTestTime } });
       yield put(actions.saveCardResponse(res.data.upsertCard));
     } else {
-      const labels = existingCard.labels.filter(label => label!=='frequency-sometimes' && label!=='frequency-often' && label!=='practice');
+      const labels = existingCard.labels.filter(label =>
+        label!=='frequency-sometimes' &&
+        label!=='frequency-often' &&
+        label!=='frequency-rarely' &&
+        label!=='practice');
       if (frequency !== 'never') labels.push(`frequency-${frequency}`);
       const res = yield call(client.mutate, { mutation: GQL_SAVE_CARD, variables: { ...existingCard, labels, userId, lastTestTime } });
       yield put(actions.saveCardResponse(res.data.upsertCard));

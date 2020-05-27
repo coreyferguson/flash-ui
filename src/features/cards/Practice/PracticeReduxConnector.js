@@ -27,6 +27,9 @@ export const mapDispatchToProps = dispatch => ({
   onRemindSometimes: cardId => {
     dispatch(actions.remindMe({ cardId, frequency: 'sometimes' }));
   },
+  onRemindRarely: cardId => {
+    dispatch(actions.remindMe({ cardId, frequency: 'rarely' }));
+  },
   onRemindNever: cardId => {
     dispatch(actions.remindMe({ cardId, frequency: 'never' }));
   },
